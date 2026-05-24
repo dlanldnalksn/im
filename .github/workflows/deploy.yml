@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install
         run: npm install
@@ -31,12 +30,11 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # 저장소 이름이 au면 https://USER.github.io/au/ 에 배포됨
           BASE_PATH: /${{ github.event.repository.name }}
           SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-          PUBLIC_INTRANET_PASSWORD: ${{ secrets.PUBLIC_INTRANET_PASSWORD || 'imc-intra' }}
+          PUBLIC_INTRANET_PASSWORD: imc-intra
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
