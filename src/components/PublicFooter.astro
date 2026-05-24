@@ -3,23 +3,24 @@ import { url } from '../lib/url';
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-auto bg-[#111] text-[#888] text-sm">
-  <div class="border-b border-[#333] px-4 md:px-10 py-6 flex flex-wrap gap-4 md:gap-6">
-    <a href={url()} class="text-[#ccc] font-semibold hover:text-white transition-colors">홈</a>
-    <a href={url('about/')} class="text-[#ccc] font-semibold hover:text-white transition-colors">위원회 소개</a>
-    <a href={url('registration/')} class="text-[#ccc] font-semibold hover:text-white transition-colors">민원·신고</a>
-    <a href={url('notices/')} class="text-[#ccc] font-semibold hover:text-white transition-colors">알림·소식</a>
-    <a href={url('intranet/login/')} class="text-[#666] hover:text-[#ccc] transition-colors ml-auto text-xs">
-      직원용 내부망
-    </a>
+<footer class="gemini-footer mt-auto">
+  <div class="footer-top flex flex-wrap gap-6 mb-6 pb-6 border-b border-[#333]">
+    <a href={url()} class="text-[#ccc] font-semibold no-underline hover:text-white">홈</a>
+    <a href={url('about/')} class="text-[#ccc] font-semibold no-underline hover:text-white">개인정보처리방침</a>
+    <a href={url('resources/')} class="text-[#ccc] font-semibold no-underline hover:text-white">정보공개</a>
+    <a href={url('organizations/')} class="text-[#ccc] font-semibold no-underline hover:text-white">찾아오시는 길</a>
   </div>
-  <div class="px-4 md:px-10 py-8">
-    <p class="text-[#ccc] font-bold text-base mb-3">이능관리위원회</p>
-    <p class="mb-1"><span class="inline-block mr-4">(03000) 서울특별시 ○○구 ○○로 1</span></p>
-    <p class="mb-1">
-      <span class="inline-block mr-4">민원 상담 1551-0000 (가상)</span>
-      <span class="inline-block">평일 09:00 – 18:00</span>
+  <div class="footer-info">
+    <p class="mb-1.5">
+      <span class="mr-4"><b>이능관리위원회</b></span>
+      <span>서울특별시 ○○구 ○○로 1 (가상)</span>
     </p>
-    <p class="font-mono text-xs text-[#666] mt-4">© {year} 이능관리위원회. All rights reserved.</p>
+    <p class="mb-1.5">
+      <span class="mr-4">대표전화: 1551-0000 (등재/민원)</span>
+      <span>폭주 및 미등재자 신고: 국번없이 11X (가상)</span>
+    </p>
+    <p class="copyright mt-4 font-mono text-xs">
+      COPYRIGHT © SUPERNATURAL ABILITY MANAGEMENT COMMITTEE. {year}. ALL RIGHTS RESERVED.
+    </p>
   </div>
 </footer>

@@ -3,84 +3,49 @@ import { url, pathnameEquals, pathnameStartsWith } from '../lib/url';
 
 const nav = [
   { path: '', label: '홈' },
-  { path: 'about/', label: '위원회·제도' },
-  { path: 'registration/', label: '등재·민원' },
+  { path: 'about/', label: '제도 안내' },
+  { path: 'registration/', label: '등재 민원' },
   { path: 'organizations/', label: '조직 소개' },
-  { path: 'notices/', label: '알림·소식' },
+  { path: 'notices/', label: '알림마당' },
   { path: 'faq/', label: 'FAQ' },
   { path: 'resources/', label: '자료실' },
 ];
 const pathname = Astro.url.pathname;
 ---
 
-<header>
-  <!-- 상단 유틸리티 바 -->
-  <div class="bg-[#1a1a1a] text-[#bbb] text-[11px] px-4 md:px-10 py-1.5 flex flex-wrap justify-between gap-2 border-b border-[#2a2a2a]">
-    <div class="flex items-center gap-3">
-      <span class="text-[#888]">대한민국 정부 누리집</span>
-      <span class="text-[#444]">|</span>
-      <span>국무총리실 직속</span>
+<header class="gemini-header">
+  <a href={url()} class="logo flex items-center gap-3 no-underline text-inherit shrink-0">
+    <div class="gemini-logo-mark"></div>
+    <div class="logo-text">
+      <h1 class="text-[22px] font-extrabold tracking-tight leading-tight m-0">이능관리위원회</h1>
+      <p class="text-[11px] text-[#666] font-mono tracking-widest m-0 mt-0.5">국무총리 직속</p>
     </div>
-    <div class="flex items-center gap-3">
-      <a href={url('intranet/login/')} class="hover:text-white transition-colors">직원 로그인</a>
-      <span class="text-[#444]">|</span>
-      <span class="text-[#666] cursor-default">English</span>
-    </div>
-  </div>
+  </a>
 
-  <!-- 메인 GNB -->
-  <div class="bg-white border-b border-imc-border px-4 md:px-10 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-    <a href={url()} class="flex items-center gap-3.5 shrink-0 group">
-      <div
-        class="w-10 h-10 bg-imc-primary flex items-center justify-center text-white font-serif font-bold text-lg tracking-tight"
-      >
-        異
-      </div>
-      <div>
-        <p class="text-[17px] font-bold tracking-tight leading-tight group-hover:text-imc-primary transition-colors">
-          이능관리위원회
-        </p>
-        <p class="text-[10.5px] text-imc-muted font-serif tracking-wide mt-0.5">
-          異能管理委員會 · Power Management Committee
-        </p>
-      </div>
-    </a>
-
-    <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold tracking-tight" aria-label="주 메뉴">
+  <nav class="gemini-nav" aria-label="주 메뉴">
+    <ul class="list-none flex flex-wrap gap-x-9 gap-y-2 m-0 p-0">
       {
         nav.map((item) => {
           const active =
             pathnameEquals(pathname, item.path) ||
             (item.path !== '' && pathnameStartsWith(pathname, item.path));
           return (
-            <a
-              href={url(item.path)}
-              class:list={[
-                'py-1.5 border-b-2 transition-colors',
-                active
-                  ? 'text-imc-primary border-imc-primary'
-                  : 'text-imc-ink border-transparent hover:text-imc-primary',
-              ]}
-            >
-              {item.label}
-            </a>
+            <li>
+              <a
+                href={url(item.path)}
+                class:list={[active && 'text-[#3478f6]']}
+              >
+                {item.label}
+              </a>
+            </li>
           );
         })
       }
-    </nav>
+    </ul>
+  </nav>
 
-    <div class="hidden xl:flex items-center border border-[#d0d3d9] bg-white px-3 py-1.5 gap-2 w-48 shrink-0">
-      <input
-        type="search"
-        placeholder="통합검색"
-        class="flex-1 text-xs bg-transparent outline-none placeholder:text-imc-muted min-w-0"
-        disabled
-        aria-label="통합검색 (준비 중)"
-      />
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" stroke="#666" stroke-width="2"></circle>
-        <path d="M21 21l-4-4" stroke="#666" stroke-width="2" stroke-linecap="round"></path>
-      </svg>
-    </div>
+  <div class="auth-btns flex flex-wrap gap-2 shrink-0">
+    <a href={url('registration/')} class="gemini-btn-outline">등재자 로그인</a>
+    <a href={url('intranet/login/')} class="gemini-btn-solid">직원 내부망</a>
   </div>
 </header>
