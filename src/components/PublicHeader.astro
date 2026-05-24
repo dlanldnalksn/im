@@ -4,6 +4,7 @@ import { url, pathnameEquals, pathnameStartsWith } from '../lib/url';
 const nav = [
   { path: '', label: '홈' },
   { path: 'about/', label: '위원회 소개' },
+  { path: 'about/', label: '정책·제도' },
   { path: 'registration/', label: '민원·신고' },
   { path: 'resources/', label: '정보공개' },
   { path: 'notices/', label: '알림·소식' },
@@ -17,61 +18,71 @@ function isActive(item: (typeof nav)[0]) {
 }
 ---
 
-<header class="imc-header">
+<header>
   <div class="imc-util-bar">
     <div class="imc-util-bar__inner">
       <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
-        <span class="font-semibold text-[#3a3a3a]">이능관리위원회 누리집</span>
-        <span class="text-[#ccc]">|</span>
-        <span>국무총리 직속</span>
-        <span class="text-[#ccc] hidden sm:inline">|</span>
-        <span class="hidden sm:inline text-[#888]">관련 누리집 ▾</span>
+        <span class="imc-util-muted">「각성자 관리 체계」 가상 세계관 누리집</span>
+        <span class="imc-util-sep">|</span>
+        <span>창작·롤플레이 설정용</span>
+        <span class="imc-util-sep hidden sm:inline">|</span>
+        <a href={url('about/')} class="hidden sm:inline imc-util-muted hover:!text-white">세계관 안내</a>
       </div>
       <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
         <a href={url('registration/')}>등재자 로그인</a>
-        <span class="text-[#ccc]">|</span>
+        <span class="imc-util-sep">|</span>
         <a href={url('intranet/login/')}>직원 내부망</a>
-        <span class="text-[#ccc] hidden sm:inline">|</span>
-        <a href={url('faq/')} class="hidden sm:inline">사이트맵</a>
+        <span class="imc-util-sep hidden sm:inline">|</span>
+        <a href={url('faq/')} class="hidden sm:inline">전체메뉴</a>
       </div>
     </div>
   </div>
 
   <div class="imc-main-header">
-    <a href={url()} class="imc-logo no-underline text-inherit shrink-0">
+    <a href={url()} class="imc-logo">
       <div class="imc-logo-mark">異</div>
       <div>
-        <div class="text-lg font-extrabold tracking-tight leading-tight text-imc-ink">이능관리위원회</div>
-        <div class="text-[11px] text-imc-muted font-serif mt-0.5">異能管理委員會</div>
+        <div class="text-[16.5px] font-bold tracking-tight leading-tight">이능관리위원회</div>
+        <div class="text-[10.5px] text-imc-muted font-serif mt-0.5">
+          異能管理委員會 · Power Management Committee
+        </div>
       </div>
     </a>
 
     <nav class="imc-gnb hidden xl:flex" aria-label="주 메뉴">
       {
-        nav.map((item) => (
-          <a href={url(item.path)} class:list={['imc-gnb-link', isActive(item) && 'is-active']}>
-            {item.label}
-          </a>
-        ))
+        nav.map((item, i) => {
+          if (i === 2) return null;
+          return (
+            <a href={url(item.path)} class:list={['imc-gnb-link', isActive(item) && 'is-active']}>
+              {item.label}
+            </a>
+          );
+        })
       }
     </nav>
 
-    <form class="imc-search-pill hidden md:flex" role="search" action={url('faq/')} method="get">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
-        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
-      </svg>
-      <input type="search" name="q" placeholder="검색어를 입력하세요" aria-label="통합검색" />
+    <form class="imc-search hidden md:flex" role="search" action={url('faq/')} method="get">
+      <input type="search" name="q" placeholder="통합검색" aria-label="통합검색" />
+      <button type="submit" aria-label="검색">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="#666" stroke-width="2"></circle>
+          <path d="M21 21l-4-4" stroke="#666" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
     </form>
   </div>
 
-  <nav class="imc-mobile-nav xl:hidden border-t border-imc-border px-4 py-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold" aria-label="주 메뉴">
+  <nav class="xl:hidden border-t border-imc-border px-4 py-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold" aria-label="주 메뉴">
     {
-      nav.map((item) => (
-        <a href={url(item.path)} class:list={['text-imc-ink no-underline', isActive(item) && 'text-imc-primary']}>
-          {item.label}
-        </a>
-      ))
+      nav.map((item, i) => {
+        if (i === 2) return null;
+        return (
+          <a href={url(item.path)} class:list={['text-imc-ink no-underline', isActive(item) && 'text-imc-primary']}>
+            {item.label}
+          </a>
+        );
+      })
     }
   </nav>
 </header>
