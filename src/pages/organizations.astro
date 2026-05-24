@@ -4,24 +4,27 @@ import { publicOrgs } from '../data/organizations-public';
 ---
 
 <PublicLayout title="조직 소개">
-  <section class="px-6 lg:px-12 py-12">
-    <div class="gemini-section-title">
+  <section class="imc-page">
+    <div class="imc-section-title">
       <span>조직 소개</span>
     </div>
-    <div class="grid md:grid-cols-3 gap-4 mb-8">
+    <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
       {
         publicOrgs.map((org) => (
-          <article class="gemini-quick-card border-t-[#1a1a1a] hover:-translate-y-1">
-            <span class="font-mono text-[10px] text-[#999] tracking-widest">{org.num}</span>
-            <h2 class="text-lg font-bold mt-2 mb-1">{org.name}</h2>
-            <p class="text-[11px] text-[#888] font-mono mb-2">{org.nameHan}</p>
-            <p class="text-sm text-[#666] leading-relaxed m-0">{org.desc}</p>
+          <article class="imc-agency-card">
+            <div class="flex items-center justify-between mb-3.5">
+              <div class:list={['imc-agency-icon', org.iconBg, org.iconColor]}>{org.hanja}</div>
+              <span class="font-mono text-[10px] text-[#999] tracking-widest">{org.num}</span>
+            </div>
+            <h2 class="text-[14.5px] font-bold mb-1">{org.name}</h2>
+            <p class="text-[10.5px] text-[#888] font-serif mb-2">{org.nameHan}</p>
+            <p class="text-[11.5px] text-[#555] leading-relaxed m-0">{org.desc}</p>
           </article>
         ))
       }
     </div>
-    <p class="text-sm text-[#666] border-l-4 border-[#d0d0d0] pl-4 max-w-2xl">
-      국가안보·질서 유지 관련 업무 기관은 대외 누리집에 공개되지 않습니다.
+    <p class="text-sm text-imc-muted border-l-4 border-imc-border pl-4 max-w-2xl">
+      일부 기밀·대응 업무는 대외 누리집에 공개되지 않을 수 있습니다.
     </p>
   </section>
 </PublicLayout>

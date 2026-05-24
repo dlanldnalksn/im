@@ -1,113 +1,179 @@
 ---
 import PublicLayout from '../layouts/PublicLayout.astro';
-import { publicNotices } from '../data/notices';
+import { publicOrgs } from '../data/organizations-public';
 import { url } from '../lib/url';
 
 const notices = [
-  { badge: 'red', badgeLabel: '긴급', title: publicNotices[1]?.title ?? '신천사건 15주기 추모 행사 안내', date: '2026.05.24', href: 'notices/' },
-  { badge: 'blue', badgeLabel: '안내', title: '2026년도 등재 신청 일정 안내', date: '2026.05.20', href: 'notices/' },
-  { badge: '', badgeLabel: '', title: '조력자 매칭 대기 현황 (요약)', date: '2026.05.15', href: 'notices/' },
-  { badge: '', badgeLabel: '', title: '차출 요원 3분기 정기 평가 일정 공고', date: '2026.05.10', href: 'notices/' },
-  { badge: '', badgeLabel: '', title: '[추모] 신천 사건 15주기 관련, 등재자 다중밀집시설 출입 자제 권고', date: '2026.05.01', href: 'notices/' },
+  { tag: 'important', label: '중요', title: '신천 사건 15주기 추모일 안내 및 등재자 활동 제한 조치 시행', date: '2026.05.21' },
+  { tag: 'notice', label: '공지', title: '「국가 각성자 관리 체계 요약 백서」 제 17.3 호 발간', date: '2026.05.14' },
+  { tag: 'notice', label: '공지', title: '등재자 정기 검진 일정 및 처방 안내 (2분기)', date: '2026.05.02' },
+  { tag: 'admin', label: '행정', title: '등재자 신분증 갱신 절차 개정 안내 (시행일 6월 1일)', date: '2026.04.28' },
+  { tag: 'admin', label: '행정', title: '차출요원 4분기 배치 계획 공고', date: '2026.04.20' },
+  { tag: 'admin', label: '행정', title: '2026년도 동기화 매칭 우선순위 산정 기준 개정 안내', date: '2026.04.11' },
+];
+
+const quickLinks = [
+  { icon: '申', label: '등재 신청', href: 'registration/' },
+  { icon: '證', label: '신분증 갱신', href: 'registration/' },
+  { icon: '居', label: '거주 이전 신고', href: 'registration/' },
+  { icon: '調', label: '처방 안내', href: 'faq/' },
+  { icon: '同', label: '동기화 등록', href: 'registration/' },
+  { icon: '報', label: '미등재자 신고', href: 'faq/', danger: true },
 ];
 ---
 
 <PublicLayout title="홈">
-  <!-- Gemini 히어로 + 퀵카드 -->
-  <section class="gemini-hero pb-24 lg:pb-16">
-    <h2 class="text-4xl lg:text-[48px] font-extrabold leading-tight tracking-tight mb-4 m-0">
-      안전한 통제,<br />질서 있는 내일.
-    </h2>
-    <p class="text-lg font-light opacity-90 max-w-xl mb-0">
-      이능관리위원회는 각성자의 체계적인 등재 관리와 안정적인 사회 정착을 지원하며, 국민의 안전을 최우선으로 생각합니다.
-    </p>
+  <section class="imc-hero">
+    <div class="imc-hero__glow-a"></div>
+    <div class="imc-hero__glow-b"></div>
+    <div class="relative z-[2] max-w-[780px]">
+      <p class="imc-hero__eyebrow">POWER MANAGEMENT COMMITTEE · KOREA</p>
+      <h2 class="imc-hero__title">
+        국민과 함께,<br />
+        안전한 사회를 위한<br />
+        <span class="imc-hero__accent">이능 관리 체계</span>
+      </h2>
+      <p class="imc-hero__desc">
+        이능관리위원회는 국무총리 직속 기관으로, 등재자의 안전한 사회 통합과 국민 보호를
+        위해 산하 4개 기관과 함께 정책을 수립·시행합니다.
+      </p>
+      <div class="imc-hero__actions">
+        <a href={url('about/')} class="imc-btn-white">위원회 소개 <span>→</span></a>
+        <a href={url('registration/')} class="imc-btn-ghost">민원 신청 <span>→</span></a>
+      </div>
+    </div>
+    <div class="imc-hero__watermark" aria-hidden="true">異能</div>
+  </section>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-auto pt-10 lg:absolute lg:bottom-[-40px] lg:w-[calc(100%-96px)] lg:px-0">
-      <a href={url('registration/')} class="gemini-quick-card">
-        <h3 class="text-lg font-bold mb-2 m-0">신규 등재 안내</h3>
-        <p class="text-[13px] text-[#666] m-0">발현 시 14일 이내 의무 신고</p>
-      </a>
-      <a href={url('registration/')} class="gemini-quick-card">
-        <h3 class="text-lg font-bold mb-2 m-0">거주·이동 허가</h3>
-        <p class="text-[13px] text-[#666] m-0">관외 이동 및 출국 사전 승인</p>
-      </a>
-      <a href={url('registration/')} class="gemini-quick-card">
-        <h3 class="text-lg font-bold mb-2 m-0">동기화 매칭 대기</h3>
-        <p class="text-[13px] text-[#666] m-0">조정원 연계 매칭 순위 조회</p>
-      </a>
-      <a href={url('faq/')} class="gemini-quick-card danger">
-        <h3 class="text-lg font-bold mb-2 m-0">이상현상·폭주 신고</h3>
-        <p class="text-[13px] text-[#666] m-0">24시간 핫라인 (가상)</p>
-      </a>
+  <a href={url('notices/')} class="imc-notice-strip no-underline">
+    <span class="imc-notice-strip__badge">공지</span>
+    <span class="imc-notice-strip__text">
+      신천 사건 15주기 추모일 (D-3) — 당일 전후 등재자 사회활동 제한 강화 조치 안내
+      <span class="text-[#888] ml-1.5">2026.05.21</span>
+    </span>
+    <span class="text-[#888] text-xs shrink-0">자세히 보기 →</span>
+  </a>
+
+  <section class="px-6 lg:px-10 pt-[60px] pb-10">
+    <div class="imc-section-head">
+      <div>
+        <p class="imc-section-head__eyebrow">SUBORDINATE AGENCIES</p>
+        <h2 class="imc-section-head__title">산하 기관 안내</h2>
+      </div>
+      <a href={url('organizations/')} class="imc-section-head__more">전체 보기 →</a>
+    </div>
+    <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {
+        publicOrgs.map((org) => (
+          <a href={url(org.href)} class="imc-agency-card">
+            <div class="flex items-center justify-between mb-3.5">
+              <div class:list={['imc-agency-icon', org.iconBg, org.iconColor]}>{org.hanja}</div>
+              <span class="font-mono text-[10px] text-[#999] tracking-widest">{org.num}</span>
+            </div>
+            <h3 class="text-[14.5px] font-bold mb-1 tracking-tight">{org.name}</h3>
+            <p class="text-[10.5px] text-[#888] font-serif mb-2.5">{org.nameHan}</p>
+            <p class="text-[11.5px] text-[#555] leading-relaxed m-0">{org.desc}</p>
+            <p class="mt-3.5 text-[11px] text-imc-primary font-semibold m-0">바로가기 →</p>
+          </a>
+        ))
+      }
     </div>
   </section>
 
-  <!-- Gemini 2단 본문 -->
-  <section class="px-6 lg:px-12 pt-24 lg:pt-[100px] pb-16 flex flex-col lg:flex-row gap-10">
-    <div class="flex-[2] min-w-0">
-      <div class="gemini-section-title">
-        <span>공지사항</span>
-        <a href={url('notices/')} class="text-[13px] text-[#666] font-medium no-underline hover:underline">더보기 +</a>
+  <section class="px-6 lg:px-10 pb-[60px] grid lg:grid-cols-[2fr_1fr] gap-6">
+    <div class="imc-notice-panel">
+      <div class="imc-notice-tabs">
+        <a href={url('notices/')} class="imc-notice-tab is-active">공지사항</a>
+        <span class="imc-notice-tab">새소식</span>
+        <span class="imc-notice-tab">보도자료</span>
+        <a href={url('notices/')} class="ml-auto text-xs text-imc-muted py-4 no-underline hover:underline">+ 더보기</a>
       </div>
-      <ul class="notice-list list-none m-0 p-0">
-        {
-          notices.map((n) => (
-            <li class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 py-4 border-b border-[#eee]">
-              <a href={url(n.href)} class="text-[15px] font-medium text-[#1a1a1a] no-underline hover:underline flex-1">
-                {n.badge === 'red' && <span class="gemini-badge red">{n.badgeLabel}</span>}
-                {n.badge === 'blue' && <span class="gemini-badge blue">{n.badgeLabel}</span>}
+      {
+        notices.map((n) => (
+          <div class="imc-notice-row">
+            <div class="flex gap-3 items-center flex-1 min-w-0">
+              <span class:list={['imc-tag', n.tag === 'important' && 'imc-tag--important', n.tag === 'notice' && 'imc-tag--notice', n.tag === 'admin' && 'imc-tag--admin']}>
+                {n.label}
+              </span>
+              <a href={url('notices/')} class="text-[13px] text-imc-ink no-underline hover:underline truncate">
                 {n.title}
               </a>
-              <span class="font-mono text-[13px] text-[#999] shrink-0">{n.date}</span>
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="gemini-whitepaper pl-6">
-        <div class="font-mono text-xs text-[#666] tracking-widest mb-2.5">REPORT 202X-01 / 제 17.3 호 (공개용)</div>
-        <div class="text-[22px] font-extrabold mb-2">국가 각성자 관리 체계 요약 백서</div>
-        <div class="text-sm text-[#666] mb-5 leading-relaxed">
-          신규 등재자의 제도 이해를 돕기 위한 공식 안내서입니다.<br />
-          능력자/조력자 특성, 위험도 등급, 차출 의무 및 제한 사항이 포함되어 있습니다.
-        </div>
-        <a href={url('resources/')} class="gemini-btn-solid inline-block no-underline">전자문서 열람하기 →</a>
-      </div>
+            </div>
+            <span class="font-mono text-[11.5px] text-[#888] shrink-0">{n.date}</span>
+          </div>
+        ))
+      }
     </div>
 
-    <div class="flex-1 min-w-0">
-      <div class="gemini-org-box">
-        <h3 class="text-base font-bold mb-4 m-0">유관기관 바로가기</h3>
-        <div class="org-links flex flex-col gap-2.5">
-          <a href={url('organizations/')} class="flex justify-between items-center px-4 py-3 bg-[#fafaf7] border border-[#eee] text-sm font-semibold text-[#1a1a1a] no-underline hover:bg-[#eee]">
-            조정원 (의료/매칭/안정원) <span>↗</span>
-          </a>
-          <a href={url('organizations/')} class="flex justify-between items-center px-4 py-3 bg-[#fafaf7] border border-[#eee] text-sm font-semibold text-[#1a1a1a] no-underline hover:bg-[#eee]">
-            이녕연구원 (생명력/학술) <span>↗</span>
-          </a>
-          <a href={url('organizations/')} class="flex justify-between items-center px-4 py-3 bg-[#fafaf7] border border-[#eee] text-sm font-semibold text-[#1a1a1a] no-underline hover:bg-[#eee]">
-            중앙행정청 관할 지역청 <span>↗</span>
-          </a>
-          <a href={url('faq/')} class="flex justify-between items-center px-4 py-3 bg-[#fafaf7] border border-[#f5c6c6] text-sm font-semibold text-[#8b2a2a] no-underline hover:bg-[#fdf0f0]">
-            미등재자 신고 안내 <span>↗</span>
-          </a>
-        </div>
+    <div class="flex flex-col gap-4">
+      <a href={url('registration/')} class="imc-side-card imc-side-card--primary">
+        <div class="absolute top-[-30px] right-[-30px] font-serif text-[90px] text-white/[0.06] font-bold leading-none pointer-events-none">民</div>
+        <p class="imc-side-card__eyebrow text-[#a8c5d8] relative">CIVIL APPLICATION</p>
+        <h3 class="text-[17px] font-bold mb-1.5 relative">민원 신청</h3>
+        <p class="text-[11.5px] text-[#cfd8e0] leading-relaxed mb-3.5 relative m-0">등재·갱신·이의신청·각종 허가</p>
+        <span class="text-[11.5px] font-semibold relative">신청 바로가기 →</span>
+      </a>
+      <a href={url('faq/')} class="imc-side-card">
+        <p class="imc-side-card__eyebrow text-imc-danger">REPORT</p>
+        <h3 class="text-[15.5px] font-bold mb-1.5">미등재자 신고</h3>
+        <p class="text-[11.5px] text-imc-muted leading-relaxed mb-3 m-0">익명 신고 가능 · 포상금 지급</p>
+        <span class="text-[11.5px] text-imc-danger font-bold">신고하기 →</span>
+      </a>
+      <div class="imc-side-card">
+        <p class="imc-side-card__eyebrow text-imc-primary">INQUIRY</p>
+        <h3 class="text-[15.5px] font-bold mb-1.5">상담 문의</h3>
+        <p class="text-[11.5px] text-imc-muted leading-relaxed mb-3 m-0">평일 09:00 ~ 18:00</p>
+        <p class="text-sm font-bold font-mono tracking-wide m-0">☎ 1551-0000</p>
       </div>
+    </div>
+  </section>
 
-      <div class="gemini-stat-box">
-        <div class="stat-item mb-4 last:mb-0">
-          <span class="block text-xs text-[#aaa] mb-1">전국 공식 등재자 현황 (추정치 제외)</span>
-          <strong class="text-2xl font-mono font-normal">1,284,502 명</strong>
-        </div>
-        <div class="stat-item mb-4 last:mb-0">
-          <span class="block text-xs text-[#aaa] mb-1">조력자 매칭 대기 인원</span>
-          <strong class="text-2xl font-mono font-normal">1,053,211 명</strong>
-        </div>
-        <div class="stat-item mb-4 last:mb-0">
-          <span class="block text-xs text-[#aaa] mb-1">금월 능력자 폭주/사건 접수</span>
-          <strong class="text-2xl font-mono font-normal text-[#ffb3b3]">84 건</strong>
-        </div>
+  <section class="imc-stat-section">
+    <div class="imc-section-head">
+      <div>
+        <p class="imc-section-head__eyebrow">STATISTICS</p>
+        <h2 class="imc-section-head__title">주요 통계 (2025년 기준)</h2>
       </div>
+      <a href={url('resources/')} class="imc-section-head__more">통계 자료실 →</a>
+    </div>
+    <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div class="imc-stat-card">
+        <p class="text-[11.5px] text-imc-muted mb-2">등재자 총원</p>
+        <p class="imc-stat-value m-0">1,184,720<span class="text-sm text-[#888] font-semibold ml-1">명</span></p>
+        <p class="text-[11px] text-[#2d5f3f] mt-1.5 m-0">▲ 전년 대비 +2.3%</p>
+      </div>
+      <div class="imc-stat-card">
+        <p class="text-[11.5px] text-imc-muted mb-2">능력자 비율</p>
+        <p class="imc-stat-value m-0">2.1<span class="text-lg text-[#888] font-bold">%</span></p>
+        <p class="text-[11px] text-[#888] mt-1.5 m-0">전체 인구 대비</p>
+      </div>
+      <div class="imc-stat-card">
+        <p class="text-[11.5px] text-imc-muted mb-2">조력자 비율</p>
+        <p class="imc-stat-value m-0">0.34<span class="text-lg text-[#888] font-bold">%</span></p>
+        <p class="text-[11px] text-[#888] mt-1.5 m-0">능력자 대비 약 1/6</p>
+      </div>
+      <div class="imc-stat-card">
+        <p class="text-[11.5px] text-imc-muted mb-2">매칭 완료 건수</p>
+        <p class="imc-stat-value m-0">3,847<span class="text-sm text-[#888] font-semibold ml-1">건</span></p>
+        <p class="text-[11px] text-[#2d5f3f] mt-1.5 m-0">▲ 전년 대비 +148건</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 lg:px-10 py-12">
+    <div class="mb-6">
+      <p class="imc-section-head__eyebrow">QUICK LINKS</p>
+      <h2 class="imc-section-head__title">자주 찾는 서비스</h2>
+    </div>
+    <div class="imc-quick-grid">
+      {
+        quickLinks.map((item) => (
+          <a href={url(item.href)} class="imc-quick-item">
+            <div class:list={['imc-quick-icon', item.danger && 'bg-[#f5e5e5] text-imc-danger']}>{item.icon}</div>
+            <span class="text-xs font-semibold">{item.label}</span>
+          </a>
+        ))
+      }
     </div>
   </section>
 </PublicLayout>

@@ -19,7 +19,7 @@
   }
 
   .gov-top-banner__inner {
-    @apply mx-auto max-w-[1200px] flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 lg:px-6;
+    @apply mx-auto max-w-site flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 lg:px-10;
   }
 
   .gov-top-banner__mark {
@@ -58,86 +58,274 @@
     }
   }
 
-  /* Gemini 디자인 시스템 */
-  .gemini-shell {
-    @apply mx-auto w-full max-w-[1200px] bg-white min-h-screen;
+  /* 이능관리위원회 공식 누리집 (정부 포털형) */
+  .imc-shell {
+    @apply mx-auto w-full max-w-site bg-white min-h-screen flex flex-col;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
   }
 
-  .gemini-header {
-    @apply flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 px-6 lg:px-12 py-6 border-b-2 border-[#1a1a1a] bg-white;
+  .imc-util-bar {
+    @apply bg-[#1a1a1a] text-[11px] text-[#bbb] border-b border-[#2a2a2a];
   }
 
-  .gemini-logo-mark {
-    @apply w-8 h-8 bg-[#1a1a1a] rounded shrink-0;
+  .imc-util-bar__inner {
+    @apply max-w-site mx-auto px-6 lg:px-10 py-1.5 flex flex-wrap justify-between items-center gap-2;
   }
 
-  .gemini-nav a {
-    @apply text-[#1a1a1a] font-semibold text-base no-underline hover:text-[#3478f6] transition-colors;
+  .imc-util-bar a {
+    @apply text-[#bbb] no-underline;
   }
 
-  .gemini-btn-outline {
-    @apply inline-block border border-[#1a1a1a] text-[#1a1a1a] text-sm font-bold px-5 py-2.5 rounded-md hover:bg-[#fafaf7] transition-colors;
+  .imc-main-header {
+    @apply bg-white border-b border-imc-border px-6 lg:px-10 py-[18px] flex flex-wrap items-center justify-between gap-4;
   }
 
-  .gemini-btn-solid {
-    @apply inline-block bg-[#1a1a1a] text-white text-sm font-bold px-5 py-2.5 rounded-md hover:bg-[#333] transition-colors;
+  .imc-logo {
+    @apply flex items-center gap-3.5;
   }
 
-  .gemini-hero {
-    @apply relative min-h-[480px] flex flex-col justify-center px-6 lg:px-12 py-20 text-white;
-    background:
-      linear-gradient(to right, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.4) 100%),
-      url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80') center / cover;
+  .imc-logo-mark {
+    @apply w-[38px] h-[38px] bg-imc-primary text-white flex items-center justify-center font-serif font-bold text-[17px] shrink-0;
   }
 
-  .gemini-quick-card {
-    @apply bg-white border border-[#d0d0d0] p-6 border-t-4 border-t-[#1a1a1a] shadow-[0_10px_20px_rgba(0,0,0,0.05)] text-[#1a1a1a] no-underline transition-transform hover:-translate-y-1;
+  .imc-gnb {
+    @apply items-center gap-9 text-sm font-semibold text-imc-ink;
   }
 
-  .gemini-quick-card.danger {
-    @apply border-t-[#8b2a2a];
+  .imc-gnb-link {
+    @apply py-1.5 text-imc-ink no-underline border-b-[2.5px] border-transparent hover:text-imc-primary transition-colors;
   }
 
-  .gemini-section-title {
-    @apply text-2xl font-extrabold mb-6 pb-3 border-b-2 border-[#1a1a1a] flex justify-between items-end;
+  .imc-gnb-link.is-active {
+    @apply text-imc-primary border-imc-primary;
   }
 
-  .gemini-badge {
-    @apply text-[11px] px-2 py-0.5 rounded font-bold mr-2;
+  .imc-search {
+    @apply border border-[#d0d3d9] bg-white items-center px-3 gap-2 w-[200px];
   }
 
-  .gemini-badge.red {
-    @apply bg-[#fdf0f0] text-[#8b2a2a] border border-[#f5c6c6];
+  .imc-search input {
+    @apply border-0 outline-0 bg-transparent flex-1 text-[12.5px] text-imc-ink min-w-0;
   }
 
-  .gemini-badge.blue {
-    @apply bg-[#f0f5fd] text-[#3478f6] border border-[#c6dbf5];
+  .imc-search button {
+    @apply border-0 bg-transparent p-0 cursor-pointer shrink-0;
   }
 
-  .gemini-whitepaper {
-    @apply mt-10 bg-[#fafaf7] border border-[#d0d0d0] p-8 relative;
+  .imc-hero {
+    @apply relative text-white px-6 lg:px-10 py-16 lg:py-[72px] overflow-hidden;
+    background: linear-gradient(135deg, #0a3d62 0%, #1e4d6e 50%, #2a5a7a 100%);
   }
 
-  .gemini-whitepaper::before {
+  .imc-hero__glow-a {
+    @apply absolute top-0 -right-[100px] w-[600px] h-[600px] rounded-full pointer-events-none;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+  }
+
+  .imc-hero__glow-b {
+    @apply absolute -bottom-[200px] -left-[100px] w-[500px] h-[500px] rounded-full pointer-events-none;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 60%);
+  }
+
+  .imc-hero__watermark {
+    @apply absolute bottom-6 right-6 lg:right-10 font-serif text-[80px] lg:text-[140px] font-bold text-white/[0.04] leading-none tracking-tight pointer-events-none select-none;
+  }
+
+  .imc-hero__eyebrow {
+    @apply font-mono text-[11px] text-[#a8c5d8] tracking-[0.3em] mb-[18px];
+  }
+
+  .imc-hero__title {
+    @apply text-[28px] sm:text-[34px] lg:text-[38px] font-extrabold leading-[1.25] tracking-tight mb-[18px] m-0;
+  }
+
+  .imc-hero__accent {
+    @apply text-imc-accent;
+  }
+
+  .imc-hero__desc {
+    @apply text-[14.5px] text-[#cfd8e0] leading-relaxed max-w-[620px] m-0;
+  }
+
+  .imc-hero__actions {
+    @apply flex flex-wrap gap-2.5 mt-[30px];
+  }
+
+  .imc-btn-white {
+    @apply inline-flex items-center gap-2 bg-white text-imc-primary px-[22px] py-[11px] text-[13px] font-bold no-underline hover:bg-[#f0f4f8] transition-colors;
+  }
+
+  .imc-btn-ghost {
+    @apply inline-flex items-center gap-2 bg-transparent text-white px-[22px] py-[11px] text-[13px] font-bold no-underline border border-white/40 hover:bg-white/10 transition-colors;
+  }
+
+  .imc-notice-strip {
+    @apply bg-imc-notice border-b border-imc-notice-border px-6 lg:px-10 py-3.5 flex flex-wrap items-center gap-3.5;
+  }
+
+  .imc-notice-strip__badge {
+    @apply bg-[#b8860b] text-white text-[10.5px] font-bold px-2.5 py-0.5 tracking-widest shrink-0;
+  }
+
+  .imc-notice-strip__text {
+    @apply flex-1 text-[13px] text-imc-ink min-w-[200px] no-underline hover:underline;
+  }
+
+  .imc-section-head {
+    @apply flex flex-wrap justify-between items-end gap-3 mb-7;
+  }
+
+  .imc-section-head__eyebrow {
+    @apply font-mono text-[11px] text-imc-primary tracking-[0.2em] mb-2 font-bold;
+  }
+
+  .imc-section-head__title {
+    @apply text-2xl font-bold tracking-tight text-imc-ink m-0;
+  }
+
+  .imc-section-head__more {
+    @apply text-[12.5px] text-imc-muted no-underline hover:text-imc-primary hover:underline;
+  }
+
+  .imc-page {
+    @apply px-6 lg:px-10 py-12;
+  }
+
+  .imc-section-title {
+    @apply text-2xl font-bold mb-6 pb-3 border-b-2 border-imc-primary text-imc-ink flex justify-between items-end;
+  }
+
+  .imc-agency-card {
+    @apply bg-white border border-imc-border p-5 no-underline text-inherit block hover:border-imc-primary/40 hover:shadow-sm transition-all;
+  }
+
+  .imc-agency-icon {
+    @apply w-[42px] h-[42px] flex items-center justify-center font-serif text-xl font-bold;
+  }
+
+  .imc-notice-panel {
+    @apply bg-white border border-imc-border;
+  }
+
+  .imc-notice-tabs {
+    @apply border-b border-imc-border flex flex-wrap items-center px-6;
+  }
+
+  .imc-notice-tab {
+    @apply py-[18px] text-[14.5px] font-medium text-[#888] no-underline px-6 first:pl-0;
+  }
+
+  .imc-notice-tab.is-active {
+    @apply font-bold text-imc-primary border-b-[2.5px] border-imc-primary -mb-px;
+  }
+
+  .imc-notice-row {
+    @apply px-6 py-3.5 flex flex-wrap justify-between items-center gap-2 border-b border-[#f0f1f3] last:border-0;
+  }
+
+  .imc-tag {
+    @apply text-[10px] font-bold px-[7px] py-0.5 tracking-widest text-white shrink-0;
+  }
+
+  .imc-tag--important {
+    @apply bg-imc-danger;
+  }
+
+  .imc-tag--notice {
+    @apply bg-imc-primary;
+  }
+
+  .imc-tag--admin {
+    @apply bg-[#6b7280];
+  }
+
+  .imc-side-card {
+    @apply border border-imc-border p-5 no-underline text-inherit block hover:border-imc-primary/30 transition-colors relative overflow-hidden;
+  }
+
+  .imc-side-card--primary {
+    @apply bg-imc-primary text-white border-imc-primary p-[22px];
+  }
+
+  .imc-side-card__eyebrow {
+    @apply font-mono text-[10px] tracking-[0.2em] mb-1.5 font-bold;
+  }
+
+  .imc-stat-section {
+    @apply bg-[#f8f9fb] px-6 lg:px-10 py-12 border-t border-imc-border;
+  }
+
+  .imc-stat-card {
+    @apply bg-white border border-imc-border p-6;
+  }
+
+  .imc-stat-value {
+    @apply text-[32px] font-extrabold tracking-tight text-imc-ink;
+  }
+
+  .imc-quick-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5;
+  }
+
+  .imc-quick-item {
+    @apply bg-white border border-imc-border py-5 px-3 text-center no-underline text-inherit hover:border-imc-primary/40 transition-colors;
+  }
+
+  .imc-quick-icon {
+    @apply w-9 h-9 mx-auto mb-2.5 flex items-center justify-center text-lg bg-[#e8eef5] font-serif font-bold text-imc-primary;
+  }
+
+  .imc-footer {
+    @apply bg-[#1a1a1a] text-[#888] px-6 lg:px-10 pt-9 pb-6 text-[11px] mt-auto;
+  }
+
+  .imc-footer__top {
+    @apply flex flex-wrap justify-between gap-6 mb-7;
+  }
+
+  .imc-footer-logo {
+    @apply w-7 h-7 bg-white text-imc-primary flex items-center justify-center font-serif font-bold text-[13px];
+  }
+
+  .imc-footer__cols {
+    @apply flex flex-wrap gap-8 lg:gap-10;
+  }
+
+  .imc-footer__col-title {
+    @apply text-white text-[11.5px] font-bold mb-3 m-0;
+  }
+
+  .imc-footer__links {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .imc-footer__links a {
+    @apply text-[#888] no-underline hover:text-white transition-colors;
+  }
+
+  .imc-footer__bottom {
+    @apply border-t border-[#2a2a2a] pt-5 flex flex-wrap justify-between items-center gap-3.5;
+  }
+
+  .imc-footer__legal {
+    @apply flex flex-wrap gap-4 text-[#aaa];
+  }
+
+  .imc-footer__legal a {
+    @apply no-underline hover:text-white;
+  }
+
+  .imc-whitepaper {
+    @apply bg-imc-cream border border-[#d0d0d0] p-8 relative mt-8;
+  }
+
+  .imc-whitepaper::before {
     content: '';
-    @apply absolute top-0 left-0 w-1 h-full bg-[#1a1a1a];
-  }
-
-  .gemini-org-box {
-    @apply border-[1.5px] border-[#1a1a1a] p-6 mb-6;
-  }
-
-  .gemini-stat-box {
-    @apply bg-[#1a1a1a] text-white p-6;
-  }
-
-  .gemini-footer {
-    @apply bg-[#111] text-[#888] px-6 lg:px-12 py-10 text-[13px];
+    @apply absolute top-0 left-0 w-1 h-full bg-imc-primary;
   }
 
   .prose-gov h2 {
-    @apply mt-8 mb-3 text-xl font-extrabold text-[#1a1a1a] border-b-2 border-[#1a1a1a] pb-2;
+    @apply mt-8 mb-3 text-xl font-extrabold text-imc-ink border-b-2 border-imc-primary pb-2;
   }
   .prose-gov h3 {
     @apply mt-6 mb-2 text-lg font-bold text-[#1a1a1a];

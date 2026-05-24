@@ -25,18 +25,20 @@ const pageTitle = `${title} | 이능관리위원회`;
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen">
+  <body class="min-h-screen bg-[#f5f6f8]">
     <PublicGovBanner />
-    <div class="gemini-shell flex flex-col">
+    <div class="flex justify-center">
+      <div class="imc-shell flex flex-col">
       <PublicHeader />
       <main class="flex-1">
         <slot />
       </main>
       <PublicFooter />
+      </div>
     </div>
   </body>
 </html>
