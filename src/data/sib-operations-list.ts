@@ -1,4 +1,5 @@
 export type SibOpRowStyle = 'priority' | 'urgent' | 'normal';
+export type SibOpFilterBucket = 'unread' | 'progress' | 'done' | 'rejected';
 
 export interface SibOpStatusTag {
   label: string;
@@ -19,6 +20,7 @@ export interface SibOperationRecord {
   scheduleMono?: boolean;
   action: 'read' | 'detail';
   muted?: boolean;
+  filterBuckets: SibOpFilterBucket[];
 }
 
 export const sibOperationStats = {
@@ -46,6 +48,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleSub: '본청 B3',
     scheduleMono: true,
     action: 'read',
+    filterBuckets: ['unread'],
   },
   {
     id: 'op-0338',
@@ -63,6 +66,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleSub: '지역분실 3',
     scheduleMono: true,
     action: 'read',
+    filterBuckets: ['unread'],
   },
   {
     id: 'op-0329',
@@ -77,6 +81,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleSub: '~06.30 예정',
     scheduleMono: true,
     action: 'detail',
+    filterBuckets: ['progress'],
   },
   {
     id: 'op-0317',
@@ -91,6 +96,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleSub: '~06.15 예정',
     scheduleMono: true,
     action: 'detail',
+    filterBuckets: ['progress'],
   },
   {
     id: 'op-0298',
@@ -105,6 +111,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleSub: '상시 대기',
     scheduleMono: true,
     action: 'detail',
+    filterBuckets: ['progress'],
   },
   {
     id: 'op-0285',
@@ -120,6 +127,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     muted: true,
+    filterBuckets: ['done'],
   },
   {
     id: 'op-0271',
@@ -135,6 +143,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     muted: true,
+    filterBuckets: ['done'],
   },
   {
     id: 'op-0254',
@@ -150,6 +159,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     muted: true,
+    filterBuckets: ['done'],
   },
   {
     id: 'op-0231',
@@ -165,6 +175,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     muted: true,
+    filterBuckets: ['done'],
   },
   {
     id: 'op-0218',
@@ -180,5 +191,6 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     muted: true,
+    filterBuckets: ['rejected'],
   },
 ];

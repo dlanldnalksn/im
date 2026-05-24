@@ -7,14 +7,22 @@ const base = 'intranet/sib/';
 const updated = '2026.05.24 14:22';
 
 const statCards = [
-  { label: '전체', value: sibOperationStats.total, accent: false },
-  { label: '미열람', value: sibOperationStats.unread, accent: true },
-  { label: '진행 중', value: sibOperationStats.inProgress, accent: false },
-  { label: '완료', value: sibOperationStats.done, accent: false },
-  { label: '반려·취소', value: sibOperationStats.rejected, accent: false, muted: true },
+  { label: '전체', value: sibOperationStats.total, filter: 'all', accent: false },
+  { label: '미열람', value: sibOperationStats.unread, filter: 'unread', accent: true },
+  { label: '진행 중', value: sibOperationStats.inProgress, filter: 'progress', accent: false },
+  { label: '완료', value: sibOperationStats.done, filter: 'done', accent: false },
+  { label: '반려·취소', value: sibOperationStats.rejected, filter: 'rejected', accent: false, muted: true },
 ];
 
-const filterTabs = ['전체', '미열람', '진행 중', '완료', '반려·취소'];
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '미열람', filter: 'unread' },
+  { label: '진행 중', filter: 'progress' },
+  { label: '완료', filter: 'done' },
+  { label: '반려·취소', filter: 'rejected' },
+];
+
+const categoryOptions = ['전체', ...new Set(sibOperationRecords.map((op) => op.category))];
 
 function tagClass(tag: SibOpStatusTag) {
   if (tag.variant === 'red') return 'sib-tag red';
@@ -39,57 +47,79 @@ function rowClass(op: SibOperationRecord) {
 
 <div class="sib-page-head">
   <div>
-    <h1 class="sib-page-title" style="margin-bottom:4px;">작전 명령 목록</h1>
-    <p class="text-xs text-[#666] font-medium" style="letter-spacing:-0.01em;">본인 차출 명령 및 작전 이력</p>
+    <h1 class="sib-page-title">작전 명령 목록</h1>
+    <p class="sib-page-subtitle">본인 차출 명령 및 작전 이력</p>
   </div>
   <div class="sib-page-meta">최근 갱신 {updated}</div>
 </div>
 
-<div class="sib-op-stat-grid">
+<div class="sib-op-stat-grid" data-sib-op-stats>
   {
     statCards.map((s) => (
-      <div class:list={['sib-op-stat-card', s.accent && 'accent', s.muted && 'muted']}>
+      <button
+        type="button"
+        class:list={['sib-op-stat-card', s.accent && 'accent', s.muted && 'muted']}
+        data-sib-op-stat-filter={s.filter}
+      >
         <div class:list={['sib-op-stat-label', s.accent && 'accent']}>{s.label}</div>
         <div class="sib-op-stat-value">
           {s.value}<span class="sib-op-stat-unit">건</span>
         </div>
-      </div>
+      </button>
     ))
   }
 </div>
 
-<div class="sib-op-toolbar">
-  <div class="sib-op-filter-tabs">
+<div class="sib-op-toolbar" data-sib-op-toolbar>
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="작전 명령 필터">
     {
       filterTabs.map((tab, i) => (
-        <button type="button" class:list={['sib-op-filter-tab', i === 0 && 'is-active']} disabled>
-          {tab}
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-op-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
         </button>
       ))
     }
   </div>
   <div class="sib-op-toolbar-right">
-    <div class="sib-op-select">
+    <label class="sib-op-select">
       <span class="sib-op-select-label">분류</span>
-      <span class="sib-op-select-value">전체</span>
-      <span class="sib-op-select-caret">▾</span>
-    </div>
+      <select class="sib-op-select-native" data-sib-op-category aria-label="분류 필터">
+        {
+          categoryOptions.map((cat) => (
+            <option value={cat === '전체' ? 'all' : cat}>{cat}</option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
     <div class="sib-op-select">
       <span class="sib-op-select-label">기간</span>
       <span class="sib-op-select-value">최근 3개월</span>
       <span class="sib-op-select-caret">▾</span>
     </div>
-    <div class="sib-op-search">
+    <label class="sib-op-search">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
         <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
       </svg>
-      <span>작전번호 / 키워드</span>
-    </div>
+      <input
+        type="search"
+        class="sib-op-search-input"
+        data-sib-op-search
+        placeholder="작전번호 / 키워드"
+        aria-label="작전번호 또는 키워드 검색"
+      />
+    </label>
   </div>
 </div>
 
-<div class="sib-op-table-wrap">
+<div class="sib-op-table-wrap" data-sib-op-list>
   <div class="sib-op-table">
     <div class="sib-op-table-head">
       <div>상태</div>
@@ -103,7 +133,13 @@ function rowClass(op: SibOperationRecord) {
 
     {
       sibOperationRecords.map((op) => (
-        <div class={rowClass(op)}>
+        <div
+          class={rowClass(op)}
+          data-sib-op-row
+          data-filters={op.filterBuckets.join(' ')}
+          data-category={op.category}
+          data-search={`${op.code} ${op.title} ${op.category}`.toLowerCase()}
+        >
           <div class="sib-op-table-status">
             {
               op.statusTags.map((tag) => (
@@ -136,7 +172,7 @@ function rowClass(op: SibOperationRecord) {
     }
 
     <div class="sib-op-table-foot">
-      <span>총 {sibOperationStats.total}건 중 1 — 10 표시</span>
+      <span data-sib-op-foot-count>총 {sibOperationStats.total}건 중 1 — {sibOperationRecords.length} 표시</span>
       <div class="sib-op-pagination">
         <span class="sib-op-page-btn disabled">‹</span>
         <span class="sib-op-page-btn active">1</span>
@@ -146,3 +182,80 @@ function rowClass(op: SibOperationRecord) {
     </div>
   </div>
 </div>
+
+<script>
+  const listRoot = document.querySelector('[data-sib-op-list]');
+  if (listRoot) {
+    const rows = Array.from(listRoot.querySelectorAll('[data-sib-op-row]'));
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-op-filter]'));
+    const statCards = Array.from(document.querySelectorAll('[data-sib-op-stat-filter]'));
+    const categorySelect = document.querySelector('[data-sib-op-category]');
+    const searchInput = document.querySelector('[data-sib-op-search]');
+    const footCount = document.querySelector('[data-sib-op-foot-count]');
+    const totalCount = rows.length;
+
+    let activeFilter = 'all';
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function setActiveTab(filter) {
+      activeFilter = filter;
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-op-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function applyFilters() {
+      const query = searchQuery.trim().toLowerCase();
+      let visible = 0;
+
+      rows.forEach((row) => {
+        const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
+        const category = row.getAttribute('data-category') || '';
+        const searchText = row.getAttribute('data-search') || '';
+
+        const matchesFilter = activeFilter === 'all' || filters.includes(activeFilter);
+        const matchesCategory = activeCategory === 'all' || category === activeCategory;
+        const matchesSearch = !query || searchText.includes(query);
+
+        const show = matchesFilter && matchesCategory && matchesSearch;
+        row.classList.toggle('is-filtered-out', !show);
+        if (show) visible += 1;
+      });
+
+      if (footCount) {
+        if (visible === 0) {
+          footCount.textContent = '검색 결과 없음';
+        } else {
+          footCount.textContent = `총 ${totalCount}건 중 1 — ${visible} 표시`;
+        }
+      }
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-op-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    statCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-op-stat-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    categorySelect?.addEventListener('change', () => {
+      activeCategory = categorySelect.value;
+      applyFilters();
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+  }
+</script>

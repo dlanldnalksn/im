@@ -5,6 +5,7 @@
   @apply mx-auto w-full max-w-site min-h-screen flex flex-col bg-[#f5f6f8];
   font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   letter-spacing: -0.01em;
+  line-height: normal;
 }
 
 .sib-shell h1 {
@@ -258,7 +259,7 @@
 }
 
 .sib-tag {
-  @apply text-[10px] font-bold rounded-[2px];
+  @apply text-[10px] font-bold rounded-[2px] w-fit;
   padding: 2px 7px;
   letter-spacing: -0.01em;
   line-height: 1.2;
@@ -309,9 +310,19 @@
 }
 
 .sib-page-title {
-  @apply text-[22px] font-extrabold text-[#1a1a1a] m-0;
+  @apply text-[22px] font-extrabold text-[#1a1a1a];
+  margin: 0 0 4px;
   letter-spacing: -0.025em;
   line-height: 1.15;
+}
+
+.sib-page-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .sib-page-meta {
@@ -332,7 +343,13 @@
 
 /* 작전 명령 목록 */
 .sib-breadcrumb {
-  @apply flex items-center gap-1.5 mb-3.5 text-[11.5px] text-[#888] font-medium;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+  color: #888;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
@@ -354,8 +371,14 @@
 }
 
 .sib-op-stat-card {
-  @apply bg-white border border-[#e5e7eb] rounded-md;
+  @apply bg-white border border-[#e5e7eb] rounded-md text-left cursor-pointer w-full;
   padding: 14px 18px;
+  font: inherit;
+  color: inherit;
+}
+
+.sib-op-stat-card:hover {
+  @apply bg-[#fafbfc];
 }
 
 .sib-op-stat-card.accent {
@@ -387,17 +410,21 @@
 }
 
 .sib-op-toolbar {
-  @apply bg-white border border-[#e5e7eb] rounded-md flex flex-wrap justify-between items-center gap-4;
+  @apply bg-white border border-[#e5e7eb] rounded-md flex flex-wrap justify-between items-center;
   padding: 16px 22px;
   margin-bottom: 14px;
+  gap: 18px;
 }
 
 .sib-op-filter-tabs {
-  @apply flex flex-wrap gap-1.5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
 .sib-op-filter-tab {
-  @apply rounded border border-transparent text-[12.5px] font-semibold text-[#525252] cursor-default;
+  @apply rounded border border-transparent text-[12.5px] font-semibold text-[#525252] cursor-pointer;
   padding: 8px 16px;
   letter-spacing: -0.01em;
   background: #fff;
@@ -412,7 +439,10 @@
 }
 
 .sib-op-toolbar-right {
-  @apply flex flex-wrap gap-2 items-center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
 }
 
 .sib-op-select {
@@ -438,9 +468,28 @@
   @apply flex items-center gap-2 border border-[#e0e2e7] rounded bg-white;
   padding: 7px 12px;
   width: 200px;
+}
+
+.sib-op-search-input {
+  @apply w-full border-0 bg-transparent outline-none;
   font-size: 11.5px;
-  color: #888;
+  color: #1a1a1a;
   letter-spacing: -0.01em;
+}
+
+.sib-op-search-input::placeholder {
+  color: #888;
+}
+
+.sib-op-select-native {
+  @apply border-0 bg-transparent outline-none cursor-pointer;
+  font-size: 11.5px;
+  color: #1a1a1a;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 0;
+  margin: 0;
+  max-width: 120px;
 }
 
 .sib-op-table-wrap {
@@ -495,8 +544,12 @@
 }
 
 .sib-op-table-status {
-  @apply flex flex-col;
+  @apply flex flex-col items-start;
   gap: 4px;
+}
+
+.sib-op-table-row.is-filtered-out {
+  display: none;
 }
 
 .sib-op-tag-unread {
@@ -540,6 +593,7 @@
 .sib-op-table-schedule {
   @apply text-[11px] text-[#525252] font-medium;
   letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .sib-op-table-schedule.mono {
@@ -589,12 +643,14 @@
 }
 
 .sib-op-table-foot {
-  @apply flex flex-wrap justify-between items-center gap-3 bg-[#fafbfc] border-t border-[#e5e7eb];
+  @apply flex flex-wrap justify-between items-center bg-[#fafbfc] border-t border-[#e5e7eb];
   padding: 16px 22px;
   font-size: 11.5px;
   color: #666;
   font-weight: 500;
   letter-spacing: -0.01em;
+  line-height: 1.2;
+  gap: 4px;
 }
 
 .sib-op-pagination {
