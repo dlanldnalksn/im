@@ -5,10 +5,8 @@
   @apply mx-auto w-full max-w-site min-h-screen flex flex-col bg-[#f5f6f8];
   font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   letter-spacing: -0.01em;
-  line-height: 1.35;
 }
 
-.sib-shell p,
 .sib-shell h1 {
   margin: 0;
 }
@@ -223,9 +221,10 @@
 }
 
 .sib-op-row {
-  @apply px-[22px] border-b border-[#f0f0f2] flex gap-3.5 items-start no-underline text-inherit hover:bg-[#fafafa] transition-colors;
+  @apply px-[22px] border-b border-[#f0f0f2] flex items-start no-underline text-inherit hover:bg-[#fafafa] transition-colors;
   padding-top: 14px;
   padding-bottom: 14px;
+  gap: 14px;
 }
 
 .sib-op-row.priority {
@@ -253,9 +252,9 @@
 }
 
 .sib-op-meta {
-  @apply text-[11px] text-[#666] font-medium m-0;
+  @apply text-[11px] text-[#666] font-medium;
   letter-spacing: -0.01em;
-  line-height: 1.2;
+  margin: 0;
 }
 
 .sib-tag {
