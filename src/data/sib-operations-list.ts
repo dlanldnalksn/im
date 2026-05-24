@@ -21,7 +21,12 @@ export interface SibOperationRecord {
   action: 'read' | 'detail';
   muted?: boolean;
   filterBuckets: SibOpFilterBucket[];
+  /** YYYY-MM-DD — 기간 필터용 */
+  issuedAt: string;
 }
+
+export const SIB_OP_PAGE_SIZE = 10;
+export const SIB_OP_REFERENCE_DATE = '2026-05-24';
 
 export const sibOperationStats = {
   total: 14,
@@ -49,6 +54,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'read',
     filterBuckets: ['unread'],
+    issuedAt: '2026-05-23',
   },
   {
     id: 'op-0338',
@@ -67,6 +73,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'read',
     filterBuckets: ['unread'],
+    issuedAt: '2026-05-22',
   },
   {
     id: 'op-0329',
@@ -82,6 +89,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     filterBuckets: ['progress'],
+    issuedAt: '2026-05-10',
   },
   {
     id: 'op-0317',
@@ -97,6 +105,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     filterBuckets: ['progress'],
+    issuedAt: '2026-05-05',
   },
   {
     id: 'op-0298',
@@ -112,6 +121,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     scheduleMono: true,
     action: 'detail',
     filterBuckets: ['progress'],
+    issuedAt: '2026-04-28',
   },
   {
     id: 'op-0285',
@@ -128,6 +138,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     action: 'detail',
     muted: true,
     filterBuckets: ['done'],
+    issuedAt: '2026-04-20',
   },
   {
     id: 'op-0271',
@@ -144,6 +155,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     action: 'detail',
     muted: true,
     filterBuckets: ['done'],
+    issuedAt: '2026-04-05',
   },
   {
     id: 'op-0254',
@@ -160,6 +172,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     action: 'detail',
     muted: true,
     filterBuckets: ['done'],
+    issuedAt: '2026-03-22',
   },
   {
     id: 'op-0231',
@@ -176,6 +189,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     action: 'detail',
     muted: true,
     filterBuckets: ['done'],
+    issuedAt: '2026-03-08',
   },
   {
     id: 'op-0218',
@@ -192,5 +206,74 @@ export const sibOperationRecords: SibOperationRecord[] = [
     action: 'detail',
     muted: true,
     filterBuckets: ['rejected'],
+    issuedAt: '2026-02-28',
+  },
+  {
+    id: 'op-0205',
+    rowStyle: 'normal',
+    statusTags: [{ label: '완료', variant: 'gray' }],
+    category: '병급 작전',
+    code: 'OP-2026-0205',
+    title: '[대외비] 경계 순찰 임무 — 야간 차출',
+    issuer: '시설관리과',
+    issuedDate: '2026.02.26 발령',
+    scheduleMain: '2026.03.05 완료',
+    scheduleSub: '보고서 제출 완료',
+    scheduleMono: true,
+    action: 'detail',
+    muted: true,
+    filterBuckets: ['done'],
+    issuedAt: '2026-02-26',
+  },
+  {
+    id: 'op-0192',
+    rowStyle: 'normal',
+    statusTags: [{ label: '완료', variant: 'gray' }],
+    category: '을급 작전',
+    code: 'OP-2026-0192',
+    title: '[대외비] 미등재자 추적 — 보조 감시',
+    issuer: '2處',
+    issuedDate: '2026.02.25 발령',
+    scheduleMain: '2026.03.10 완료',
+    scheduleSub: '보고서 제출 완료',
+    scheduleMono: true,
+    action: 'detail',
+    muted: true,
+    filterBuckets: ['done'],
+    issuedAt: '2026-02-25',
+  },
+  {
+    id: 'op-0180',
+    rowStyle: 'normal',
+    statusTags: [{ label: '완료', variant: 'gray' }],
+    category: '병급 작전',
+    code: 'OP-2026-0180',
+    title: '[대외비] 차출요원 역량 재평가 — 현장 실사',
+    issuer: '훈련과',
+    issuedDate: '2026.02.24 발령',
+    scheduleMain: '2026.03.01 완료',
+    scheduleSub: '보고서 검토 중',
+    scheduleMono: true,
+    action: 'detail',
+    muted: true,
+    filterBuckets: ['done'],
+    issuedAt: '2026-02-24',
+  },
+  {
+    id: 'op-0166',
+    rowStyle: 'normal',
+    statusTags: [{ label: '완료', variant: 'gray' }],
+    category: '을급 작전',
+    code: 'OP-2026-0166',
+    title: '[대외비] 비인가 집회 단속 — 현장 지원',
+    issuer: '2處',
+    issuedDate: '2026.02.24 발령',
+    scheduleMain: '2026.02.28 완료',
+    scheduleSub: '보고서 제출 완료',
+    scheduleMono: true,
+    action: 'detail',
+    muted: true,
+    filterBuckets: ['done'],
+    issuedAt: '2026-02-24',
   },
 ];

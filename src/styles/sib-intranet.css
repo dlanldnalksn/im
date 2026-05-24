@@ -446,7 +446,7 @@
 }
 
 .sib-op-select {
-  @apply flex items-center gap-1.5 border border-[#e0e2e7] rounded bg-[#fafbfc] cursor-default;
+  @apply flex items-center gap-1.5 border border-[#e0e2e7] rounded bg-[#fafbfc] cursor-pointer;
   padding: 7px 12px;
 }
 
@@ -657,8 +657,15 @@
   @apply flex items-center gap-1;
 }
 
+.sib-op-pagination.is-hidden {
+  display: none;
+}
+
 .sib-op-page-btn {
   @apply w-[30px] h-[30px] border border-[#e0e2e7] rounded-[3px] flex items-center justify-center text-xs text-[#525252] font-semibold cursor-pointer;
+  background: #fff;
+  padding: 0;
+  font: inherit;
 }
 
 .sib-op-page-btn.active {

@@ -1,6 +1,11 @@
 ---
 import { url } from '../../lib/url';
-import { sibOperationStats, sibOperationRecords } from '../../data/sib-operations-list';
+import {
+  SIB_OP_PAGE_SIZE,
+  SIB_OP_REFERENCE_DATE,
+  sibOperationStats,
+  sibOperationRecords,
+} from '../../data/sib-operations-list';
 import type { SibOpStatusTag, SibOperationRecord } from '../../data/sib-operations-list';
 
 const base = 'intranet/sib/';
@@ -23,6 +28,12 @@ const filterTabs = [
 ];
 
 const categoryOptions = ['전체', ...new Set(sibOperationRecords.map((op) => op.category))];
+
+const periodOptions = [
+  { label: '최근 3개월', value: '3m' },
+  { label: '최근 6개월', value: '6m' },
+  { label: '전체', value: 'all' },
+];
 
 function tagClass(tag: SibOpStatusTag) {
   if (tag.variant === 'red') return 'sib-tag red';
@@ -98,11 +109,19 @@ function rowClass(op: SibOperationRecord) {
       </select>
       <span class="sib-op-select-caret" aria-hidden="true">▾</span>
     </label>
-    <div class="sib-op-select">
+    <label class="sib-op-select">
       <span class="sib-op-select-label">기간</span>
-      <span class="sib-op-select-value">최근 3개월</span>
-      <span class="sib-op-select-caret">▾</span>
-    </div>
+      <select class="sib-op-select-native" data-sib-op-period aria-label="기간 필터">
+        {
+          periodOptions.map((opt) => (
+            <option value={opt.value} selected={opt.value === '3m'}>
+              {opt.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
     <label class="sib-op-search">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
@@ -138,7 +157,8 @@ function rowClass(op: SibOperationRecord) {
           data-sib-op-row
           data-filters={op.filterBuckets.join(' ')}
           data-category={op.category}
-          data-search={`${op.code} ${op.title} ${op.category}`.toLowerCase()}
+          data-issued-at={op.issuedAt}
+          data-search={`${op.code} ${op.title} ${op.category} ${op.issuer}`.toLowerCase()}
         >
           <div class="sib-op-table-status">
             {
@@ -161,9 +181,9 @@ function rowClass(op: SibOperationRecord) {
           <div class="sib-op-table-action">
             {
               op.action === 'read' ? (
-                <span class="sib-op-btn-read">열람 →</span>
+                <span class="sib-op-btn-read">열람</span>
               ) : (
-                <span class:list={['sib-op-btn-detail', op.muted && 'muted']}>상세 →</span>
+                <span class:list={['sib-op-btn-detail', op.muted && 'muted']}>상세</span>
               )
             }
           </div>
@@ -172,31 +192,59 @@ function rowClass(op: SibOperationRecord) {
     }
 
     <div class="sib-op-table-foot">
-      <span data-sib-op-foot-count>총 {sibOperationStats.total}건 중 1 — {sibOperationRecords.length} 표시</span>
-      <div class="sib-op-pagination">
-        <span class="sib-op-page-btn disabled">‹</span>
-        <span class="sib-op-page-btn active">1</span>
-        <span class="sib-op-page-btn">2</span>
-        <span class="sib-op-page-btn">›</span>
-      </div>
+      <span data-sib-op-foot-count>
+        총 {sibOperationStats.total}건 중 1 — {Math.min(SIB_OP_PAGE_SIZE, sibOperationRecords.length)} 표시
+      </span>
+      <div class="sib-op-pagination" data-sib-op-pagination></div>
     </div>
   </div>
 </div>
 
-<script>
+<script define:vars={{ pageSize: SIB_OP_PAGE_SIZE, referenceDate: SIB_OP_REFERENCE_DATE }}>
   const listRoot = document.querySelector('[data-sib-op-list]');
   if (listRoot) {
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-op-row]'));
     const filterTabs = Array.from(document.querySelectorAll('[data-sib-op-filter]'));
     const statCards = Array.from(document.querySelectorAll('[data-sib-op-stat-filter]'));
     const categorySelect = document.querySelector('[data-sib-op-category]');
+    const periodSelect = document.querySelector('[data-sib-op-period]');
     const searchInput = document.querySelector('[data-sib-op-search]');
     const footCount = document.querySelector('[data-sib-op-foot-count]');
-    const totalCount = rows.length;
+    const paginationRoot = document.querySelector('[data-sib-op-pagination]');
+    const refDate = new Date(`${referenceDate}T00:00:00`);
 
     let activeFilter = 'all';
     let activeCategory = 'all';
+    let activePeriod = '3m';
     let searchQuery = '';
+    let currentPage = 1;
+
+    function getPeriodCutoff(period) {
+      if (period === 'all') return null;
+      const cutoff = new Date(refDate);
+      cutoff.setMonth(cutoff.getMonth() - (period === '6m' ? 6 : 3));
+      return cutoff;
+    }
+
+    function rowMatchesFilters(row) {
+      const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
+      const category = row.getAttribute('data-category') || '';
+      const searchText = row.getAttribute('data-search') || '';
+      const issuedAt = row.getAttribute('data-issued-at') || '';
+      const query = searchQuery.trim().toLowerCase();
+      const cutoff = getPeriodCutoff(activePeriod);
+
+      const matchesFilter = activeFilter === 'all' || filters.includes(activeFilter);
+      const matchesCategory = activeCategory === 'all' || category === activeCategory;
+      const matchesSearch = !query || searchText.includes(query);
+      const matchesPeriod = !cutoff || (issuedAt && new Date(`${issuedAt}T00:00:00`) >= cutoff);
+
+      return matchesFilter && matchesCategory && matchesSearch && matchesPeriod;
+    }
+
+    function getMatchingRows() {
+      return rows.filter((row) => rowMatchesFilters(row));
+    }
 
     function setActiveTab(filter) {
       activeFilter = filter;
@@ -207,31 +255,84 @@ function rowClass(op: SibOperationRecord) {
       });
     }
 
-    function applyFilters() {
-      const query = searchQuery.trim().toLowerCase();
-      let visible = 0;
+    function renderPagination(totalPages) {
+      if (!paginationRoot) return;
+
+      if (totalPages <= 1) {
+        paginationRoot.innerHTML = '';
+        paginationRoot.classList.add('is-hidden');
+        return;
+      }
+
+      paginationRoot.classList.remove('is-hidden');
+      paginationRoot.innerHTML = '';
+
+      const prev = document.createElement('button');
+      prev.type = 'button';
+      prev.className = `sib-op-page-btn${currentPage === 1 ? ' disabled' : ''}`;
+      prev.textContent = '‹';
+      prev.disabled = currentPage === 1;
+      prev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(prev);
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `sib-op-page-btn${page === currentPage ? ' active' : ''}`;
+        btn.textContent = String(page);
+        btn.addEventListener('click', () => {
+          currentPage = page;
+          applyFilters(false);
+        });
+        paginationRoot.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = `sib-op-page-btn${currentPage === totalPages ? ' disabled' : ''}`;
+      next.textContent = '›';
+      next.disabled = currentPage === totalPages;
+      next.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(next);
+    }
+
+    function applyFilters(resetPage = true) {
+      if (resetPage) currentPage = 1;
+
+      const matching = getMatchingRows();
+      const total = matching.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = Math.min(startIdx + pageSize, total);
+      const visibleOnPage = matching.slice(startIdx, endIdx);
+      const visibleSet = new Set(visibleOnPage);
 
       rows.forEach((row) => {
-        const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
-        const category = row.getAttribute('data-category') || '';
-        const searchText = row.getAttribute('data-search') || '';
-
-        const matchesFilter = activeFilter === 'all' || filters.includes(activeFilter);
-        const matchesCategory = activeCategory === 'all' || category === activeCategory;
-        const matchesSearch = !query || searchText.includes(query);
-
-        const show = matchesFilter && matchesCategory && matchesSearch;
-        row.classList.toggle('is-filtered-out', !show);
-        if (show) visible += 1;
+        row.classList.toggle('is-filtered-out', !visibleSet.has(row));
       });
 
       if (footCount) {
-        if (visible === 0) {
+        if (total === 0) {
           footCount.textContent = '검색 결과 없음';
         } else {
-          footCount.textContent = `총 ${totalCount}건 중 1 — ${visible} 표시`;
+          footCount.textContent = `총 ${total}건 중 ${startIdx + 1} — ${endIdx} 표시`;
         }
       }
+
+      renderPagination(totalPages);
     }
 
     filterTabs.forEach((tab) => {
@@ -253,9 +354,16 @@ function rowClass(op: SibOperationRecord) {
       applyFilters();
     });
 
+    periodSelect?.addEventListener('change', () => {
+      activePeriod = periodSelect.value;
+      applyFilters();
+    });
+
     searchInput?.addEventListener('input', () => {
       searchQuery = searchInput.value;
       applyFilters();
     });
+
+    applyFilters();
   }
 </script>
