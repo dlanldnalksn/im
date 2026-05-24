@@ -6,9 +6,10 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  fullWidth?: boolean;
 }
 
-const { title, description = '이능관리위원회 공식 대외 누리집' } = Astro.props;
+const { title, description = '이능관리위원회 공식 대외 누리집', fullWidth = false } = Astro.props;
 const pageTitle = `${title} | 이능관리위원회`;
 ---
 
@@ -23,12 +24,18 @@ const pageTitle = `${title} | 이능관리위원회`;
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <PublicHeader />
-    <main class="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
-      <slot />
-    </main>
-    <PublicFooter />
+  <body class="min-h-screen">
+    <div class="site-shell">
+      <PublicHeader />
+      <main class:list={['flex-1', fullWidth ? '' : 'px-4 md:px-10 py-8']}>
+        <slot />
+      </main>
+      <PublicFooter />
+    </div>
   </body>
 </html>

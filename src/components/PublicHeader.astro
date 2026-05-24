@@ -3,33 +3,50 @@ import { url, pathnameEquals, pathnameStartsWith } from '../lib/url';
 
 const nav = [
   { path: '', label: '홈' },
-  { path: 'about', label: '각성자 안내' },
-  { path: 'registration', label: '등재 안내' },
-  { path: 'organizations', label: '조직 소개' },
-  { path: 'notices', label: '공지' },
-  { path: 'faq', label: 'FAQ' },
-  { path: 'resources', label: '자료실' },
+  { path: 'about/', label: '위원회·제도' },
+  { path: 'registration/', label: '등재·민원' },
+  { path: 'organizations/', label: '조직 소개' },
+  { path: 'notices/', label: '알림·소식' },
+  { path: 'faq/', label: 'FAQ' },
+  { path: 'resources/', label: '자료실' },
 ];
 const pathname = Astro.url.pathname;
 ---
 
-<header class="border-b border-slate-200 bg-white">
-  <div class="bg-imc-navy text-white text-center text-xs py-1.5 px-4">
-    이 누리집은 대한민국 각성자 관리 제도를 안내하는 이능관리위원회 공식 대외 채널입니다.
+<header>
+  <!-- 상단 유틸리티 바 -->
+  <div class="bg-[#1a1a1a] text-[#bbb] text-[11px] px-4 md:px-10 py-1.5 flex flex-wrap justify-between gap-2 border-b border-[#2a2a2a]">
+    <div class="flex items-center gap-3">
+      <span class="text-[#888]">대한민국 정부 누리집</span>
+      <span class="text-[#444]">|</span>
+      <span>국무총리실 직속</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href={url('intranet/login/')} class="hover:text-white transition-colors">직원 로그인</a>
+      <span class="text-[#444]">|</span>
+      <span class="text-[#666] cursor-default">English</span>
+    </div>
   </div>
-  <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-    <a href={url()} class="flex items-center gap-3 group">
-      <div class="w-10 h-10 rounded bg-imc-navy flex items-center justify-center text-white text-xs font-bold shrink-0">
-        IMC
+
+  <!-- 메인 GNB -->
+  <div class="bg-white border-b border-imc-border px-4 md:px-10 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <a href={url()} class="flex items-center gap-3.5 shrink-0 group">
+      <div
+        class="w-10 h-10 bg-imc-primary flex items-center justify-center text-white font-serif font-bold text-lg tracking-tight"
+      >
+        異
       </div>
       <div>
-        <p class="text-lg font-bold text-imc-navy leading-tight group-hover:text-imc-accent">
+        <p class="text-[17px] font-bold tracking-tight leading-tight group-hover:text-imc-primary transition-colors">
           이능관리위원회
         </p>
-        <p class="text-xs text-slate-500">Immortal Capability Management Committee</p>
+        <p class="text-[10.5px] text-imc-muted font-serif tracking-wide mt-0.5">
+          異能管理委員會 · Power Management Committee
+        </p>
       </div>
     </a>
-    <nav class="flex flex-wrap gap-1 text-sm" aria-label="주 메뉴">
+
+    <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold tracking-tight" aria-label="주 메뉴">
       {
         nav.map((item) => {
           const active =
@@ -39,10 +56,10 @@ const pathname = Astro.url.pathname;
             <a
               href={url(item.path)}
               class:list={[
-                'px-3 py-2 rounded-md transition-colors',
+                'py-1.5 border-b-2 transition-colors',
                 active
-                  ? 'bg-imc-navy text-white font-semibold'
-                  : 'text-slate-600 hover:bg-slate-100',
+                  ? 'text-imc-primary border-imc-primary'
+                  : 'text-imc-ink border-transparent hover:text-imc-primary',
               ]}
             >
               {item.label}
@@ -51,5 +68,19 @@ const pathname = Astro.url.pathname;
         })
       }
     </nav>
+
+    <div class="hidden xl:flex items-center border border-[#d0d3d9] bg-white px-3 py-1.5 gap-2 w-48 shrink-0">
+      <input
+        type="search"
+        placeholder="통합검색"
+        class="flex-1 text-xs bg-transparent outline-none placeholder:text-imc-muted min-w-0"
+        disabled
+        aria-label="통합검색 (준비 중)"
+      />
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#666" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#666" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+    </div>
   </div>
 </header>

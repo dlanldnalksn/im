@@ -1,48 +1,36 @@
 ---
 import PublicLayout from '../layouts/PublicLayout.astro';
-
-const orgs = [
-  {
-    name: '중앙행정청',
-    desc: '등재 관리, 신분·거주·이동·취업 허가, 동기화 등록 등 행정 업무 총괄.',
-    items: ['등재청사', '훈련시설', '미성년자 보호시설'],
-  },
-  {
-    name: '조정원',
-    desc: '능력자 의료 관리, 조력자 매칭, 조정시술, 안정원 운영.',
-    items: ['조정원 본원', '지역 의료센터', '안정원'],
-  },
-  {
-    name: '이능연구원',
-    desc: '능력 메커니즘 연구 및 학술기관 대외 협력 (대외 공개 범위 내).',
-    items: ['본원', '학술 교류'],
-  },
-];
+import PageHero from '../components/PageHero.astro';
+import { publicOrgs } from '../data/organizations-public';
 ---
 
-<PublicLayout title="조직 소개">
-  <h1 class="text-2xl font-bold text-imc-navy mb-2">산하 기관 소개</h1>
-  <p class="text-slate-600 mb-8 max-w-2xl">
-    이능관리위원회는 국무총리 직속으로 각성자 관련 업무를 총괄합니다.
-    아래는 대외 공개 가능한 산하 기관입니다.
-  </p>
-  <div class="grid gap-6">
-    {
-      orgs.map((org) => (
-        <article class="card">
-          <h2 class="text-xl font-bold text-imc-navy">{org.name}</h2>
-          <p class="mt-2 text-slate-600">{org.desc}</p>
-          <ul class="mt-3 flex flex-wrap gap-2">
-            {org.items.map((item) => (
-              <li class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">{item}</li>
-            ))}
-          </ul>
-        </article>
-      ))
-    }
+<PublicLayout title="조직 소개" fullWidth={true}>
+  <PageHero
+    label="SUBORDINATE AGENCIES"
+    title="산하 기관 소개"
+    description="이능관리위원회는 국무총리 직속으로 각성자 관련 업무를 총괄합니다."
+  />
+  <div class="px-4 md:px-10 py-10">
+    <div class="grid md:grid-cols-3 gap-5 mb-8">
+      {
+        publicOrgs.map((org) => (
+          <article class="agency-card">
+            <div class="flex items-center justify-between mb-3.5">
+              <div class:list={['w-10 h-10 flex items-center justify-center font-serif text-xl font-bold', org.iconBg, org.iconColor]}>
+                {org.hanja}
+              </div>
+              <span class="font-mono text-[10px] text-[#999] tracking-widest">{org.num}</span>
+            </div>
+            <h2 class="text-lg font-bold tracking-tight mb-1">{org.name}</h2>
+            <p class="text-[10.5px] text-imc-muted font-serif mb-3">{org.nameHan}</p>
+            <p class="text-sm text-[#555] leading-relaxed">{org.desc}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="text-sm text-imc-muted border-l-4 border-imc-border pl-4 max-w-2xl">
+      국가안보·질서 유지 관련 업무를 담당하는 기관은 법령 및 보안 규정에 따라
+      대외 누리집에 공개되지 않습니다.
+    </p>
   </div>
-  <p class="mt-8 text-sm text-slate-500 border-l-4 border-slate-300 pl-4">
-    국가안보·질서 유지 관련 업무를 담당하는 기관은 법령 및 보안 규정에 따라
-    대외 누리집에 공개되지 않습니다.
-  </p>
 </PublicLayout>

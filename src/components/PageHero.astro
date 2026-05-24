@@ -1,0 +1,23 @@
+---
+interface Props {
+  label?: string;
+  title: string;
+  description?: string;
+}
+
+const { label = 'POWER MANAGEMENT COMMITTEE', title, description } = Astro.props;
+---
+
+<section class="page-hero -mx-0 md:-mx-10 md:mt-0">
+  <div class="absolute top-0 right-[-100px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(255,255,255,0.06)_0%,transparent_60%)] rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-[-200px] left-[-100px] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(255,255,255,0.04)_0%,transparent_60%)] rounded-full pointer-events-none"></div>
+  <div class="absolute bottom-6 right-6 md:right-10 font-serif text-[80px] md:text-[140px] font-bold text-white/[0.04] leading-none tracking-tighter pointer-events-none select-none">
+    異能
+  </div>
+  <div class="relative z-10 max-w-3xl">
+    <p class="font-mono text-[11px] text-[#a8c5d8] tracking-[0.3em] mb-4">{label}</p>
+    <h1 class="text-3xl md:text-[38px] font-extrabold leading-tight tracking-tight mb-4 whitespace-pre-line">{title}</h1>
+    {description && <p class="text-sm md:text-[14.5px] text-[#cfd8e0] leading-relaxed max-w-xl">{description}</p>}
+    <slot />
+  </div>
+</section>

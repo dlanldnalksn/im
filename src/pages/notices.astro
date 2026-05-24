@@ -1,19 +1,25 @@
 ---
 import PublicLayout from '../layouts/PublicLayout.astro';
+import PageHero from '../components/PageHero.astro';
 import { publicNotices } from '../data/notices';
 ---
 
-<PublicLayout title="공지사항">
-  <h1 class="text-2xl font-bold text-imc-navy mb-6">공지사항</h1>
-  <ul class="space-y-4">
-    {
-      publicNotices.map((n) => (
-        <li class="card">
-          <p class="text-xs text-slate-400">{n.date}</p>
-          <h2 class="mt-1 font-bold text-slate-900">{n.title}</h2>
-          <p class="mt-2 text-sm text-slate-600">{n.summary}</p>
-        </li>
-      ))
-    }
-  </ul>
+<PublicLayout title="공지사항" fullWidth={true}>
+  <PageHero label="NEWS · NOTICE" title="알림·소식" description="이능관리위원회 공지 및 안내사항입니다." />
+  <div class="px-4 md:px-10 py-10">
+    <div class="bg-white border border-imc-border divide-y divide-[#f0f1f3]">
+      {
+        publicNotices.map((n) => (
+          <article class="px-6 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 hover:bg-[#fafbfc] transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="bg-imc-primary text-white text-[10px] font-bold px-1.5 py-0.5 tracking-widest shrink-0">공지</span>
+              <h2 class="text-[13px] font-medium tracking-tight">{n.title}</h2>
+            </div>
+            <span class="font-mono text-[11.5px] text-imc-muted shrink-0">{n.date.replace(/-/g, '.')}</span>
+            <p class="text-sm text-imc-muted sm:basis-full sm:pl-[52px]">{n.summary}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
 </PublicLayout>

@@ -23,15 +23,19 @@ const pageTitle = `${title} | IMC 내부망`;
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="min-h-screen flex flex-col bg-slate-100">
+  <body class="min-h-screen bg-[#eef0f3]">
     {requireAuth && <IntranetGuard />}
     <IntranetHeader />
-    <main class="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
+    <main class="mx-auto w-full max-w-site bg-white shadow-site min-h-[60vh] px-4 md:px-10 py-8">
       <slot />
     </main>
-    <footer class="border-t border-slate-300 py-4 text-center text-xs text-slate-500">
-      내부망 · 접속 IP 기록 · 문서 무단 반출 시 법적 조치
+    <footer class="bg-[#1a1a1a] text-[#666] py-4 text-center text-xs font-mono tracking-wide">
+      내부망 · 접속 기록 보관 · 문서 무단 반출 시 징계
     </footer>
   </body>
 </html>
