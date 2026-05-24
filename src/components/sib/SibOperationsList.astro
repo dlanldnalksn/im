@@ -1,0 +1,148 @@
+---
+import { url } from '../../lib/url';
+import { sibOperationStats, sibOperationRecords } from '../../data/sib-operations-list';
+import type { SibOpStatusTag, SibOperationRecord } from '../../data/sib-operations-list';
+
+const base = 'intranet/sib/';
+const updated = '2026.05.24 14:22';
+
+const statCards = [
+  { label: '전체', value: sibOperationStats.total, accent: false },
+  { label: '미열람', value: sibOperationStats.unread, accent: true },
+  { label: '진행 중', value: sibOperationStats.inProgress, accent: false },
+  { label: '완료', value: sibOperationStats.done, accent: false },
+  { label: '반려·취소', value: sibOperationStats.rejected, accent: false, muted: true },
+];
+
+const filterTabs = ['전체', '미열람', '진행 중', '완료', '반려·취소'];
+
+function tagClass(tag: SibOpStatusTag) {
+  if (tag.variant === 'red') return 'sib-tag red';
+  if (tag.variant === 'amber') return 'sib-tag amber';
+  if (tag.variant === 'gray') return 'sib-tag gray';
+  if (tag.variant === 'unread') return 'sib-op-tag-unread';
+  return 'sib-op-tag-rejected';
+}
+
+function rowClass(op: SibOperationRecord) {
+  if (op.rowStyle === 'priority') return 'sib-op-table-row priority';
+  if (op.rowStyle === 'urgent') return 'sib-op-table-row urgent';
+  return 'sib-op-table-row';
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">작전 명령</span>
+</nav>
+
+<div class="sib-page-head">
+  <div>
+    <h1 class="sib-page-title" style="margin-bottom:4px;">작전 명령 목록</h1>
+    <p class="text-xs text-[#666] font-medium" style="letter-spacing:-0.01em;">본인 차출 명령 및 작전 이력</p>
+  </div>
+  <div class="sib-page-meta">최근 갱신 {updated}</div>
+</div>
+
+<div class="sib-op-stat-grid">
+  {
+    statCards.map((s) => (
+      <div class:list={['sib-op-stat-card', s.accent && 'accent', s.muted && 'muted']}>
+        <div class:list={['sib-op-stat-label', s.accent && 'accent']}>{s.label}</div>
+        <div class="sib-op-stat-value">
+          {s.value}<span class="sib-op-stat-unit">건</span>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<div class="sib-op-toolbar">
+  <div class="sib-op-filter-tabs">
+    {
+      filterTabs.map((tab, i) => (
+        <button type="button" class:list={['sib-op-filter-tab', i === 0 && 'is-active']} disabled>
+          {tab}
+        </button>
+      ))
+    }
+  </div>
+  <div class="sib-op-toolbar-right">
+    <div class="sib-op-select">
+      <span class="sib-op-select-label">분류</span>
+      <span class="sib-op-select-value">전체</span>
+      <span class="sib-op-select-caret">▾</span>
+    </div>
+    <div class="sib-op-select">
+      <span class="sib-op-select-label">기간</span>
+      <span class="sib-op-select-value">최근 3개월</span>
+      <span class="sib-op-select-caret">▾</span>
+    </div>
+    <div class="sib-op-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <span>작전번호 / 키워드</span>
+    </div>
+  </div>
+</div>
+
+<div class="sib-op-table-wrap">
+  <div class="sib-op-table">
+    <div class="sib-op-table-head">
+      <div>상태</div>
+      <div>분류</div>
+      <div>작전번호</div>
+      <div>건명</div>
+      <div>발령</div>
+      <div>집결 일시</div>
+      <div class="text-right">조치</div>
+    </div>
+
+    {
+      sibOperationRecords.map((op) => (
+        <div class={rowClass(op)}>
+          <div class="sib-op-table-status">
+            {
+              op.statusTags.map((tag) => (
+                <span class={tagClass(tag)}>{tag.label}</span>
+              ))
+            }
+          </div>
+          <div class:list={['sib-op-table-cat', op.muted && 'muted']}>{op.category}</div>
+          <div class:list={['sib-op-table-code', op.muted && 'muted']}>{op.code}</div>
+          <div class:list={['sib-op-table-title', op.muted && 'muted']}>{op.title}</div>
+          <div class:list={['sib-op-table-issuer', op.muted && 'muted']}>
+            {op.issuer}<br />
+            <span class="sib-op-table-sub">{op.issuedDate}</span>
+          </div>
+          <div class:list={['sib-op-table-schedule', op.muted && 'muted', op.scheduleMono && 'mono']}>
+            {op.scheduleMain}<br />
+            <span class="sib-op-table-sub">{op.scheduleSub}</span>
+          </div>
+          <div class="sib-op-table-action">
+            {
+              op.action === 'read' ? (
+                <span class="sib-op-btn-read">열람 →</span>
+              ) : (
+                <span class:list={['sib-op-btn-detail', op.muted && 'muted']}>상세 →</span>
+              )
+            }
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="sib-op-table-foot">
+      <span>총 {sibOperationStats.total}건 중 1 — 10 표시</span>
+      <div class="sib-op-pagination">
+        <span class="sib-op-page-btn disabled">‹</span>
+        <span class="sib-op-page-btn active">1</span>
+        <span class="sib-op-page-btn">2</span>
+        <span class="sib-op-page-btn">›</span>
+      </div>
+    </div>
+  </div>
+</div>

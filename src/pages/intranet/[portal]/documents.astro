@@ -1,7 +1,7 @@
 ---
 import IntranetLayout from '../../../layouts/IntranetLayout.astro';
 import SibIntranetLayout from '../../../layouts/SibIntranetLayout.astro';
-import SibDocuments from '../../../components/sib/SibDocuments.astro';
+import SibOperationsList from '../../../components/sib/SibOperationsList.astro';
 import { intranetPortals, getPortalById } from '../../../data/intranet-portals';
 import { getDocumentsForPortal } from '../../../lib/intranet-content';
 import { url } from '../../../lib/url';
@@ -23,8 +23,8 @@ const documents = getDocumentsForPortal(portal.id);
 
 {
   isSib ? (
-    <SibIntranetLayout title="작전·행정 자료">
-      <SibDocuments />
+    <SibIntranetLayout title="작전 명령">
+      <SibOperationsList />
     </SibIntranetLayout>
   ) : (
     <IntranetLayout title="내부 자료" portal={portal}>

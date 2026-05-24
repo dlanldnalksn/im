@@ -19,7 +19,7 @@ function isActive(item: (typeof nav)[0]) {
   if (item.label === '신상·인사') return pathnameStartsWith(pathname, `${base}personnel/`);
   if (item.label === '대시보드' && item.exact) return pathnameEquals(pathname, item.path);
   if (item.label === '공지·알림') return pathnameEquals(pathname, item.path) && Astro.url.hash === '#notices';
-  if (item.path.includes('documents')) return pathnameStartsWith(pathname, `${base}documents/`);
+  if (item.label === '작전 명령') return pathnameStartsWith(pathname, `${base}documents/`);
   return false;
 }
 
