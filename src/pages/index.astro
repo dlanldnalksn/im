@@ -1,0 +1,57 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import { publicNotices } from '../data/notices';
+import { url } from '../lib/url';
+const latest = publicNotices.slice(0, 2);
+---
+
+<PublicLayout title="홈" description="이능관리위원회 공식 대외 누리집">
+  <section class="rounded-xl bg-imc-navy text-white p-8 md:p-12 mb-8">
+    <p class="text-sm text-blue-200 mb-2">국무총리 직속 · 각성자 국가 관리</p>
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">이능관리위원회</h1>
+    <p class="text-blue-100 max-w-2xl leading-relaxed">
+      각성자 현상에 대한 국가의 통합 관리·등재·안정화 업무를 수행합니다.
+      등재 안내, 제도 설명, 공지사항은 본 누리집을 통해 확인하실 수 있습니다.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href={url('registration')} class="btn-primary bg-white text-imc-navy hover:bg-blue-50">
+        등재 안내
+      </a>
+      <a href={url('about')} class="btn-secondary border-white/30 text-white hover:bg-white/10">
+        각성자 제도 알아보기
+      </a>
+    </div>
+  </section>
+
+  <div class="grid md:grid-cols-3 gap-6 mb-8">
+    <a href={url('registration')} class="card hover:border-imc-accent transition-colors group">
+      <h2 class="font-bold text-imc-navy group-hover:text-imc-accent">등재·신분</h2>
+      <p class="mt-2 text-sm text-slate-600">등재 신청, 신분증, 허가 절차 안내</p>
+    </a>
+    <a href={url('organizations')} class="card hover:border-imc-accent transition-colors group">
+      <h2 class="font-bold text-imc-navy group-hover:text-imc-accent">산하 기관</h2>
+      <p class="mt-2 text-sm text-slate-600">중앙행정청, 조정원, 이녕연구원 소개</p>
+    </a>
+    <a href={url('resources')} class="card hover:border-imc-accent transition-colors group">
+      <h2 class="font-bold text-imc-navy group-hover:text-imc-accent">자료실</h2>
+      <p class="mt-2 text-sm text-slate-600">시민용 제도 요약 백서</p>
+    </a>
+  </div>
+
+  <section class="card">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold">공지사항</h2>
+      <a href={url('notices')} class="text-sm text-imc-accent hover:underline">전체 보기</a>
+    </div>
+    <ul class="divide-y divide-slate-100">
+      {
+        latest.map((n) => (
+          <li class="py-3 flex flex-col sm:flex-row sm:gap-4">
+            <span class="text-xs text-slate-400 shrink-0">{n.date}</span>
+            <span class="font-medium text-slate-800">{n.title}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</PublicLayout>

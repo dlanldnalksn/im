@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import { url } from '../../lib/url';
+
+const password = import.meta.env.PUBLIC_INTRANET_PASSWORD || 'imc-intra';
+const homeUrl = url();
+const intranetUrl = url('intranet');
+const loginPath = url('intranet/login');
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>내부망 로그인 | 이능관리위원회</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+  </head>
+  <body class="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8">
+      <p class="text-xs text-imc-alert font-semibold text-center mb-2">직원 전용</p>
+      <h1 class="text-xl font-bold text-center text-slate-900">내부망 로그인</h1>
+      <p class="text-sm text-slate-500 text-center mt-2 mb-6">이능관리위원회 통합 인증</p>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="employee-id" class="block text-sm font-medium text-slate-700 mb-1"
+            >사번</label
+          >
+          <input
+            id="employee-id"
+            type="text"
+            class="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"
+            placeholder="TG-0-00-0000"
+            autocomplete="username"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-slate-700 mb-1"
+            >비밀번호</label
+          >
+          <input
+            id="password"
+            type="password"
+            class="w-full border border-slate-300 rounded-md px-3 py-2 text-sm"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <p id="login-error" class="text-sm text-red-600 hidden">인증에 실패했습니다.</p>
+        <button type="submit" class="btn-primary w-full">로그인</button>
+      </form>
+      <p class="mt-6 text-center">
+        <a href={homeUrl} class="text-xs text-slate-400 hover:text-slate-600">← 대외 누리집</a>
+      </p>
+    </div>
+    <script define:vars={{ password, intranetUrl, loginPath }}>
+      const form = document.getElementById('login-form');
+      const err = document.getElementById('login-error');
+      if (sessionStorage.getItem('imc_intranet_auth') === '1') {
+        window.location.replace(intranetUrl);
+      }
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pw = document.getElementById('password')?.value;
+        if (pw === password) {
+          sessionStorage.setItem('imc_intranet_auth', '1');
+          window.location.href = intranetUrl;
+        } else {
+          err?.classList.remove('hidden');
+        }
+      });
+    </script>
+  </body>
+</html>

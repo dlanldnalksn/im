@@ -1,0 +1,158 @@
+---
+import IntranetLayout from '../../../layouts/IntranetLayout.astro';
+import { allPersonnel, getPersonnelById } from '../../../data/personnel';
+import { url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return allPersonnel.map((p) => ({ params: { id: p.id } }));
+}
+
+const { id } = Astro.params;
+const person = getPersonnelById(id!);
+
+if (!person) {
+  return Astro.redirect(url('intranet/personnel'));
+}
+---
+
+<IntranetLayout title={person.name}>
+  <nav class="text-sm text-slate-500 mb-4">
+    <a href={url('intranet/personnel')} class="hover:text-imc-accent">인사 조회</a>
+    <span class="mx-2">/</span>
+    <span class="text-slate-800">{person.name}</span>
+  </nav>
+
+  <header class="card mb-6">
+    <div class="flex flex-wrap justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold">{person.name}</h1>
+        <p class="text-slate-500">{person.nameEn} · {person.age}세 · {person.sex === 'M' ? '남' : '여'}</p>
+        <p class="mt-2 text-sm">
+          <span class="font-semibold">{person.org}</span> · {person.department} · {person.role}
+        </p>
+        <p class="text-xs text-slate-400 mt-1">사번 {person.employeeId}</p>
+      </div>
+      <div class="flex flex-wrap gap-2 items-start">
+        {
+          person.registry.abilityGrade && (
+            <span class="text-sm font-bold bg-imc-navy text-white px-3 py-1 rounded">
+              능력 {person.registry.abilityGrade}
+            </span>
+          )
+        }
+        <span class="text-sm bg-slate-200 text-slate-700 px-3 py-1 rounded">
+          위험도 {person.registry.riskGrade}
+        </span>
+        <span class="text-sm border border-slate-300 px-3 py-1 rounded">{person.registry.matchingStatus}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="border-b border-slate-200 mb-6 overflow-x-auto">
+    <nav class="flex gap-1 text-sm min-w-max" role="tablist">
+      <button type="button" data-tab="basic" class="tab-btn px-4 py-2 border-b-2 border-imc-navy font-semibold text-imc-navy">기본·연락</button>
+      <button type="button" data-tab="ability" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-600">등재·능력</button>
+      <button type="button" data-tab="appearance" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-600">신체·외형</button>
+      <button type="button" data-tab="psych" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-600">심리·행동</button>
+      <button type="button" data-tab="extended" class="tab-btn px-4 py-2 border-b-2 border-transparent text-imc-alert">심층 분석</button>
+    </nav>
+  </div>
+
+  <div id="panel-basic" class="tab-panel card prose-gov max-w-4xl">
+    <h2>기본·연락</h2>
+    <table>
+      <tbody>
+        <tr><th>공식 숙소</th><td>{person.residence.official}</td></tr>
+        <tr><th>개인 거주지</th><td>{person.residence.personal}</td></tr>
+        <tr><th>휴대전화</th><td>{person.contact.mobile}</td></tr>
+        <tr><th>내선</th><td>{person.contact.extension}</td></tr>
+        <tr><th>등재 유형</th><td>{person.registry.type}</td></tr>
+        <tr><th>매칭</th><td>{person.registry.matchingStatus}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="panel-ability" class="tab-panel card prose-gov max-w-4xl hidden">
+    <h2>등재·능력</h2>
+    <p><strong>분류</strong> {person.ability.category}</p>
+    <p><strong>패시브</strong> {person.ability.passive}</p>
+    <h3>작동</h3>
+    <p><strong>감지</strong> {person.ability.detection}</p>
+    <p><strong>효과</strong> {person.ability.effect}</p>
+    <h3>반동 (사용 중)</h3>
+    <ul>{person.ability.backlashActive.map((x) => <li>{x}</li>)}</ul>
+    <h3>반동 (사용 직후)</h3>
+    <ul>{person.ability.backlashAfter.map((x) => <li>{x}</li>)}</ul>
+    <h3>만성</h3>
+    <ul>{person.ability.chronic.map((x) => <li>{x}</li>)}</ul>
+  </div>
+
+  <div id="panel-appearance" class="tab-panel card prose-gov max-w-4xl hidden">
+    <h2>신체·외형</h2>
+    <p><strong>신장/체중</strong> {person.appearance.height}cm / {person.appearance.weight}kg</p>
+    <p>{person.appearance.summary}</p>
+    <p><strong>일터</strong> {person.appearance.outfitWork}</p>
+    <p><strong>사복</strong> {person.appearance.outfitCasual}</p>
+    <p><strong>표식</strong> {person.appearance.marks}</p>
+  </div>
+
+  <div id="panel-psych" class="tab-panel card prose-gov max-w-4xl hidden">
+    <h2>심리·행동</h2>
+    <p><strong>겉</strong> {person.psych.surface}</p>
+    <p><strong>속</strong> {person.psych.inner}</p>
+    <p><strong>말투</strong> {person.psych.speech}</p>
+    <h3>특이사항</h3>
+    <ul>{person.psych.special.map((x) => <li>{x}</li>)}</ul>
+    <h3>호</h3>
+    <ul>{person.psych.likes.map((x) => <li>{x}</li>)}</ul>
+    <h3>애</h3>
+    <ul>{person.psych.dislikes.map((x) => <li>{x}</li>)}</ul>
+    <p class="text-sm bg-amber-50 border border-amber-200 p-3 rounded mt-4">
+      <strong>지문 가이드</strong> {person.psych.narrativeGuide}
+    </p>
+  </div>
+
+  <div id="panel-extended" class="tab-panel card max-w-4xl hidden border-imc-alert/30 bg-red-50/20">
+    <p class="text-xs text-imc-alert font-semibold mb-4">
+      {person.clearanceRequired}급 열람 · 무단 유출 시 징계
+    </p>
+    <div class="prose-gov text-sm">
+      <h2>심층 분석 · 행동·관계 지침</h2>
+      <h3>Emotional Hierarchy</h3>
+      <ul>
+        <li><strong>Tier 1</strong>: 애정·사랑 — 유일하게 갈구. 근접·전지적 소유.</li>
+        <li><strong>Tier 2 (거부)</strong>: 숭배·구원·이상화 — 거리를 만듦.</li>
+      </ul>
+      <h3>Anti-Destruction &amp; 순애</h3>
+      <ul>
+        <li>파괴·상해 욕구 없음. 통제 = 비파괴적 보호.</li>
+        <li>공허·포기가 기본이 아님 → 애정 갈구·매달림으로 표출.</li>
+      </ul>
+      <h3>NSFW · 관계 (내부 요약)</h3>
+      <ul>
+        <li>절대 탑. 겉: 디그레이더·소프트 돔 / 속: 리틀·펫 — 애프터케어 시 누출.</li>
+        <li>상대 반응 관찰·기록. 애프터케어 시 상대 돌봄 + 자신도 안음 갈구.</li>
+      </ul>
+      <p class="text-slate-500 text-xs mt-4">상세 RP 지침은 캐릭터 설정 원본 참조.</p>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab');
+        tabs.forEach((t) => {
+          t.classList.remove('border-imc-navy', 'font-semibold', 'text-imc-navy');
+          t.classList.add('border-transparent', 'text-slate-600');
+        });
+        btn.classList.add('border-imc-navy', 'font-semibold', 'text-imc-navy');
+        btn.classList.remove('border-transparent', 'text-slate-600');
+        panels.forEach((p) => {
+          p.classList.toggle('hidden', p.id !== `panel-${tabId}`);
+        });
+      });
+    });
+  </script>
+</IntranetLayout>

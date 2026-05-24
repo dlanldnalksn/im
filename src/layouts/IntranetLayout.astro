@@ -1,0 +1,37 @@
+---
+import IntranetHeader from '../components/IntranetHeader.astro';
+import IntranetGuard from '../components/IntranetGuard.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  requireAuth?: boolean;
+}
+
+const { title, requireAuth = true } = Astro.props;
+const pageTitle = `${title} | IMC 내부망`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{pageTitle}</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-100">
+    {requireAuth && <IntranetGuard />}
+    <IntranetHeader />
+    <main class="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-300 py-4 text-center text-xs text-slate-500">
+      내부망 · 접속 IP 기록 · 문서 무단 반출 시 법적 조치
+    </footer>
+  </body>
+</html>

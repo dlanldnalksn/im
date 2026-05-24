@@ -1,0 +1,35 @@
+---
+import IntranetLayout from '../../layouts/IntranetLayout.astro';
+---
+
+<IntranetLayout title="내부 자료">
+  <h1 class="text-2xl font-bold mb-6">내부 자료실</h1>
+  <ul class="space-y-3">
+    <li class="card flex justify-between items-center">
+      <div>
+        <p class="font-semibold">국가 각성자 관리 체계 요약 백서 (전문)</p>
+        <p class="text-xs text-slate-500">제 17.3 호 · 대외비</p>
+      </div>
+      <span class="text-xs bg-imc-alert/10 text-imc-alert px-2 py-1 rounded">열람 가능</span>
+    </li>
+    <li class="card flex justify-between items-center opacity-75">
+      <div>
+        <p class="font-semibold">신천사건 내부 조사 브리핑</p>
+        <p class="text-xs text-slate-500">1급 열람</p>
+      </div>
+      <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded">권한 없음</span>
+    </li>
+    <li class="card flex justify-between items-center opacity-75">
+      <div>
+        <p class="font-semibold">차출 요원 운용 지침</p>
+        <p class="text-xs text-slate-500">2처·4처 공동</p>
+      </div>
+      <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded">권한 없음</span>
+    </li>
+  </ul>
+  <div class="prose-gov card mt-8 max-w-3xl">
+    <h2>백서 전문 (요약)</h2>
+    <p>내부망 열람용 전문은 대외 자료실 공개본 대비 특감국·비공식 영역·운용 세부가 포함됩니다.</p>
+    <p>제1~5장 전체, 표 1~6, 각주 포함 — 콘텐츠 확장 예정.</p>
+  </div>
+</IntranetLayout>

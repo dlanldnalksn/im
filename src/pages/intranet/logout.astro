@@ -1,0 +1,18 @@
+---
+import { url } from '../../lib/url';
+const loginUrl = url('intranet/login');
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>로그아웃</title>
+  </head>
+  <body>
+    <script define:vars={{ loginUrl }}>
+      sessionStorage.removeItem('imc_intranet_auth');
+      window.location.replace(loginUrl);
+    </script>
+  </body>
+</html>

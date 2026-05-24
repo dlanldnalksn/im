@@ -1,0 +1,15 @@
+---
+import { url } from '../lib/url';
+const loginPath = url('intranet/login');
+const isLoginPage = Astro.url.pathname.includes('/intranet/login');
+---
+
+{!isLoginPage && (
+  <script define:vars={{ loginPath }}>
+    (function () {
+      if (sessionStorage.getItem('imc_intranet_auth') !== '1') {
+        window.location.replace(loginPath);
+      }
+    })();
+  </script>
+)}

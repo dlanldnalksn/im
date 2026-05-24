@@ -1,0 +1,21 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import { faqItems } from '../data/faq';
+---
+
+<PublicLayout title="FAQ">
+  <h1 class="text-2xl font-bold text-imc-navy mb-6">자주 묻는 질문</h1>
+  <div class="space-y-3 max-w-3xl">
+    {
+      faqItems.map((item) => (
+        <details class="card group">
+          <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">
+            {item.q}
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">{item.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</PublicLayout>

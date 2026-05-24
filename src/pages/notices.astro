@@ -1,0 +1,19 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import { publicNotices } from '../data/notices';
+---
+
+<PublicLayout title="공지사항">
+  <h1 class="text-2xl font-bold text-imc-navy mb-6">공지사항</h1>
+  <ul class="space-y-4">
+    {
+      publicNotices.map((n) => (
+        <li class="card">
+          <p class="text-xs text-slate-400">{n.date}</p>
+          <h2 class="mt-1 font-bold text-slate-900">{n.title}</h2>
+          <p class="mt-2 text-sm text-slate-600">{n.summary}</p>
+        </li>
+      ))
+    }
+  </ul>
+</PublicLayout>

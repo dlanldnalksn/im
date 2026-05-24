@@ -1,0 +1,55 @@
+---
+import { url, pathnameEquals, pathnameStartsWith } from '../lib/url';
+
+const nav = [
+  { path: '', label: '홈' },
+  { path: 'about', label: '각성자 안내' },
+  { path: 'registration', label: '등재 안내' },
+  { path: 'organizations', label: '조직 소개' },
+  { path: 'notices', label: '공지' },
+  { path: 'faq', label: 'FAQ' },
+  { path: 'resources', label: '자료실' },
+];
+const pathname = Astro.url.pathname;
+---
+
+<header class="border-b border-slate-200 bg-white">
+  <div class="bg-imc-navy text-white text-center text-xs py-1.5 px-4">
+    이 누리집은 대한민국 각성자 관리 제도를 안내하는 이능관리위원회 공식 대외 채널입니다.
+  </div>
+  <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <a href={url()} class="flex items-center gap-3 group">
+      <div class="w-10 h-10 rounded bg-imc-navy flex items-center justify-center text-white text-xs font-bold shrink-0">
+        IMC
+      </div>
+      <div>
+        <p class="text-lg font-bold text-imc-navy leading-tight group-hover:text-imc-accent">
+          이능관리위원회
+        </p>
+        <p class="text-xs text-slate-500">Immortal Capability Management Committee</p>
+      </div>
+    </a>
+    <nav class="flex flex-wrap gap-1 text-sm" aria-label="주 메뉴">
+      {
+        nav.map((item) => {
+          const active =
+            pathnameEquals(pathname, item.path) ||
+            (item.path !== '' && pathnameStartsWith(pathname, item.path));
+          return (
+            <a
+              href={url(item.path)}
+              class:list={[
+                'px-3 py-2 rounded-md transition-colors',
+                active
+                  ? 'bg-imc-navy text-white font-semibold'
+                  : 'text-slate-600 hover:bg-slate-100',
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</header>

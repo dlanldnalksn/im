@@ -1,0 +1,24 @@
+---
+import { url } from '../lib/url';
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto border-t border-slate-200 bg-white">
+  <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-600">
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      <div>
+        <p class="font-semibold text-slate-800">이능관리위원회</p>
+        <p class="mt-1">서울특별시 ○○구 ○○로 1 (가상)</p>
+        <p>민원 상담 1588-0000 (가상) · 평일 09:00–18:00</p>
+      </div>
+      <div class="text-slate-500">
+        <p>
+          <a href={url('intranet/login')} class="text-slate-400 hover:text-slate-600 text-xs">
+            직원용 내부망
+          </a>
+        </p>
+        <p class="mt-2">© {year} 이능관리위원회. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
