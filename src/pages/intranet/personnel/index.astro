@@ -10,7 +10,7 @@ import { url } from '../../../lib/url';
   <div class="grid gap-4 sm:grid-cols-2">
     {
       allPersonnel.map((p) => (
-        <a href={url(`intranet/personnel/${p.id}`)} class="card hover:border-imc-accent transition-colors block">
+        <a href={url(`intranet/personnel/${p.id}/`)} class="card hover:border-imc-accent transition-colors block">
           <div class="flex justify-between items-start">
             <div>
               <h2 class="text-lg font-bold">{p.name}</h2>
