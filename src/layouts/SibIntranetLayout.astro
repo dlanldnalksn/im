@@ -44,9 +44,55 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
         <SibIntranetFooter />
       </div>
     </div>
-    <script>
+    <script define:vars={{ sibBase: 'intranet/sib/' }}>
+      const SIB_NAV_PATHS = {
+        dashboard: `${sibBase}`,
+        documents: `${sibBase}documents/`,
+        reports: `${sibBase}reports/`,
+        personnel: `${sibBase}personnel/lee-chan-young/`,
+      };
+
+      function sibUrl(path) {
+        return new URL(path, document.baseURI).href;
+      }
+
+      function syncSibNavLinks() {
+        document.querySelectorAll('[data-sib-nav]').forEach((link) => {
+          const key = link.getAttribute('data-sib-nav');
+          const path = SIB_NAV_PATHS[key];
+          if (path) link.href = sibUrl(path);
+        });
+
+        document.querySelectorAll('[data-sib-link="reports"]').forEach((link) => {
+          link.href = sibUrl(SIB_NAV_PATHS.reports);
+        });
+
+        // bfcache 등 구버전 HTML: 텍스트로 의무 보고 링크 보정
+        document.querySelectorAll('.sib-nav-link').forEach((link) => {
+          const label = link.textContent.replace(/\d+/g, '').trim();
+          if (label.startsWith('의무 보고')) {
+            link.href = sibUrl(SIB_NAV_PATHS.reports);
+          }
+        });
+      }
+
+      syncSibNavLinks();
+
       window.addEventListener('pageshow', (event) => {
-        if (event.persisted) window.location.reload();
+        syncSibNavLinks();
+
+        if (event.persisted) {
+          window.location.reload();
+          return;
+        }
+
+        const path = window.location.pathname;
+        const title = document.title;
+        if (path.includes('/reports') && !title.includes('의무 보고')) {
+          window.location.reload();
+        } else if (path.includes('/documents') && !title.includes('작전 명령')) {
+          window.location.reload();
+        }
       });
     </script>
   </body>

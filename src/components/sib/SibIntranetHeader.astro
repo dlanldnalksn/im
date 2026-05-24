@@ -7,12 +7,12 @@ const pathname = Astro.url.pathname;
 
 const nav = [
   { path: `${base}`, label: '대시보드', exact: true },
-  { path: `${base}documents/`, label: '작전 명령', badge: 2 },
-  { path: `${base}personnel/lee-chan-young/`, label: '신상·인사' },
-  { path: `${base}reports/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const },
-  { path: `${base}documents/`, label: '결재·신청' },
-  { path: `${base}documents/`, label: '규정·법령' },
-  { path: `${base}`, label: '공지·알림', hash: 'notices' },
+  { path: `${base}documents/`, label: '작전 명령', badge: 2, navKey: 'documents' },
+  { path: `${base}personnel/lee-chan-young/`, label: '신상·인사', navKey: 'personnel' },
+  { path: `${base}reports/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const, navKey: 'reports' },
+  { path: `${base}documents/`, label: '결재·신청', navKey: 'documents' },
+  { path: `${base}documents/`, label: '규정·법령', navKey: 'documents' },
+  { path: `${base}`, label: '공지·알림', hash: 'notices', navKey: 'dashboard' },
 ];
 
 function isActive(item: (typeof nav)[0]) {
@@ -89,7 +89,11 @@ const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-di
 <nav class="sib-nav" aria-label="특감국 메뉴">
   {
     nav.map((item) => (
-      <a href={navHref(item)} class:list={['sib-nav-link', isActive(item) && 'is-active']}>
+      <a
+        href={navHref(item)}
+        class:list={['sib-nav-link', isActive(item) && 'is-active']}
+        data-sib-nav={item.navKey}
+      >
         {item.label}
         {item.badge && (
           <span class:list={['sib-nav-badge', item.badgeClass === 'amber' && 'amber']}>{item.badge}</span>

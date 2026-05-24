@@ -135,10 +135,15 @@ const updated = '2026.05.24 14:22';
 
   <div class="sib-panel">
     <div class="sib-panel-head">
-      <span class="sib-panel-head-title">의무 보고·일정</span>
-      <a href={url(`${base}reports/`)} class="text-[11.5px] text-[#525252] font-semibold no-underline hover:underline">+ 새 보고</a>
+      <a href={url(`${base}reports/`)} class="sib-panel-head-title no-underline text-inherit hover:text-imc-danger" data-sib-link="reports">
+        의무 보고·일정
+      </a>
+      <div class="flex gap-3.5 items-center text-[11.5px]">
+        <span class="text-[#92400e] font-bold">기한 임박 1건</span>
+        <a href={url(`${base}reports/`)} class="text-[#525252] font-semibold no-underline hover:underline" data-sib-link="reports">전체보기</a>
+      </div>
     </div>
-    <a href={url(`${base}reports/`)} class="sib-report-row bg-[#fffbf3] hover:bg-[#fff8eb]">
+    <a href={url(`${base}reports/`)} class="sib-report-row bg-[#fffbf3] hover:bg-[#fff8eb]" data-sib-link="reports">
       <div class="flex items-center gap-2" style="margin-bottom:6px;">
         <span class="sib-tag amber">기한 임박</span>
         <span class="text-[11px] text-[#92400e] font-bold">D-1</span>
@@ -146,7 +151,7 @@ const updated = '2026.05.24 14:22';
       <p class="text-[13px] font-bold text-[#1a1a1a]" style="margin-bottom:4px;line-height:1.4;">월간 정기 진술서 (5월분)</p>
       <p class="sib-op-meta">기한 05.25 23:59 · 양식 <span class="sib-mono-inline">M-FORM-03</span></p>
     </a>
-    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]">
+    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]" data-sib-link="reports">
       <div class="flex items-center gap-2" style="margin-bottom:6px;">
         <span class="sib-tag gray">정기</span>
         <span class="text-[11px] font-semibold text-[#525252]">D-7</span>
@@ -154,7 +159,7 @@ const updated = '2026.05.24 14:22';
       <p class="text-[13px] font-semibold text-[#525252]" style="margin-bottom:4px;line-height:1.4;">분기 정기 검진 (2분기)</p>
       <p class="sib-op-meta text-[#888]">조정원 본원 · 예약 필요</p>
     </a>
-    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]">
+    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]" data-sib-link="reports">
       <div class="flex items-center gap-2" style="margin-bottom:6px;">
         <span class="sib-tag gray">정기</span>
         <span class="text-[11px] font-semibold text-[#525252]">D-12</span>
