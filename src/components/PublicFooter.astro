@@ -5,15 +5,18 @@ const year = new Date().getFullYear();
 
 <footer class="imc-footer">
   <div class="imc-footer__top">
-    <div>
-      <div class="flex items-center gap-2.5 mb-2">
+    <div class="max-w-[340px]">
+      <div class="flex items-center gap-3 mb-3.5">
         <div class="imc-footer-logo">異</div>
-        <span class="text-white text-[13.5px] font-bold tracking-tight">이능관리위원회</span>
+        <div>
+          <p class="text-white text-sm font-bold m-0">이능관리위원회</p>
+          <p class="text-[10px] text-[#888] font-serif mt-0.5 m-0">異能管理委員會</p>
+        </div>
       </div>
-      <p class="text-[11px] text-[#888] leading-relaxed m-0">
+      <p class="text-[11px] leading-relaxed m-0">
         (00000) 서울특별시 종로구 ○○로 ○○ (가상)<br />
         대표전화 1551-0000 · FAX 02-XXX-XXXX<br />
-        사업자등록번호 ○○○-○○-○○○○○ · 통신판매업신고번호 제 ○○○○-서울○○-○○○○○○ 호
+        사업자등록번호 ○○○-○○-○○○○○
       </p>
     </div>
 
@@ -55,8 +58,8 @@ const year = new Date().getFullYear();
       <span>이메일 무단수집 거부</span>
       <span>웹 접근성</span>
     </div>
-    <p class="m-0 text-[#666]">
-      COPYRIGHT © POWER MANAGEMENT COMMITTEE. {year}. ALL RIGHTS RESERVED.
+    <p class="m-0 font-mono text-[#666] tracking-wide">
+      © {year} POWER MANAGEMENT COMMITTEE · ALL RIGHTS RESERVED
     </p>
   </div>
 </footer>

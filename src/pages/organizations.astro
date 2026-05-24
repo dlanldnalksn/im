@@ -8,17 +8,23 @@ import { publicOrgs } from '../data/organizations-public';
     <div class="imc-section-title">
       <span>조직 소개</span>
     </div>
-    <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+    <div class="grid md:grid-cols-2 gap-4 mb-8">
       {
         publicOrgs.map((org) => (
-          <article class="imc-agency-card">
-            <div class="flex items-center justify-between mb-3.5">
-              <div class:list={['imc-agency-icon', org.iconBg, org.iconColor]}>{org.hanja}</div>
-              <span class="font-mono text-[10px] text-[#999] tracking-widest">{org.num}</span>
+          <article class="imc-agency-wide">
+            <div class:list={['imc-agency-wide__icon', org.iconBg, org.iconColor]}>{org.hanja}</div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2.5 mb-2">
+                <span class="font-mono text-[10px] text-[#888] tracking-widest">{org.num}</span>
+                <span class="text-[11px] text-imc-muted">{org.codeEn}</span>
+              </div>
+              <h2 class="text-lg font-extrabold mb-1">
+                {org.name}
+                <span class="text-xs text-[#888] font-serif ml-1">{org.nameHan}</span>
+              </h2>
+              <p class="text-[12.5px] text-imc-muted leading-relaxed m-0">{org.desc}</p>
+              <p class="text-[11px] text-imc-muted mt-3 m-0">{org.location}</p>
             </div>
-            <h2 class="text-[14.5px] font-bold mb-1">{org.name}</h2>
-            <p class="text-[10.5px] text-[#888] font-serif mb-2">{org.nameHan}</p>
-            <p class="text-[11.5px] text-[#555] leading-relaxed m-0">{org.desc}</p>
           </article>
         ))
       }

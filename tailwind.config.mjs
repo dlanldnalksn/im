@@ -5,18 +5,19 @@ export default {
     extend: {
       colors: {
         imc: {
-          primary: '#0a3d62',
-          'primary-light': '#1e4d6e',
-          'primary-muted': '#2a5a7a',
+          primary: '#4a3a7a',
+          'primary-light': '#5a4a8a',
+          navy: '#1a2b4c',
+          blue: '#0052a4',
           accent: '#7fb8d9',
           ink: '#1a1a1a',
-          muted: '#666666',
+          muted: '#525252',
           border: '#e5e7eb',
-          cream: '#fafaf7',
+          cream: '#f9f6fc',
           notice: '#fff8e7',
           'notice-border': '#e8d9a3',
           danger: '#8b2a2a',
-          link: '#3478f6',
+          link: '#0052a4',
         },
       },
       fontFamily: {
