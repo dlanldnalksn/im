@@ -1,0 +1,103 @@
+---
+import { url, pathnameEquals, pathnameStartsWith } from '../../lib/url';
+import { leeChanYoung } from '../../data/personnel/lee-chan-young';
+
+const base = 'intranet/sib/';
+const pathname = Astro.url.pathname;
+
+const nav = [
+  { path: `${base}`, label: '대시보드', exact: true },
+  { path: `${base}documents/`, label: '작전 명령', badge: 2 },
+  { path: `${base}personnel/lee-chan-young/`, label: '신상·인사' },
+  { path: `${base}documents/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const },
+  { path: `${base}documents/`, label: '결재·신청' },
+  { path: `${base}documents/`, label: '규정·법령' },
+  { path: `${base}`, label: '공지·알림', hash: 'notices' },
+];
+
+function isActive(item: (typeof nav)[0]) {
+  if (item.label === '신상·인사') return pathnameStartsWith(pathname, `${base}personnel/`);
+  if (item.label === '대시보드' && item.exact) return pathnameEquals(pathname, item.path);
+  if (item.label === '공지·알림') return pathnameEquals(pathname, item.path) && Astro.url.hash === '#notices';
+  if (item.path.includes('documents')) return pathnameStartsWith(pathname, `${base}documents/`);
+  return false;
+}
+
+function navHref(item: (typeof nav)[0]) {
+  return item.hash ? url(`${item.path}#${item.hash}`) : url(item.path);
+}
+
+const now = new Date();
+const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+---
+
+<div class="sib-secure-bar">
+  <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+    <span class="text-[#e88080] font-bold">대외비 · 인가자 전용</span>
+    <span class="text-[#444]">|</span>
+    <span class="text-[#aaa]">CLASSIFIED · INTERNAL USE ONLY</span>
+    <span class="text-[#444] hidden sm:inline">|</span>
+    <span class="hidden sm:inline">무단 접근 시 형사처벌 대상</span>
+  </div>
+  <div class="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+    <span class="flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 bg-[#22a06b] rounded-full"></span>
+      보안 접속
+    </span>
+    <span class="text-[#444]">|</span>
+    <span>접속 시간 {timeStr}</span>
+  </div>
+</div>
+
+<div class="sib-main-header">
+  <div class="flex items-center gap-3.5">
+    <a href={url(`${base}`)} class="flex items-center gap-3.5 no-underline text-inherit">
+      <div class="sib-logo-mark">監</div>
+      <div>
+        <div class="text-[15px] font-extrabold tracking-tight leading-tight">특수감찰국 인트라넷</div>
+        <div class="text-[10px] text-imc-muted font-mono font-semibold tracking-widest mt-0.5">
+          SPECIAL INSPECTION BUREAU · DIV-00
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3.5">
+    <form class="sib-search hidden md:flex" role="search" action={url(`${base}personnel/`)} method="get">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <input type="search" name="q" placeholder="사안 / 인원 검색" aria-label="사안 인원 검색" />
+    </form>
+
+    <div class="flex items-center gap-2.5 pl-3.5 border-l border-[#e5e7eb]">
+      <div class="text-right hidden sm:block">
+        <div class="text-xs font-bold">차출요원 {leeChanYoung.name}</div>
+        <div class="text-[10px] text-imc-muted font-mono font-semibold mt-0.5">
+          {leeChanYoung.employeeId} · 2처
+        </div>
+      </div>
+      <div class="w-9 h-9 bg-[#f5f6f8] border border-[#e0e2e7] rounded-full flex items-center justify-center text-xs text-imc-muted font-bold font-serif">
+        {leeChanYoung.name.slice(0, 1)}
+      </div>
+    </div>
+
+    <a href={url('intranet/logout/')} class="text-[11.5px] text-imc-muted pl-2.5 border-l border-[#e5e7eb] no-underline hover:text-imc-ink font-medium">
+      로그아웃
+    </a>
+  </div>
+</div>
+
+<nav class="sib-nav" aria-label="특감국 메뉴">
+  {
+    nav.map((item) => (
+      <a href={navHref(item)} class:list={['sib-nav-link', isActive(item) && 'is-active']}>
+        {item.label}
+        {item.badge && (
+          <span class:list={['sib-nav-badge', item.badgeClass === 'amber' && 'amber']}>{item.badge}</span>
+        )}
+      </a>
+    ))
+  }
+</nav>

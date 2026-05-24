@@ -1,0 +1,211 @@
+---
+import { url } from '../../lib/url';
+import { leeChanYoung } from '../../data/personnel/lee-chan-young';
+
+const base = `intranet/sib/`;
+const updated = '2026.05.24 14:22';
+---
+
+<div class="flex flex-wrap justify-between items-end gap-3 mb-[18px]">
+  <h1 class="text-[22px] font-extrabold tracking-tight m-0">차출요원 통합 현황</h1>
+  <div class="flex flex-wrap gap-3.5 items-center text-[11.5px] text-imc-muted font-medium">
+    <span>최근 갱신 {updated}</span>
+    <span class="flex items-center gap-1.5 text-[#22a06b] font-semibold">
+      <span class="w-1.5 h-1.5 bg-[#22a06b] rounded-full"></span>
+      접속 중
+    </span>
+  </div>
+</div>
+
+<div class="sib-alert">
+  <div class="flex flex-wrap items-center gap-3.5">
+    <span class="text-[11px] text-imc-danger font-bold bg-white border border-[#f5d8d0] px-2 py-0.5 rounded-sm">긴급 · D-3</span>
+    <span class="text-[13px] font-medium">신천 사건 15주기 추모일 (05.27) — 차출요원 전원 비상 대기, 출입 제한 강화 조치</span>
+  </div>
+  <a href={url('notices/')} class="text-[11.5px] text-imc-danger font-bold no-underline hover:underline">자세히 →</a>
+</div>
+
+<div class="sib-stat-grid">
+  <div class="sib-stat-card">
+    <p class="text-[11.5px] text-[#525252] font-semibold mb-3.5">위험도 등급</p>
+    <div class="flex items-baseline gap-2 mb-4">
+      <p class="sib-stat-value m-0">二級</p>
+      <span class="text-xs text-imc-muted font-semibold">통제 대상</span>
+    </div>
+    <div class="flex flex-col gap-1.5 pt-3 border-t border-[#f0f0f2] text-[11px]">
+      <div class="flex justify-between"><span class="text-[#888]">감시 수준</span><span class="font-semibold">상시 추적</span></div>
+      <div class="flex justify-between"><span class="text-[#888]">이동 제한</span><span class="font-semibold">관외 허가제</span></div>
+    </div>
+  </div>
+
+  <div class="sib-stat-card">
+    <p class="text-[11.5px] text-[#525252] font-semibold mb-3.5">작전 등급</p>
+    <div class="flex items-baseline gap-2 mb-4">
+      <p class="sib-stat-value m-0">乙</p>
+      <span class="text-xs text-imc-muted font-semibold">중위험·일반 작전</span>
+    </div>
+    <div class="flex flex-col gap-1.5 pt-3 border-t border-[#f0f0f2] text-[11px]">
+      <div class="flex justify-between"><span class="text-[#888]">능력 등급</span><span class="font-semibold">{leeChanYoung.registry.abilityGrade}</span></div>
+      <div class="flex justify-between"><span class="text-[#888]">매칭 우선순위</span><span class="font-semibold">일반</span></div>
+    </div>
+  </div>
+
+  <div class="sib-stat-card">
+    <p class="text-[11.5px] text-[#525252] font-semibold mb-3.5">봉인 상태</p>
+    <div class="flex items-baseline gap-2 mb-4">
+      <p class="sib-stat-value m-0">未實施</p>
+      <span class="text-xs text-imc-muted font-semibold">차단제 처방 중</span>
+    </div>
+    <div class="flex flex-col gap-1.5 pt-3 border-t border-[#f0f0f2] text-[11px]">
+      <div class="flex justify-between"><span class="text-[#888]">처방 약물</span><span class="font-semibold">차단제 정기</span></div>
+      <div class="flex justify-between"><span class="text-[#888]">최종 갱신</span><span class="font-semibold">2026.05.18</span></div>
+    </div>
+  </div>
+
+  <div class="sib-stat-card">
+    <p class="text-[11.5px] text-[#525252] font-semibold mb-3.5">매칭·동기화</p>
+    <div class="flex items-baseline gap-2 mb-4">
+      <p class="sib-stat-value m-0">未매칭</p>
+      <span class="text-xs text-imc-danger font-bold">매칭 대기 중</span>
+    </div>
+    <div class="sib-match-steps">
+      <div class="sib-match-step">
+        <div class="sib-match-dot bg-imc-danger text-white">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <span class="text-[8.5px] font-semibold text-[#525252]">접수</span>
+      </div>
+      <div class="sib-match-line bg-imc-danger"></div>
+      <div class="sib-match-step">
+        <div class="sib-match-dot bg-imc-danger text-white border border-imc-danger">2</div>
+        <span class="text-[8.5px] font-bold text-imc-danger">탐색</span>
+      </div>
+      <div class="sib-match-line bg-[#e5e7eb]"></div>
+      <div class="sib-match-step">
+        <div class="sib-match-dot bg-[#f5f6f8] text-[#888] border border-[#e5e7eb]">3</div>
+        <span class="text-[8.5px] font-semibold text-[#888]">평가</span>
+      </div>
+      <div class="sib-match-line bg-[#e5e7eb]"></div>
+      <div class="sib-match-step">
+        <div class="sib-match-dot bg-[#f5f6f8] text-[#888] border border-[#e5e7eb]">4</div>
+        <span class="text-[8.5px] font-semibold text-[#888]">확정</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid lg:grid-cols-[1.6fr_1fr] gap-3.5 mb-[18px]">
+  <div class="sib-panel">
+    <div class="sib-panel-head">
+      <span class="text-sm font-extrabold">작전 명령서</span>
+      <div class="flex gap-3.5 items-center text-[11.5px]">
+        <span class="text-imc-danger font-bold">미열람 2건</span>
+        <a href={url(`${base}documents/`)} class="text-[#525252] font-semibold no-underline hover:underline">전체보기 +</a>
+      </div>
+    </div>
+    <a href={url(`${base}documents/`)} class="sib-op-row priority">
+      <div class="sib-op-bar bg-imc-danger"></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+          <span class="sib-tag red">최우선</span>
+          <span class="sib-tag outline font-mono">OP-2026-0147</span>
+          <span class="text-[11px] text-imc-muted">갑급 작전 지원</span>
+        </div>
+        <p class="text-[13.5px] font-bold leading-snug mb-1">[극비] 수도권 □□구역 미등재자 거점 진압 작전 — 차출 명령</p>
+        <p class="text-[11px] text-imc-muted m-0">집결 · 05.25 04:00 / 본청 B3 · 발령 2처 작전과</p>
+      </div>
+      <span class="text-[#525252] shrink-0">→</span>
+    </a>
+    <a href={url(`${base}documents/`)} class="sib-op-row urgent">
+      <div class="sib-op-bar bg-[#e8b870]"></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+          <span class="sib-tag amber">긴급</span>
+          <span class="sib-tag outline font-mono">OP-2026-0132</span>
+          <span class="text-[11px] text-imc-muted">을급 작전</span>
+        </div>
+        <p class="text-[13.5px] font-bold leading-snug mb-1">[대외비] △△지역 신흥종교 잔당 추적 — 합동 작전</p>
+        <p class="text-[11px] text-imc-muted m-0">집결 · 05.28 09:00 / 지역분실 · 발령 2처</p>
+      </div>
+      <span class="text-[#525252] shrink-0">→</span>
+    </a>
+    <a href={url(`${base}documents/`)} class="sib-op-row">
+      <div class="sib-op-bar bg-[#e0e2e7]"></div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1.5">
+          <span class="sib-tag gray">완료</span>
+          <span class="sib-tag outline font-mono text-[#888]">OP-2026-0098</span>
+        </div>
+        <p class="text-[13.5px] font-semibold text-[#525252] leading-snug mb-1">[대외비] 보호처분소 외곽 경계 임시 차출</p>
+        <p class="text-[11px] text-[#888] m-0">완료 · 05.20 · 보고서 제출 완료</p>
+      </div>
+      <span class="text-[#aaa] shrink-0">→</span>
+    </a>
+  </div>
+
+  <div class="sib-panel">
+    <div class="sib-panel-head">
+      <span class="text-sm font-extrabold">의무 보고·일정</span>
+      <a href={url(`${base}documents/`)} class="text-[11.5px] text-[#525252] font-semibold no-underline hover:underline">+ 새 보고</a>
+    </div>
+    <a href={url(`${base}documents/`)} class="block px-[22px] py-3.5 border-b border-[#f0f0f2] bg-[#fffbf3] no-underline text-inherit hover:bg-[#fff8eb]">
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="sib-tag amber">기한 임박</span>
+        <span class="text-[11px] text-[#92400e] font-bold">D-1</span>
+      </div>
+      <p class="text-[13px] font-bold mb-1">월간 정기 진술서 (5월분)</p>
+      <p class="text-[11px] text-imc-muted m-0">기한 05.25 23:59 · 양식 <span class="font-mono">M-FORM-03</span></p>
+    </a>
+    <a href={url(`${base}documents/`)} class="block px-[22px] py-3.5 border-b border-[#f0f0f2] no-underline text-inherit hover:bg-[#fafafa]">
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="sib-tag gray">정기</span>
+        <span class="text-[11px] font-semibold text-[#525252]">D-7</span>
+      </div>
+      <p class="text-[13px] font-semibold text-[#525252] mb-1">분기 정기 검진 (2분기)</p>
+      <p class="text-[11px] text-[#888] m-0">조정원 본원 · 예약 필요</p>
+    </a>
+    <a href={url(`${base}documents/`)} class="block px-[22px] py-3.5 no-underline text-inherit hover:bg-[#fafafa]">
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="sib-tag gray">정기</span>
+        <span class="text-[11px] font-semibold text-[#525252]">D-12</span>
+      </div>
+      <p class="text-[13px] font-semibold text-[#525252] mb-1">차단제 처방 갱신</p>
+      <p class="text-[11px] text-[#888] m-0">조정원 의료센터 · 자동 갱신 가능</p>
+    </a>
+  </div>
+</div>
+
+<div class="sib-panel" id="notices">
+  <div class="sib-panel-head">
+    <span class="text-sm font-extrabold">내부 공지</span>
+    <a href={url(`${base}documents/`)} class="text-[11.5px] text-[#525252] font-semibold no-underline hover:underline">전체보기 +</a>
+  </div>
+  <a href={url(`${base}documents/`)} class="flex px-[22px] py-3 border-b border-[#f0f0f2] justify-between items-center gap-3 no-underline text-inherit hover:bg-[#fafafa]">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <span class="sib-tag red shrink-0">긴급</span>
+      <span class="text-[12.5px] font-semibold truncate">전 차출요원 비상 대기 명령 (05.25 00:00 — 05.28 24:00)</span>
+    </div>
+    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.23</span>
+  </a>
+  <a href={url(`${base}documents/`)} class="flex px-[22px] py-3 border-b border-[#f0f0f2] justify-between items-center gap-3 no-underline text-inherit hover:bg-[#fafafa]">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <span class="sib-tag gray shrink-0">공지</span>
+      <span class="text-[12.5px] text-[#525252] truncate">차출요원 숙소 출입 게이트 보안 시스템 업데이트 안내</span>
+    </div>
+    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.22</span>
+  </a>
+  <a href={url(`${base}documents/`)} class="flex px-[22px] py-3 border-b border-[#f0f0f2] justify-between items-center gap-3 no-underline text-inherit hover:bg-[#fafafa]">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <span class="sib-tag gray shrink-0">공지</span>
+      <span class="text-[12.5px] text-[#525252] truncate">2026년도 동기화 매칭 우선순위 산정 기준 개정 안내</span>
+    </div>
+    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.18</span>
+  </a>
+  <a href={url(`${base}documents/`)} class="flex px-[22px] py-3 justify-between items-center gap-3 no-underline text-inherit hover:bg-[#fafafa]">
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+      <span class="sib-tag gray shrink-0">행정</span>
+      <span class="text-[12.5px] text-[#525252] truncate">분기 정기 진료 일정 배정 안내 (2분기)</span>
+    </div>
+    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.15</span>
+  </a>
+</div>

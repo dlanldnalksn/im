@@ -1,5 +1,7 @@
 ---
 import IntranetLayout from '../../../layouts/IntranetLayout.astro';
+import SibIntranetLayout from '../../../layouts/SibIntranetLayout.astro';
+import SibDocuments from '../../../components/sib/SibDocuments.astro';
 import { intranetPortals, getPortalById } from '../../../data/intranet-portals';
 import { getDocumentsForPortal } from '../../../lib/intranet-content';
 import { url } from '../../../lib/url';
@@ -15,56 +17,56 @@ if (!portal) {
   return Astro.redirect(url('intranet/login/'));
 }
 
+const isSib = portal.id === 'sib';
 const documents = getDocumentsForPortal(portal.id);
 ---
 
-<IntranetLayout title="내부 자료" portal={portal}>
-  <h1 class="text-2xl font-bold mb-2">내부 자료실</h1>
-  <p class="text-sm text-slate-600 mb-6">{portal.name} · {portal.clearanceLabel}</p>
+{
+  isSib ? (
+    <SibIntranetLayout title="작전·행정 자료">
+      <SibDocuments />
+    </SibIntranetLayout>
+  ) : (
+    <IntranetLayout title="내부 자료" portal={portal}>
+      <h1 class="text-2xl font-bold mb-2">내부 자료실</h1>
+      <p class="text-sm text-slate-600 mb-6">{portal.name} · {portal.clearanceLabel}</p>
 
-  {
-    documents.length === 0 ? (
-      <p class="text-sm text-imc-muted card">이 포털에 등록된 열람 자료가 없습니다.</p>
-    ) : (
-      <ul class="space-y-3">
-        {
-          documents.map((doc) => (
-            <li class:list={['card flex justify-between items-center gap-4', !doc.accessible && 'opacity-75']}>
-              <div>
-                <p class="font-semibold">{doc.title}</p>
-                <p class="text-xs text-slate-500">{doc.meta}</p>
-              </div>
-              {
-                doc.accessible ? (
-                  <span class="text-xs px-2 py-1 rounded shrink-0" style={`background: ${portal.accent}15; color: ${portal.accent}`}>
-                    열람 가능
-                  </span>
-                ) : (
-                  <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded shrink-0">권한 없음</span>
-                )
-              }
-            </li>
-          ))
-        }
-      </ul>
-    )
-  }
+      {
+        documents.length === 0 ? (
+          <p class="text-sm text-imc-muted card">이 포털에 등록된 열람 자료가 없습니다.</p>
+        ) : (
+          <ul class="space-y-3">
+            {
+              documents.map((doc) => (
+                <li class:list={['card flex justify-between items-center gap-4', !doc.accessible && 'opacity-75']}>
+                  <div>
+                    <p class="font-semibold">{doc.title}</p>
+                    <p class="text-xs text-slate-500">{doc.meta}</p>
+                  </div>
+                  {
+                    doc.accessible ? (
+                      <span class="text-xs px-2 py-1 rounded shrink-0" style={`background: ${portal.accent}15; color: ${portal.accent}`}>
+                        열람 가능
+                      </span>
+                    ) : (
+                      <span class="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded shrink-0">권한 없음</span>
+                    )
+                  }
+                </li>
+              ))
+            }
+          </ul>
+        )
+      }
 
-  {
-    portal.id === 'sib' && (
-      <div class="prose-gov card mt-8 max-w-3xl border-imc-alert/20">
-        <h2>차출·집행 자료 (요약)</h2>
-        <p>특감국 내부망 전용. 차출 요원 배치·검거 SOP·수용처 현황 등은 본 자료실에서만 열람됩니다.</p>
-      </div>
-    )
-  }
-
-  {
-    portal.id === 'research' && (
-      <div class="prose-gov card mt-8 max-w-3xl">
-        <h2>연구 데이터 (요약)</h2>
-        <p>실험 원본·Σ 프로젝트 세부는 연구원 내부망 2급 이상. 타 기관 접근 차단.</p>
-      </div>
-    )
-  }
-</IntranetLayout>
+      {
+        portal.id === 'research' && (
+          <div class="prose-gov card mt-8 max-w-3xl">
+            <h2>연구 데이터 (요약)</h2>
+            <p>실험 원본·Σ 프로젝트 세부는 연구원 내부망 2급 이상. 타 기관 접근 차단.</p>
+          </div>
+        )
+      }
+    </IntranetLayout>
+  )
+}

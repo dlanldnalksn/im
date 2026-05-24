@@ -1,0 +1,120 @@
+@reference './global.css';
+
+/* 특수감찰국 차출요원 인트라넷 v9 */
+.sib-shell {
+  @apply mx-auto w-full max-w-site min-h-screen flex flex-col bg-[#f5f6f8];
+  font-family: Pretendard, -apple-system, sans-serif;
+}
+
+.sib-secure-bar {
+  @apply bg-[#1a1a1a] text-[#888] px-6 lg:px-7 py-1.5 text-[11px] flex flex-wrap justify-between items-center gap-2;
+}
+
+.sib-main-header {
+  @apply bg-white border-b border-[#e5e7eb] px-6 lg:px-7 py-4 flex flex-wrap justify-between items-center gap-4;
+}
+
+.sib-logo-mark {
+  @apply w-10 h-10 bg-white border-2 border-imc-danger text-imc-danger flex items-center justify-center font-serif text-lg font-bold shrink-0;
+}
+
+.sib-search {
+  @apply bg-[#f5f6f8] border border-[#e0e2e7] rounded px-3 py-1.5 flex items-center gap-2 w-[220px];
+}
+
+.sib-search input {
+  @apply border-0 outline-0 bg-transparent flex-1 text-xs text-[#888] min-w-0;
+}
+
+.sib-nav {
+  @apply bg-white border-b border-[#e5e7eb] px-6 lg:px-7 flex flex-wrap items-center gap-9;
+}
+
+.sib-nav-link {
+  @apply py-3.5 text-[13.5px] font-semibold text-[#525252] no-underline border-b-[2.5px] border-transparent -mb-px flex items-center gap-2 hover:text-imc-danger transition-colors;
+}
+
+.sib-nav-link.is-active {
+  @apply text-imc-danger border-imc-danger font-bold;
+}
+
+.sib-nav-badge {
+  @apply bg-imc-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none;
+}
+
+.sib-nav-badge.amber {
+  @apply bg-[#fef3c7] text-[#92400e];
+}
+
+.sib-main {
+  @apply flex-1 px-6 lg:px-7 py-6;
+}
+
+.sib-footer {
+  @apply bg-[#1a1a1a] text-[#888] px-6 lg:px-7 py-3.5 text-[10.5px] flex flex-wrap justify-between items-center gap-2;
+}
+
+.sib-alert {
+  @apply bg-[#fff8f5] border border-[#f5d8d0] border-l-[3px] border-l-imc-danger px-[18px] py-3 mb-[18px] flex flex-wrap justify-between items-center gap-3 rounded-sm;
+}
+
+.sib-stat-grid {
+  @apply grid sm:grid-cols-2 xl:grid-cols-4 gap-3.5 mb-[18px];
+}
+
+.sib-stat-card {
+  @apply bg-white border border-[#e5e7eb] rounded-md p-5 lg:p-[22px];
+}
+
+.sib-stat-value {
+  @apply text-[30px] font-extrabold tracking-tight leading-none font-serif text-[#1a1a1a];
+}
+
+.sib-panel {
+  @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden;
+}
+
+.sib-panel-head {
+  @apply px-[22px] py-4 border-b border-[#e5e7eb] flex flex-wrap justify-between items-center gap-2 bg-[#fafbfc];
+}
+
+.sib-op-row {
+  @apply px-[22px] py-3.5 border-b border-[#f0f0f2] flex gap-3.5 items-start no-underline text-inherit hover:bg-[#fafafa] transition-colors;
+}
+
+.sib-op-row.priority {
+  @apply bg-[#fff8f5];
+}
+
+.sib-op-row.urgent {
+  @apply bg-[#fffbf3];
+}
+
+.sib-op-bar {
+  @apply w-[3px] self-stretch shrink-0;
+}
+
+.sib-tag {
+  @apply text-[10px] font-bold px-[7px] py-0.5 rounded-sm tracking-tight;
+}
+
+.sib-tag.red { @apply bg-imc-danger text-white; }
+.sib-tag.amber { @apply bg-[#fef3c7] text-[#92400e]; }
+.sib-tag.gray { @apply bg-[#f5f6f8] border border-[#e0e2e7] text-[#666]; }
+.sib-tag.outline { @apply bg-white border border-[#e5e7eb] text-[#525252] font-mono; }
+
+.sib-match-steps {
+  @apply flex gap-1.5 items-center pt-3 border-t border-[#f0f0f2];
+}
+
+.sib-match-step {
+  @apply flex flex-col items-center gap-1;
+}
+
+.sib-match-dot {
+  @apply w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-bold;
+}
+
+.sib-match-line {
+  @apply flex-1 h-px -mt-3.5;
+}

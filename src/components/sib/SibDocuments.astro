@@ -1,0 +1,85 @@
+---
+import { url } from '../../lib/url';
+import { getDocumentsForPortal } from '../../lib/intranet-content';
+
+const documents = getDocumentsForPortal('sib');
+---
+
+<h1 class="text-[22px] font-extrabold tracking-tight mb-2">작전·행정 자료</h1>
+<p class="text-[13px] text-imc-muted mb-6">특수감찰국 · 대외비 · 차출요원 열람 구역</p>
+
+<div class="grid lg:grid-cols-2 gap-3.5 mb-[18px]">
+  <section class="sib-panel">
+    <div class="sib-panel-head">
+      <span class="text-sm font-extrabold">작전 명령서</span>
+      <span class="text-[11.5px] text-imc-danger font-bold">미열람 2건</span>
+    </div>
+    <div class="px-[22px] py-4 border-b border-[#f0f0f2]">
+      <p class="text-[13px] font-bold mb-1">[극비] OP-2026-0147 · 수도권 □□구역 진압</p>
+      <p class="text-[11px] text-imc-muted m-0">집결 05.25 04:00 · 2처 작전과</p>
+    </div>
+    <div class="px-[22px] py-4 border-b border-[#f0f0f2] bg-[#fffbf3]">
+      <p class="text-[13px] font-bold mb-1">[대외비] OP-2026-0132 · △△지역 잔당 추적</p>
+      <p class="text-[11px] text-imc-muted m-0">집결 05.28 09:00 · 지역분실</p>
+    </div>
+    <div class="px-[22px] py-4">
+      <p class="text-[13px] font-semibold text-[#525252] mb-1">[대외비] OP-2026-0098 · 보호처분소 경계 (완료)</p>
+      <p class="text-[11px] text-[#888] m-0">보고서 제출 완료 · 05.20</p>
+    </div>
+  </section>
+
+  <section class="sib-panel">
+    <div class="sib-panel-head">
+      <span class="text-sm font-extrabold">의무 보고</span>
+      <span class="sib-nav-badge amber">1</span>
+    </div>
+    <div class="px-[22px] py-4 border-b border-[#f0f0f2] bg-[#fffbf3]">
+      <p class="text-[13px] font-bold mb-1">월간 정기 진술서 (5월분)</p>
+      <p class="text-[11px] text-[#92400e] font-bold m-0">기한 D-1 · 양식 M-FORM-03</p>
+    </div>
+    <div class="px-[22px] py-4 border-b border-[#f0f0f2]">
+      <p class="text-[13px] font-semibold text-[#525252] mb-1">분기 정기 검진 (2분기)</p>
+      <p class="text-[11px] text-[#888] m-0">조정원 본원 · D-7</p>
+    </div>
+    <div class="px-[22px] py-4">
+      <p class="text-[13px] font-semibold text-[#525252] mb-1">차단제 처방 갱신</p>
+      <p class="text-[11px] text-[#888] m-0">조정원 의료센터 · D-12</p>
+    </div>
+  </section>
+</div>
+
+<section class="sib-panel">
+  <div class="sib-panel-head">
+    <span class="text-sm font-extrabold">내부 자료실</span>
+    <span class="text-[11.5px] text-imc-muted">결재·규정·법령</span>
+  </div>
+  {
+    documents.length === 0 ? (
+      <p class="px-[22px] py-6 text-sm text-imc-muted">등록된 열람 자료가 없습니다.</p>
+    ) : (
+      <ul>
+        {
+          documents.map((doc) => (
+            <li class:list={['flex px-[22px] py-3.5 border-b border-[#f0f0f2] justify-between items-center gap-4 last:border-0', !doc.accessible && 'opacity-75']}>
+              <div>
+                <p class="text-[13px] font-semibold">{doc.title}</p>
+                <p class="text-[11px] text-imc-muted mt-0.5">{doc.meta}</p>
+              </div>
+              {
+                doc.accessible ? (
+                  <span class="sib-tag gray shrink-0">열람 가능</span>
+                ) : (
+                  <span class="sib-tag gray shrink-0 text-[#888]">권한 없음</span>
+                )
+              }
+            </li>
+          ))
+        }
+      </ul>
+    )
+  }
+</section>
+
+<p class="text-[11px] text-imc-muted mt-4">
+  차출·집행 SOP·수용처 현황 등은 본 자료실에서만 열람됩니다. 무단 반출 시 형사처벌 대상.
+</p>

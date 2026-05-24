@@ -1,5 +1,6 @@
 ---
 import IntranetLayout from '../../../../layouts/IntranetLayout.astro';
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
 import { intranetPortals, getPortalById } from '../../../../data/intranet-portals';
 import { allPersonnel, getPersonnelById } from '../../../../data/personnel';
 import { canViewPersonnel } from '../../../../lib/intranet-content';
@@ -21,13 +22,16 @@ const { portal: portalId, id } = Astro.params;
 const portal = getPortalById(portalId!);
 const person = getPersonnelById(id!);
 const base = `intranet/${portalId}/`;
+const isSib = portal?.id === 'sib';
 
 if (!portal || !person || !canViewPersonnel(person, portal.id)) {
   return Astro.redirect(url(`${base}personnel/`));
 }
+
+const Layout = isSib ? SibIntranetLayout : IntranetLayout;
 ---
 
-<IntranetLayout title={person.name} portal={portal}>
+<Layout title={person.name} portal={portal}>
   <nav class="text-sm text-slate-500 mb-4">
     <a href={url(`${base}personnel/`)} class="hover:text-imc-accent">인사 조회</a>
     <span class="mx-2">/</span>
@@ -167,4 +171,4 @@ if (!portal || !person || !canViewPersonnel(person, portal.id)) {
       });
     });
   </script>
-</IntranetLayout>
+</Layout>
