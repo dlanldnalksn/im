@@ -1,50 +1,17 @@
 ---
-import IntranetLayout from '../../layouts/IntranetLayout.astro';
-import { internalNotices } from '../../data/notices';
-import { allPersonnel } from '../../data/personnel';
 import { url } from '../../lib/url';
 ---
 
-<IntranetLayout title="대시보드">
-  <p class="font-mono text-[10px] text-imc-muted tracking-widest mb-1">DASHBOARD</p>
-  <h1 class="text-2xl font-extrabold tracking-tight mb-8">업무 대시보드</h1>
-
-  <div class="grid md:grid-cols-3 gap-4 mb-8">
-    <div class="border border-imc-border p-5 bg-[#f8f9fb]">
-      <p class="text-xs text-imc-muted mb-1">등록 인사 카드</p>
-      <p class="text-3xl font-extrabold text-imc-primary">{allPersonnel.length}</p>
-    </div>
-    <div class="border border-imc-border p-5 bg-[#f8f9fb]">
-      <p class="text-xs text-imc-muted mb-1">내부 공지</p>
-      <p class="text-3xl font-extrabold text-imc-primary">{internalNotices.length}</p>
-    </div>
-    <div class="border border-imc-border p-5 bg-[#f8f9fb]">
-      <p class="text-xs text-imc-muted mb-1">접속 등급</p>
-      <p class="text-lg font-bold">일반 직원</p>
-    </div>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-6">
-    <section class="border border-imc-border p-5">
-      <h2 class="font-bold mb-4 pb-2 border-b border-imc-border">빠른 링크</h2>
-      <ul class="space-y-2 text-sm">
-        <li><a href={url('intranet/personnel/')} class="text-imc-primary font-semibold hover:underline">인사 통합 조회 →</a></li>
-        <li><a href={url('intranet/organizations/')} class="text-imc-primary font-semibold hover:underline">전체 조직도 →</a></li>
-        <li><a href={url('intranet/documents/')} class="text-imc-primary font-semibold hover:underline">내부 자료실 →</a></li>
-      </ul>
-    </section>
-    <section class="border border-imc-border p-5">
-      <h2 class="font-bold mb-4 pb-2 border-b border-imc-border">내부 공지</h2>
-      <ul class="space-y-3 text-sm">
-        {
-          internalNotices.map((n) => (
-            <li class="border-b border-[#f0f1f3] pb-2 last:border-0">
-              <span class="font-mono text-[11px] text-imc-muted">{n.date.replace(/-/g, '.')}</span>
-              <p class="font-medium mt-0.5">{n.title}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-  </div>
-</IntranetLayout>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content={`0;url=${url('intranet/login/')}`} />
+    <title>내부망</title>
+  </head>
+  <body>
+    <script define:vars={{ loginUrl: url('intranet/login/') }}>
+      window.location.replace(loginUrl);
+    </script>
+  </body>
+</html>

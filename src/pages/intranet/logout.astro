@@ -12,6 +12,7 @@ const loginUrl = url('intranet/login/');
   <body>
     <script define:vars={{ loginUrl }}>
       sessionStorage.removeItem('imc_intranet_auth');
+      sessionStorage.removeItem('imc_intranet_portal');
       window.location.replace(loginUrl);
     </script>
   </body>

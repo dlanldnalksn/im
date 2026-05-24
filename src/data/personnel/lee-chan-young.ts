@@ -87,6 +87,7 @@ export const leeChanYoung: PersonnelRecord = {
     narrativeGuide:
       '지문 금지: 짐승·야수·맹수·늑대·animalistic·feral·beast·predator·prey·사냥감·포식자·으르렁·송곳니(어금니 제외)·발톱(손톱 제외)·본능·야성. 신체 반응·구체 행동·미세 표정으로 대체.',
   },
+  portalId: 'sib',
   tags: ['차출요원', '2처', '능력자', '갑급'],
   clearanceRequired: 2,
 };

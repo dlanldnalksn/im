@@ -1,23 +1,36 @@
 ---
 import { url, pathnameEquals, pathnameStartsWith } from '../lib/url';
+import type { IntranetPortal } from '../data/intranet-portals';
+
+interface Props {
+  portal: IntranetPortal;
+}
+
+const { portal } = Astro.props;
+const base = `intranet/${portal.id}/`;
 
 const nav = [
-  { path: 'intranet/', label: '대시보드', exact: true },
-  { path: 'intranet/organizations/', label: '조직도' },
-  { path: 'intranet/personnel/', label: '인사 조회' },
-  { path: 'intranet/documents/', label: '내부 자료' },
+  { path: `${base}`, label: '대시보드', exact: true },
+  { path: `${base}organizations/`, label: '조직도' },
+  { path: `${base}personnel/`, label: '인사 조회' },
+  { path: `${base}documents/`, label: '내부 자료' },
 ];
+
 const pathname = Astro.url.pathname;
 ---
 
 <header>
-  <div class="bg-imc-danger text-white text-center text-[11px] py-1.5 font-semibold tracking-wide">
-    직원 전용 내부망 · 무단 접근·유출 금지 · 접속 기록 보관
+  <div
+    class="text-white text-center text-[11px] py-1.5 font-semibold tracking-wide"
+    style={`background-color: ${portal.accent}`}
+  >
+    {portal.name} 내부망 · {portal.clearanceLabel} · 무단 접근·유출 금지
   </div>
   <div class="bg-[#1a1a1a] text-white px-4 md:px-10 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-[#333]">
     <div>
-      <p class="font-mono text-[10px] text-[#888] tracking-[0.2em] uppercase">Internal Network</p>
-      <p class="text-lg font-bold tracking-tight">이능관리위원회 내부망</p>
+      <p class="font-mono text-[10px] text-[#888] tracking-[0.2em] uppercase">{portal.code} · Internal</p>
+      <p class="text-lg font-bold tracking-tight">{portal.name} 내부망</p>
+      <p class="text-[11px] text-[#888] mt-0.5">{portal.nameHan}</p>
     </div>
     <nav class="flex flex-wrap gap-1 text-sm">
       {

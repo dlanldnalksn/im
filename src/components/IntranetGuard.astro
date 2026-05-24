@@ -1,15 +1,20 @@
 ---
 import { url } from '../lib/url';
+
+interface Props {
+  portalId: string;
+}
+
+const { portalId } = Astro.props;
 const loginPath = url('intranet/login/');
-const isLoginPage = Astro.url.pathname.includes('/intranet/login');
 ---
 
-{!isLoginPage && (
-  <script define:vars={{ loginPath }}>
-    (function () {
-      if (sessionStorage.getItem('imc_intranet_auth') !== '1') {
-        window.location.replace(loginPath);
-      }
-    })();
-  </script>
-)}
+<script define:vars={{ loginPath, portalId }}>
+  (function () {
+    const auth = sessionStorage.getItem('imc_intranet_auth');
+    const stored = sessionStorage.getItem('imc_intranet_portal');
+    if (auth !== '1' || stored !== portalId) {
+      window.location.replace(loginPath);
+    }
+  })();
+</script>

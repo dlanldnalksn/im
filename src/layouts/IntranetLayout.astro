@@ -1,15 +1,17 @@
 ---
 import IntranetHeader from '../components/IntranetHeader.astro';
 import IntranetGuard from '../components/IntranetGuard.astro';
+import type { IntranetPortal } from '../data/intranet-portals';
 import '../styles/global.css';
 
 interface Props {
   title: string;
+  portal: IntranetPortal;
   requireAuth?: boolean;
 }
 
-const { title, requireAuth = true } = Astro.props;
-const pageTitle = `${title} | IMC 내부망`;
+const { title, portal, requireAuth = true } = Astro.props;
+const pageTitle = `${title} | ${portal.name} 내부망`;
 ---
 
 <!doctype html>
@@ -29,13 +31,13 @@ const pageTitle = `${title} | IMC 내부망`;
     />
   </head>
   <body class="min-h-screen bg-[#eef0f3]">
-    {requireAuth && <IntranetGuard />}
-    <IntranetHeader />
+    {requireAuth && <IntranetGuard portalId={portal.id} />}
+    <IntranetHeader portal={portal} />
     <main class="mx-auto w-full max-w-site bg-white shadow-site min-h-[60vh] px-4 md:px-10 py-8">
       <slot />
     </main>
     <footer class="bg-[#1a1a1a] text-[#666] py-4 text-center text-xs font-mono tracking-wide">
-      내부망 · 접속 기록 보관 · 문서 무단 반출 시 징계
+      {portal.code} 내부망 · 접속 기록 보관 · 문서 무단 반출 시 징계
     </footer>
   </body>
 </html>

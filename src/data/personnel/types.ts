@@ -49,5 +49,6 @@ export interface PersonnelRecord {
     narrativeGuide: string;
   };
   tags: string[];
+  portalId: 'imc' | 'admin' | 'adjust' | 'sib' | 'research';
   clearanceRequired: number;
 }
