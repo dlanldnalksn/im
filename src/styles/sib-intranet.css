@@ -1,37 +1,80 @@
 @reference './global.css';
 
-/* 특수감찰국 차출요원 인트라넷 v9 */
+/* 특수감찰국 차출요원 인트라넷 v9 — template-matched spacing */
 .sib-shell {
   @apply mx-auto w-full max-w-site min-h-screen flex flex-col bg-[#f5f6f8];
-  font-family: Pretendard, -apple-system, sans-serif;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .sib-secure-bar {
-  @apply bg-[#1a1a1a] text-[#888] px-6 lg:px-7 py-1.5 text-[11px] flex flex-wrap justify-between items-center gap-2;
+  @apply bg-[#1a1a1a] text-[#888] px-7 py-1.5 text-[11px] flex flex-wrap justify-between items-center gap-2;
 }
 
 .sib-main-header {
-  @apply bg-white border-b border-[#e5e7eb] px-6 lg:px-7 py-4 flex flex-wrap justify-between items-center gap-4;
+  @apply bg-white border-b border-[#e5e7eb] px-7 py-4 flex flex-wrap justify-between items-center gap-3.5;
 }
 
 .sib-logo-mark {
-  @apply w-10 h-10 bg-white border-2 border-imc-danger text-imc-danger flex items-center justify-center font-serif text-lg font-bold shrink-0;
+  @apply w-10 h-10 bg-white border-2 border-imc-danger text-imc-danger flex items-center justify-center shrink-0;
+  font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.sib-brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: #1a1a1a;
+}
+
+.sib-brand-sub,
+.sib-agent-code,
+.sib-op-code {
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.sib-brand-sub {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 0.15em;
+  margin-top: 2px;
+}
+
+.sib-agent-code {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.sib-agent-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1a1a1a;
 }
 
 .sib-search {
-  @apply bg-[#f5f6f8] border border-[#e0e2e7] rounded px-3 py-1.5 flex items-center gap-2 w-[220px];
+  @apply bg-[#f5f6f8] border border-[#e0e2e7] rounded px-3 py-[7px] flex items-center gap-2 w-[220px];
 }
 
 .sib-search input {
   @apply border-0 outline-0 bg-transparent flex-1 text-xs text-[#888] min-w-0;
+  letter-spacing: -0.01em;
 }
 
 .sib-nav {
-  @apply bg-white border-b border-[#e5e7eb] px-6 lg:px-7 flex flex-wrap items-center gap-9;
+  @apply bg-white border-b border-[#e5e7eb] px-7 flex flex-wrap items-center gap-9;
 }
 
 .sib-nav-link {
-  @apply py-3.5 text-[13.5px] font-semibold text-[#525252] no-underline border-b-[2.5px] border-transparent -mb-px flex items-center gap-2 hover:text-imc-danger transition-colors;
+  @apply py-[14px] text-[13.5px] font-semibold text-[#525252] no-underline border-b-[2.5px] border-transparent -mb-px flex items-center gap-2 hover:text-imc-danger transition-colors;
+  letter-spacing: -0.01em;
 }
 
 .sib-nav-link.is-active {
@@ -39,7 +82,7 @@
 }
 
 .sib-nav-badge {
-  @apply bg-imc-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none;
+  @apply bg-imc-danger text-white text-[10px] font-bold px-1.5 py-px rounded-[9px] leading-none;
 }
 
 .sib-nav-badge.amber {
@@ -47,15 +90,15 @@
 }
 
 .sib-main {
-  @apply flex-1 px-6 lg:px-7 py-6;
+  @apply flex-1 px-7 py-6;
 }
 
 .sib-footer {
-  @apply bg-[#1a1a1a] text-[#888] px-6 lg:px-7 py-3.5 text-[10.5px] flex flex-wrap justify-between items-center gap-2;
+  @apply bg-[#1a1a1a] text-[#888] px-7 py-3.5 text-[10.5px] flex flex-wrap justify-between items-center gap-2;
 }
 
 .sib-alert {
-  @apply bg-[#fff8f5] border border-[#f5d8d0] border-l-[3px] border-l-imc-danger px-[18px] py-3 mb-[18px] flex flex-wrap justify-between items-center gap-3 rounded-sm;
+  @apply bg-[#fff8f5] border border-[#f5d8d0] border-l-[3px] border-l-imc-danger px-[18px] py-3 mb-[18px] flex flex-wrap justify-between items-center gap-3 rounded-[3px];
 }
 
 .sib-stat-grid {
@@ -63,11 +106,43 @@
 }
 
 .sib-stat-card {
-  @apply bg-white border border-[#e5e7eb] rounded-md p-5 lg:p-[22px];
+  @apply bg-white border border-[#e5e7eb] rounded-md px-[22px] py-5;
+}
+
+.sib-stat-label {
+  @apply text-[11.5px] text-[#525252] font-semibold mb-[14px];
+  letter-spacing: -0.01em;
 }
 
 .sib-stat-value {
-  @apply text-[30px] font-extrabold tracking-tight leading-none font-serif text-[#1a1a1a];
+  font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #1a1a1a;
+}
+
+.sib-stat-desc {
+  @apply text-xs text-[#666] font-semibold;
+  letter-spacing: -0.01em;
+}
+
+.sib-stat-meta {
+  @apply flex flex-col gap-1.5 pt-3 border-t border-[#f0f0f2] text-[11px];
+}
+
+.sib-stat-meta-row {
+  @apply flex justify-between;
+  letter-spacing: -0.01em;
+}
+
+.sib-stat-meta-row span:first-child {
+  @apply text-[#888] font-medium;
+}
+
+.sib-stat-meta-row span:last-child {
+  @apply text-[#1a1a1a] font-semibold;
 }
 
 .sib-panel {
@@ -78,8 +153,13 @@
   @apply px-[22px] py-4 border-b border-[#e5e7eb] flex flex-wrap justify-between items-center gap-2 bg-[#fafbfc];
 }
 
+.sib-panel-head-title {
+  @apply text-sm font-extrabold text-[#1a1a1a];
+  letter-spacing: -0.02em;
+}
+
 .sib-op-row {
-  @apply px-[22px] py-3.5 border-b border-[#f0f0f2] flex gap-3.5 items-start no-underline text-inherit hover:bg-[#fafafa] transition-colors;
+  @apply px-[22px] py-[14px] border-b border-[#f0f0f2] flex gap-3.5 items-start no-underline text-inherit hover:bg-[#fafafa] transition-colors;
 }
 
 .sib-op-row.priority {
@@ -94,17 +174,53 @@
   @apply w-[3px] self-stretch shrink-0;
 }
 
+.sib-op-tags {
+  @apply flex flex-wrap items-center gap-2 mb-1.5;
+}
+
+.sib-op-title {
+  @apply text-[13.5px] font-bold text-[#1a1a1a] mb-[5px];
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.sib-op-meta {
+  @apply text-[11px] text-[#666] font-medium m-0;
+  letter-spacing: -0.01em;
+}
+
 .sib-tag {
-  @apply text-[10px] font-bold px-[7px] py-0.5 rounded-sm tracking-tight;
+  @apply text-[10px] font-bold px-[7px] py-0.5 rounded-[2px];
+  letter-spacing: -0.01em;
 }
 
 .sib-tag.red { @apply bg-imc-danger text-white; }
 .sib-tag.amber { @apply bg-[#fef3c7] text-[#92400e]; }
 .sib-tag.gray { @apply bg-[#f5f6f8] border border-[#e0e2e7] text-[#666]; }
-.sib-tag.outline { @apply bg-white border border-[#e5e7eb] text-[#525252] font-mono; }
+.sib-tag.outline {
+  @apply bg-white border border-[#e5e7eb] text-[#525252];
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-report-row {
+  @apply block px-[22px] py-[14px] border-b border-[#f0f0f2] no-underline text-inherit;
+}
+
+.sib-report-row:last-child {
+  @apply border-b-0;
+}
+
+.sib-notice-row {
+  @apply flex px-[22px] py-[13px] border-b border-[#f0f0f2] justify-between items-center gap-3.5 no-underline text-inherit hover:bg-[#fafafa];
+}
+
+.sib-notice-row:last-child {
+  @apply border-b-0;
+}
 
 .sib-match-steps {
-  @apply flex gap-1.5 items-center pt-3 border-t border-[#f0f0f2];
+  @apply flex gap-[5px] items-center pt-3 border-t border-[#f0f0f2];
 }
 
 .sib-match-step {
@@ -116,5 +232,16 @@
 }
 
 .sib-match-line {
-  @apply flex-1 h-px -mt-3.5;
+  @apply flex-1 h-px;
+  margin-top: -14px;
+}
+
+.sib-page-title {
+  @apply text-[22px] font-extrabold text-[#1a1a1a] m-0;
+  letter-spacing: -0.025em;
+}
+
+.sib-page-meta {
+  @apply text-[11.5px] text-[#666] font-medium;
+  letter-spacing: -0.01em;
 }

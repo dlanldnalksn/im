@@ -54,10 +54,8 @@ const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-di
     <a href={url(`${base}`)} class="flex items-center gap-3.5 no-underline text-inherit">
       <div class="sib-logo-mark">監</div>
       <div>
-        <div class="text-[15px] font-extrabold tracking-tight leading-tight">특수감찰국 인트라넷</div>
-        <div class="text-[10px] text-imc-muted font-mono font-semibold tracking-widest mt-0.5">
-          SPECIAL INSPECTION BUREAU · DIV-00
-        </div>
+        <div class="sib-brand-title">특수감찰국 인트라넷</div>
+        <div class="sib-brand-sub">SPECIAL INSPECTION BUREAU · DIV-00</div>
       </div>
     </a>
   </div>
@@ -73,17 +71,15 @@ const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-di
 
     <div class="flex items-center gap-2.5 pl-3.5 border-l border-[#e5e7eb]">
       <div class="text-right hidden sm:block">
-        <div class="text-xs font-bold">차출요원 {leeChanYoung.name}</div>
-        <div class="text-[10px] text-imc-muted font-mono font-semibold mt-0.5">
-          {leeChanYoung.employeeId} · 2처
-        </div>
+        <div class="sib-agent-name">차출요원 {leeChanYoung.name}</div>
+        <div class="sib-agent-code">{leeChanYoung.employeeId} · 2處</div>
       </div>
-      <div class="w-9 h-9 bg-[#f5f6f8] border border-[#e0e2e7] rounded-full flex items-center justify-center text-xs text-imc-muted font-bold font-serif">
+      <div class="w-9 h-9 bg-[#f5f6f8] border border-[#e0e2e7] rounded-full flex items-center justify-center text-xs text-[#666] font-bold font-serif">
         {leeChanYoung.name.slice(0, 1)}
       </div>
     </div>
 
-    <a href={url('intranet/logout/')} class="text-[11.5px] text-imc-muted pl-2.5 border-l border-[#e5e7eb] no-underline hover:text-imc-ink font-medium">
+    <a href={url('intranet/logout/')} class="text-[11.5px] text-[#666] pl-2.5 border-l border-[#e5e7eb] no-underline hover:text-imc-ink font-medium">
       로그아웃
     </a>
   </div>
