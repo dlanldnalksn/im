@@ -1,0 +1,41 @@
+/** 특감국 차출요원 대시보드 — 이찬영 세션 고정 데이터 */
+export const sibOperations = [
+  {
+    priority: 'priority' as const,
+    tag: '최우선',
+    tagClass: 'red' as const,
+    code: 'OP-2026-0XXX',
+    grade: '갑급 작전 지원',
+    title: '[극비] 수도권 마포구역 미등재자 거점 진압 작전 — 차출 명령',
+    meta: '집결 · 05.25 04:00 / 본청 B3 · 발령 2處 작전과',
+  },
+  {
+    priority: 'urgent' as const,
+    tag: '긴급',
+    tagClass: 'amber' as const,
+    code: 'OP-2026-0XXX',
+    grade: '을급 작전',
+    title: '[대외비] 인천 서구 신흥종교 잔당 추적 — 합동 작전',
+    meta: '집결 · 05.28 09:00 / 지역분실 3 · 발령 2處',
+  },
+  {
+    priority: 'done' as const,
+    tag: '완료',
+    tagClass: 'gray' as const,
+    code: 'OP-2026-0XXX',
+    grade: '병급 작전',
+    title: '[대외비] 보호처분소 외곽 경계 임시 차출',
+    meta: '완료 · 05.20 · 보고서 제출 완료',
+    muted: true,
+  },
+  {
+    priority: 'done' as const,
+    tag: '완료',
+    tagClass: 'gray' as const,
+    code: 'OP-2026-0XXX',
+    grade: '을급 작전',
+    title: '[대외비] 미등재자 색출 합동작전 — 후속 진술 의무',
+    meta: '완료 · 05.14 · 보고서 검토 중',
+    muted: true,
+  },
+];

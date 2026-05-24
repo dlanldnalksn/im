@@ -1,0 +1,10 @@
+---
+interface Props {
+  code: string;
+  muted?: boolean;
+}
+
+const { code, muted = false } = Astro.props;
+---
+
+<span class:list={['sib-op-code-tag', muted && 'is-muted']}>{code}</span>
