@@ -1,4 +1,5 @@
 ---
+import PublicGovBanner from '../components/PublicGovBanner.astro';
 import PublicHeader from '../components/PublicHeader.astro';
 import PublicFooter from '../components/PublicFooter.astro';
 import '../styles/global.css';
@@ -29,6 +30,7 @@ const pageTitle = `${title} | 이능관리위원회`;
     />
   </head>
   <body class="min-h-screen">
+    <PublicGovBanner />
     <div class="gemini-shell flex flex-col">
       <PublicHeader />
       <main class="flex-1">

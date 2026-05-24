@@ -13,6 +13,51 @@
 }
 
 @layer components {
+  /* 공식 전자정부 누리집 상단 안내 (가상 세계관) */
+  .gov-top-banner {
+    @apply w-full bg-[#242424] text-white text-[12px] leading-snug;
+  }
+
+  .gov-top-banner__inner {
+    @apply mx-auto max-w-[1200px] flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2 lg:px-6;
+  }
+
+  .gov-top-banner__mark {
+    @apply inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-white text-[10px] font-bold text-[#242424];
+    font-family: 'Nanum Myeongjo', serif;
+  }
+
+  .gov-top-banner__text {
+    @apply m-0 flex-1 min-w-[200px] text-[#e8e8e8];
+  }
+
+  .gov-top-banner__text strong {
+    @apply font-semibold text-white;
+  }
+
+  .gov-top-banner__sub {
+    @apply ml-1 text-[#aaa];
+  }
+
+  .gov-top-banner__sub::before {
+    content: '·';
+    @apply mr-1;
+  }
+
+  .gov-top-banner__link {
+    @apply shrink-0 text-[11px] text-[#ccc] underline underline-offset-2 hover:text-white transition-colors;
+  }
+
+  @media (max-width: 640px) {
+    .gov-top-banner__sub {
+      @apply block ml-0 mt-0.5;
+    }
+
+    .gov-top-banner__sub::before {
+      content: none;
+    }
+  }
+
   /* Gemini 디자인 시스템 */
   .gemini-shell {
     @apply mx-auto w-full max-w-[1200px] bg-white min-h-screen;
