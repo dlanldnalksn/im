@@ -9,7 +9,7 @@ const nav = [
   { path: `${base}`, label: '대시보드', exact: true },
   { path: `${base}documents/`, label: '작전 명령', badge: 2 },
   { path: `${base}personnel/lee-chan-young/`, label: '신상·인사' },
-  { path: `${base}documents/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const },
+  { path: `${base}reports/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const },
   { path: `${base}documents/`, label: '결재·신청' },
   { path: `${base}documents/`, label: '규정·법령' },
   { path: `${base}`, label: '공지·알림', hash: 'notices' },
@@ -20,6 +20,7 @@ function isActive(item: (typeof nav)[0]) {
   if (item.label === '대시보드' && item.exact) return pathnameEquals(pathname, item.path);
   if (item.label === '공지·알림') return pathnameEquals(pathname, item.path) && Astro.url.hash === '#notices';
   if (item.label === '작전 명령') return pathnameStartsWith(pathname, `${base}documents/`);
+  if (item.label === '의무 보고') return pathnameStartsWith(pathname, `${base}reports/`);
   return false;
 }
 

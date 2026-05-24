@@ -1,0 +1,321 @@
+---
+import { url } from '../../lib/url';
+import { SIB_RPT_REFERENCE_DATE, sibReportRecords, sibReportStats } from '../../data/sib-reports-list';
+import type { SibReportRecord, SibReportStatusTag } from '../../data/sib-reports-list';
+
+const base = 'intranet/sib/';
+
+const statCards = [
+  { label: '전체', value: sibReportStats.total, filter: 'all', accent: false },
+  { label: '기한 임박', value: sibReportStats.urgent, filter: 'urgent', accent: true, accentClass: 'amber' as const },
+  { label: '예정', value: sibReportStats.scheduled, filter: 'scheduled', accent: false },
+  { label: '검토 중', value: sibReportStats.review, filter: 'review', accent: false },
+  { label: '제출 완료', value: sibReportStats.done, filter: 'done', accent: false },
+];
+
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '기한 임박', filter: 'urgent' },
+  { label: '예정', filter: 'scheduled' },
+  { label: '검토 중', filter: 'review' },
+  { label: '완료', filter: 'done' },
+];
+
+const categoryOptions = ['전체', ...new Set(sibReportRecords.map((r) => r.category))];
+
+const periodOptions = [
+  { label: '최근 3개월', value: '3m' },
+  { label: '최근 6개월', value: '6m' },
+  { label: '전체', value: 'all' },
+];
+
+function tagClass(tag: SibReportStatusTag) {
+  if (tag.variant === 'urgent') return 'sib-rpt-tag urgent';
+  if (tag.variant === 'scheduled') return 'sib-rpt-tag scheduled';
+  if (tag.variant === 'review') return 'sib-rpt-tag review';
+  return 'sib-rpt-tag done';
+}
+
+function statusSubClass(rpt: SibReportRecord) {
+  if (rpt.statusSubVariant === 'urgent') return 'sib-rpt-tag-sub urgent';
+  if (rpt.statusSubVariant === 'muted') return 'sib-rpt-tag-sub muted';
+  return 'sib-rpt-tag-sub';
+}
+
+function rowClass(rpt: SibReportRecord) {
+  if (rpt.rowStyle === 'urgent') return 'sib-rpt-table-row urgent';
+  return 'sib-rpt-table-row';
+}
+
+function actionClass(rpt: SibReportRecord) {
+  if (rpt.action === 'write') return 'sib-rpt-btn-write';
+  if (rpt.action === 'reserve' || rpt.action === 'apply') return 'sib-rpt-btn-outline';
+  if (rpt.muted) return 'sib-rpt-btn-link muted';
+  return 'sib-rpt-btn-link';
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">의무 보고</span>
+</nav>
+
+<div class="sib-page-head">
+  <div>
+    <h1 class="sib-page-title">의무 보고·일정</h1>
+    <p class="sib-page-subtitle">정기 진술서 · 검진 · 약물 갱신 · 작전 후 보고 외</p>
+  </div>
+  <button type="button" class="sib-rpt-new-btn">+ 새 보고 작성</button>
+</div>
+
+<div class="sib-op-stat-grid" data-sib-rpt-stats>
+  {
+    statCards.map((s) => (
+      <button
+        type="button"
+        class:list={[
+          'sib-op-stat-card',
+          s.accent && 'accent',
+          s.accentClass === 'amber' && 'accent-amber',
+        ]}
+        data-sib-rpt-stat-filter={s.filter}
+      >
+        <div
+          class:list={[
+            'sib-op-stat-label',
+            s.accent && 'accent',
+            s.accentClass === 'amber' && 'accent-amber',
+          ]}
+        >
+          {s.label}
+        </div>
+        <div class="sib-op-stat-value">
+          {s.value}<span class="sib-op-stat-unit">건</span>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
+<div class="sib-op-toolbar" data-sib-rpt-toolbar>
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="의무 보고 필터">
+    {
+      filterTabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-rpt-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+  <div class="sib-op-toolbar-right">
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">분류</span>
+      <select class="sib-op-select-native" data-sib-rpt-category aria-label="분류 필터">
+        {
+          categoryOptions.map((cat) => (
+            <option value={cat === '전체' ? 'all' : cat}>{cat}</option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">기간</span>
+      <select class="sib-op-select-native" data-sib-rpt-period aria-label="기간 필터">
+        {
+          periodOptions.map((opt) => (
+            <option value={opt.value} selected={opt.value === '3m'}>
+              {opt.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <input
+        type="search"
+        class="sib-op-search-input"
+        data-sib-rpt-search
+        placeholder="양식명 / 키워드"
+        aria-label="양식명 또는 키워드 검색"
+      />
+    </label>
+  </div>
+</div>
+
+<div class="sib-op-table-wrap" data-sib-rpt-list>
+  <div class="sib-rpt-table">
+    <div class="sib-rpt-table-head">
+      <div>상태</div>
+      <div>분류</div>
+      <div>양식</div>
+      <div>건명</div>
+      <div>제출처</div>
+      <div>기한 / 처리</div>
+      <div class="text-right">조치</div>
+    </div>
+
+    {
+      sibReportRecords.map((rpt) => (
+        <div
+          class={rowClass(rpt)}
+          data-sib-rpt-row
+          data-filters={rpt.filterBuckets.join(' ')}
+          data-category={rpt.category}
+          data-reference-date={rpt.referenceDate}
+          data-search={`${rpt.formCode} ${rpt.title} ${rpt.category} ${rpt.submitTo} ${rpt.titleCode || ''}`.toLowerCase()}
+        >
+          <div class="sib-rpt-table-status">
+            {
+              rpt.statusTags.map((tag) => (
+                <span class={tagClass(tag)}>{tag.label}</span>
+              ))
+            }
+            <span class={statusSubClass(rpt)}>{rpt.statusSub}</span>
+          </div>
+          <div class:list={['sib-rpt-table-cat', rpt.muted && 'muted']}>{rpt.category}</div>
+          <div class:list={['sib-rpt-table-form', rpt.muted && 'muted']}>{rpt.formCode}</div>
+          <div class:list={['sib-rpt-table-title', rpt.muted && 'muted']}>
+            {rpt.title}
+            {rpt.titleCode && <span class="sib-rpt-title-code">{rpt.titleCode}</span>}
+          </div>
+          <div class:list={['sib-rpt-table-submit', rpt.muted && 'muted']}>
+            {rpt.submitTo}<br />
+            <span class="sib-op-table-sub">{rpt.submitSub}</span>
+          </div>
+          <div class:list={['sib-rpt-table-deadline', rpt.muted && 'muted', rpt.deadlineMono && 'mono', rpt.filterBuckets.includes('review') && 'review']}>
+            {rpt.deadlineMain}<br />
+            <span class="sib-op-table-sub">{rpt.deadlineSub}</span>
+          </div>
+          <div class="sib-op-table-action">
+            <span class={actionClass(rpt)}>{rpt.actionLabel}</span>
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="sib-op-table-foot">
+      <span data-sib-rpt-foot-count>총 {sibReportStats.total}건 표시</span>
+      <div class="sib-op-pagination" data-sib-rpt-pagination></div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ referenceDate: SIB_RPT_REFERENCE_DATE }}>
+  const listRoot = document.querySelector('[data-sib-rpt-list]');
+  if (listRoot) {
+    const rows = Array.from(listRoot.querySelectorAll('[data-sib-rpt-row]'));
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-rpt-filter]'));
+    const statCards = Array.from(document.querySelectorAll('[data-sib-rpt-stat-filter]'));
+    const categorySelect = document.querySelector('[data-sib-rpt-category]');
+    const periodSelect = document.querySelector('[data-sib-rpt-period]');
+    const searchInput = document.querySelector('[data-sib-rpt-search]');
+    const footCount = document.querySelector('[data-sib-rpt-foot-count]');
+    const paginationRoot = document.querySelector('[data-sib-rpt-pagination]');
+    const refDate = new Date(`${referenceDate}T00:00:00`);
+
+    let activeFilter = 'all';
+    let activeCategory = 'all';
+    let activePeriod = '3m';
+    let searchQuery = '';
+
+    function getPeriodCutoff(period) {
+      if (period === 'all') return null;
+      const cutoff = new Date(refDate);
+      cutoff.setMonth(cutoff.getMonth() - (period === '6m' ? 6 : 3));
+      return cutoff;
+    }
+
+    function rowMatchesFilters(row) {
+      const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
+      const category = row.getAttribute('data-category') || '';
+      const searchText = row.getAttribute('data-search') || '';
+      const referenceAt = row.getAttribute('data-reference-date') || '';
+      const query = searchQuery.trim().toLowerCase();
+      const cutoff = getPeriodCutoff(activePeriod);
+
+      const matchesFilter = activeFilter === 'all' || filters.includes(activeFilter);
+      const matchesCategory = activeCategory === 'all' || category === activeCategory;
+      const matchesSearch = !query || searchText.includes(query);
+      const matchesPeriod =
+        !cutoff || (referenceAt && new Date(`${referenceAt}T00:00:00`) >= cutoff);
+
+      return matchesFilter && matchesCategory && matchesSearch && matchesPeriod;
+    }
+
+    function getMatchingRows() {
+      return rows.filter((row) => rowMatchesFilters(row));
+    }
+
+    function setActiveTab(filter) {
+      activeFilter = filter;
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-rpt-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function applyFilters() {
+      const matching = getMatchingRows();
+      const total = matching.length;
+      const visibleSet = new Set(matching);
+
+      rows.forEach((row) => {
+        row.classList.toggle('is-filtered-out', !visibleSet.has(row));
+      });
+
+      if (footCount) {
+        footCount.textContent = total === 0 ? '검색 결과 없음' : `총 ${total}건 표시`;
+      }
+
+      if (paginationRoot) {
+        paginationRoot.innerHTML = '';
+        paginationRoot.classList.add('is-hidden');
+      }
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-rpt-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    statCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-rpt-stat-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    categorySelect?.addEventListener('change', () => {
+      activeCategory = categorySelect.value;
+      applyFilters();
+    });
+
+    periodSelect?.addEventListener('change', () => {
+      activePeriod = periodSelect.value;
+      applyFilters();
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    applyFilters();
+  }
+</script>
