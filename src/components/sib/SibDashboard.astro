@@ -120,13 +120,17 @@ function noticeTagClass(filterKey: string) {
     <div class="sib-panel-head">
       <span class="sib-panel-head-title">작전 명령서</span>
       <div class="flex gap-3.5 items-center text-[11.5px]">
-        <a
-          href={url(`${base}documents/?filter=unread`)}
-          class="text-imc-danger font-bold no-underline hover:underline"
-          data-sib-unread-link
-        >
-          미열람 {sibOperationStats.unread}건
-        </a>
+        {
+          sibOperationStats.unread > 0 && (
+            <a
+              href={url(`${base}documents/?filter=unread`)}
+              class="text-imc-danger font-bold no-underline hover:underline"
+              data-sib-unread-link
+            >
+              미열람 {sibOperationStats.unread}건
+            </a>
+          )
+        }
         <a href={url(`${base}documents/`)} class="text-[#525252] font-semibold no-underline hover:underline">전체보기 →</a>
       </div>
     </div>
@@ -249,10 +253,10 @@ function noticeTagClass(filterKey: string) {
     const count = unreadOpIds.filter((id) => !read.has(id)).length;
 
     if (unreadLink) {
-      unreadLink.textContent = `미열람 ${count}건`;
       if (count === 0) {
-        unreadLink.classList.remove('text-imc-danger');
-        unreadLink.classList.add('text-[#888]');
+        unreadLink.remove();
+      } else {
+        unreadLink.textContent = `미열람 ${count}건`;
       }
     }
   } catch {

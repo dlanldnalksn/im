@@ -216,10 +216,21 @@ function rowClass(op: SibOperationRecord) {
       listRoot.querySelectorAll('[data-sib-op-row]').forEach((row) => {
         const id = row.getAttribute('data-op-id');
         const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
-        if (id && readOps.has(id) && filters.includes('unread')) {
+        const isRead = id && readOps.has(id);
+
+        if (isRead && filters.includes('unread')) {
           row.setAttribute('data-filters', filters.filter((f) => f !== 'unread').join(' '));
           row.querySelectorAll('.sib-op-tag-unread').forEach((tag) => tag.remove());
         }
+
+        if (isRead) {
+          const readBtn = row.querySelector('.sib-op-btn-read');
+          if (readBtn) {
+            readBtn.className = 'sib-op-btn-detail';
+            readBtn.textContent = '상세 →';
+          }
+        }
+
         if ((row.getAttribute('data-filters') || '').includes('unread')) unreadCount += 1;
       });
 

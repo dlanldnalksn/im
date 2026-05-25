@@ -18,8 +18,8 @@ export interface SibDetailContent {
 const workflowLabels = ['접수', '1차 검토', '2차 검토', '최종 승인'];
 
 export function getOperationDetail(op: SibOperationRecord): SibDetailContent {
-  const isUnread = op.filterBuckets.includes('unread');
-  const statusText = op.statusTags.map((t) => t.label).join(' · ');
+  const statusTags = op.statusTags.filter((t) => t.variant !== 'unread');
+  const statusText = statusTags.map((t) => t.label).join(' · ');
 
   return {
     fields: [
@@ -28,7 +28,6 @@ export function getOperationDetail(op: SibOperationRecord): SibDetailContent {
       { label: '상태', value: statusText },
       { label: '발령', value: `${op.issuer} · ${op.issuedDate}` },
       { label: '집결', value: `${op.scheduleMain} · ${op.scheduleSub}` },
-      { label: '열람', value: isUnread ? '미열람' : '열람 완료' },
     ],
     body: [
       op.title,
@@ -37,9 +36,7 @@ export function getOperationDetail(op: SibOperationRecord): SibDetailContent {
         ? '본인 차출 신청이 반려되었습니다. 사유 및 후속 조치는 발령 부서에 문의하십시오.'
         : op.filterBuckets.includes('done')
           ? '작전이 완료되었습니다. 사후 진술·보고 의무가 있는 경우 의무 보고 메뉴에서 확인하십시오.'
-          : isUnread
-            ? '본 문서를 열람하면 미열람 상태가 해제됩니다. 집결 전까지 명령 내용을 숙지하고, 이동·동행 인원 기준을 준수하십시오.'
-            : '작전 진행 중입니다. 변경 사항은 본 시스템을 통해 통보됩니다.',
+          : '집결 전까지 명령 내용을 숙지하고, 이동·동행 인원 기준을 준수하십시오. 변경 사항은 본 시스템을 통해 통보됩니다.',
       '무단 유출·외부 공유 시 형사처벌 및 복무 제재 대상입니다.',
     ],
   };
