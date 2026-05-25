@@ -106,7 +106,6 @@ const notices = [
               placeholder="직원번호 8자리를 입력하세요"
               required
             />
-            <p class="imc-field-hint">예: TG-0(본청), TG-2(특감국), CA-/AD-/IR-(산하)</p>
           </div>
 
           <div class="imc-form-group">
@@ -253,7 +252,7 @@ const notices = [
   .imc-login-body {
     box-sizing: border-box;
     margin: 0;
-    padding: 24px 16px;
+    padding: 16px;
     min-height: 100vh;
     font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
     background-color: #e2e8f0;
@@ -281,31 +280,31 @@ const notices = [
   .imc-info-panel {
     width: 50%;
     background: #f8fafc;
-    padding: 40px;
+    padding: 28px 32px;
     border-right: 1px solid var(--imc-border-color);
   }
 
   .imc-info-panel h1 {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 800;
     color: var(--imc-gov-blue);
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     letter-spacing: -0.05em;
   }
 
   .imc-info-sub {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--imc-text-gray);
-    margin: 0 0 40px;
+    margin: 0 0 22px;
     font-weight: 600;
   }
 
   .imc-notice-board h3 {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     border-bottom: 2px solid var(--imc-text-dark);
-    padding-bottom: 8px;
-    margin: 0 0 12px;
+    padding-bottom: 6px;
+    margin: 0 0 8px;
     display: flex;
     justify-content: space-between;
   }
@@ -317,12 +316,12 @@ const notices = [
   }
 
   .imc-notice-board li {
-    font-size: 12.5px;
-    padding: 10px 0;
+    font-size: 12px;
+    padding: 7px 0;
     border-bottom: 1px dashed var(--imc-border-color);
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     color: var(--imc-text-dark);
     cursor: pointer;
   }
@@ -339,15 +338,15 @@ const notices = [
   }
 
   .imc-security-plugins {
-    margin-top: 40px;
+    margin-top: 22px;
     background: #fff;
     border: 1px solid var(--imc-border-color);
-    padding: 16px;
+    padding: 12px;
   }
 
   .imc-security-plugins h4 {
-    font-size: 12px;
-    margin: 0 0 12px;
+    font-size: 11.5px;
+    margin: 0 0 8px;
     color: var(--imc-text-dark);
   }
 
@@ -355,8 +354,8 @@ const notices = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 11.5px;
-    margin-bottom: 8px;
+    font-size: 11px;
+    margin-bottom: 5px;
     color: var(--imc-text-gray);
   }
 
@@ -371,9 +370,9 @@ const notices = [
 
   .imc-plugin-download {
     width: 100%;
-    margin-top: 10px;
-    padding: 8px;
-    font-size: 11px;
+    margin-top: 6px;
+    padding: 6px;
+    font-size: 10.5px;
     font-weight: 600;
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
@@ -384,7 +383,7 @@ const notices = [
 
   .imc-login-panel {
     width: 50%;
-    padding: 32px 40px 28px;
+    padding: 24px 32px 18px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -392,9 +391,9 @@ const notices = [
   }
 
   .imc-login-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
-    margin: 0 0 18px;
+    margin: 0 0 12px;
     color: var(--imc-text-dark);
     text-align: center;
   }
@@ -405,27 +404,27 @@ const notices = [
   }
 
   .imc-form-group {
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
   .imc-network-group {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .imc-form-group label {
     display: block;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     color: var(--imc-text-dark);
   }
 
   .imc-form-group input[type='text'],
   .imc-form-group input[type='password'] {
     width: 100%;
-    padding: 12px;
+    padding: 9px 10px;
     border: 1px solid var(--imc-border-color);
-    font-size: 14px;
+    font-size: 13.5px;
     outline: none;
     background: #fafafa;
     font-family: Tahoma, sans-serif;
@@ -436,15 +435,9 @@ const notices = [
     background: #fff;
   }
 
-  .imc-field-hint {
-    margin: 6px 0 0;
-    font-size: 11px;
-    color: var(--imc-text-gray);
-  }
-
   .imc-network-select {
     display: flex;
-    gap: 10px;
+    gap: 8px;
   }
 
   .imc-network-label {
@@ -460,14 +453,14 @@ const notices = [
 
   .imc-network-box {
     border: 1px solid var(--imc-border-color);
-    padding: 10px;
+    padding: 7px 8px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
     color: var(--imc-text-gray);
     background: #f8fafc;
     transition: 0.2s;
-    line-height: 1.35;
+    line-height: 1.3;
   }
 
   .imc-network-sub {
@@ -485,10 +478,10 @@ const notices = [
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px 12px;
-    font-size: 12px;
+    gap: 4px 10px;
+    font-size: 11.5px;
     color: var(--imc-text-gray);
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .imc-checkbox-label {
@@ -499,8 +492,8 @@ const notices = [
   }
 
   .imc-login-error {
-    margin: 0 0 12px;
-    font-size: 12px;
+    margin: 0 0 8px;
+    font-size: 11.5px;
     color: #dc2626;
     font-weight: 600;
   }
@@ -514,8 +507,8 @@ const notices = [
     background: var(--imc-gov-blue);
     color: #fff;
     border: none;
-    padding: 14px;
-    font-size: 15px;
+    padding: 11px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     border-radius: 2px;
@@ -527,11 +520,11 @@ const notices = [
   }
 
   .imc-demo-panel {
-    margin-top: 18px;
+    margin-top: 12px;
     border: 1px solid var(--imc-border-color);
     background: #f8fafc;
-    padding: 10px 12px;
-    font-size: 11.5px;
+    padding: 7px 10px;
+    font-size: 11px;
     color: var(--imc-text-gray);
   }
 
@@ -542,25 +535,25 @@ const notices = [
   }
 
   .imc-demo-panel ul {
-    margin: 10px 0 0;
+    margin: 6px 0 0;
     padding-left: 16px;
-    line-height: 1.6;
+    line-height: 1.45;
   }
 
   .imc-legal-warning {
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 12px;
+    padding-top: 10px;
     border-top: 1px solid #e2e8f0;
-    font-size: 11px;
+    font-size: 10.5px;
     color: #94a3b8;
-    line-height: 1.55;
+    line-height: 1.45;
     text-align: justify;
   }
 
   .imc-home-link {
     display: inline-block;
-    margin-top: 14px;
-    font-size: 12px;
+    margin-top: 8px;
+    font-size: 11.5px;
     color: var(--imc-text-gray);
     text-decoration: none;
   }
@@ -583,11 +576,11 @@ const notices = [
     .imc-info-panel {
       border-right: 0;
       border-bottom: 1px solid var(--imc-border-color);
-      padding: 28px 24px;
+      padding: 20px 20px;
     }
 
     .imc-login-panel {
-      padding: 28px 24px 24px;
+      padding: 20px 20px 16px;
     }
   }
 </style>
