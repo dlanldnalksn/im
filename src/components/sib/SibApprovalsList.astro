@@ -1,0 +1,411 @@
+---
+import { url } from '../../lib/url';
+import {
+  SIB_APR_PAGE_SIZE,
+  SIB_APR_REFERENCE_DATE,
+  sibApprovalRecords,
+  sibApprovalStats,
+} from '../../data/sib-approvals-list';
+import type { SibApprovalRecord } from '../../data/sib-approvals-list';
+import SibApprovalWorkflow from './SibApprovalWorkflow.astro';
+
+const base = 'intranet/sib/';
+
+const statCards = [
+  { label: '전체', value: sibApprovalStats.total, filter: 'all', accent: false },
+  { label: '검토 중', value: sibApprovalStats.review, filter: 'review', accent: true, accentClass: 'amber' as const },
+  { label: '승인', value: sibApprovalStats.approved, filter: 'approved', accent: false },
+  { label: '반려', value: sibApprovalStats.rejected, filter: 'rejected', accent: true, accentClass: 'red' as const },
+  { label: '취소·철회', value: sibApprovalStats.cancelled, filter: 'cancelled', accent: false, muted: true },
+];
+
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '검토 중', filter: 'review' },
+  { label: '승인', filter: 'approved' },
+  { label: '반려', filter: 'rejected' },
+  { label: '취소·철회', filter: 'cancelled' },
+];
+
+const categoryOptions = ['전체', ...new Set(sibApprovalRecords.map((r) => r.category))];
+
+const periodOptions = [
+  { label: '최근 3개월', value: '3m' },
+  { label: '최근 6개월', value: '6m' },
+  { label: '전체', value: 'all' },
+];
+
+function statusTagClass(rec: SibApprovalRecord) {
+  if (rec.statusVariant === 'review') return 'sib-apr-tag review';
+  if (rec.statusVariant === 'rejected') return 'sib-apr-tag rejected';
+  if (rec.statusVariant === 'approved') return 'sib-apr-tag approved';
+  return 'sib-apr-tag cancelled';
+}
+
+function statusSubClass(rec: SibApprovalRecord) {
+  if (rec.statusSubVariant === 'review') return 'sib-apr-tag-sub review';
+  if (rec.statusSubVariant === 'rejected') return 'sib-apr-tag-sub rejected';
+  if (rec.statusSubVariant === 'approved') return 'sib-apr-tag-sub approved';
+  if (rec.statusSubVariant === 'muted') return 'sib-apr-tag-sub muted';
+  return 'sib-apr-tag-sub';
+}
+
+function rowClass(rec: SibApprovalRecord) {
+  if (rec.rowStyle === 'review') return 'sib-apr-table-row review';
+  return 'sib-apr-table-row';
+}
+
+function dateClass(rec: SibApprovalRecord) {
+  return [
+    'sib-apr-table-date',
+    rec.muted && 'muted',
+    rec.dateVariant === 'review' && 'review',
+    rec.dateVariant === 'rejected' && 'rejected',
+    rec.dateVariant === 'approved' && 'approved',
+  ].filter(Boolean);
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">결재·신청</span>
+</nav>
+
+<div class="sib-page-head">
+  <div>
+    <h1 class="sib-page-title">결재·신청</h1>
+    <p class="sib-page-subtitle">관외 이동 · 처방 · 매칭 · 자원 차출 · 시설 이용 외</p>
+  </div>
+  <div class="sib-apr-head-actions">
+    <button type="button" class="sib-apr-btn-outline">신청 양식 보기</button>
+    <button type="button" class="sib-apr-new-btn">+ 새 신청</button>
+  </div>
+</div>
+
+<div class="sib-op-stat-grid" data-sib-apr-stats>
+  {
+    statCards.map((s) => (
+      <button
+        type="button"
+        class:list={[
+          'sib-op-stat-card',
+          s.accent && 'accent',
+          s.accentClass === 'amber' && 'accent-amber',
+          s.accentClass === 'red' && 'accent-red',
+          s.muted && 'muted',
+        ]}
+        data-sib-apr-stat-filter={s.filter}
+      >
+        <div
+          class:list={[
+            'sib-op-stat-label',
+            s.accent && 'accent',
+            s.accentClass === 'amber' && 'accent-amber',
+            s.accentClass === 'red' && 'accent-red',
+          ]}
+        >
+          {s.label}
+        </div>
+        <div class="sib-op-stat-value">
+          {s.value}<span class="sib-op-stat-unit">건</span>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
+<div class="sib-op-toolbar" data-sib-apr-toolbar>
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="결재·신청 필터">
+    {
+      filterTabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-apr-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+  <div class="sib-op-toolbar-right">
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">분류</span>
+      <select class="sib-op-select-native" data-sib-apr-category aria-label="분류 필터">
+        {
+          categoryOptions.map((cat) => (
+            <option value={cat === '전체' ? 'all' : cat}>{cat}</option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">기간</span>
+      <select class="sib-op-select-native" data-sib-apr-period aria-label="기간 필터">
+        {
+          periodOptions.map((opt) => (
+            <option value={opt.value} selected={opt.value === '6m'}>
+              {opt.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <input
+        type="search"
+        class="sib-op-search-input"
+        data-sib-apr-search
+        placeholder="신청번호 / 키워드"
+        aria-label="신청번호 또는 키워드 검색"
+      />
+    </label>
+  </div>
+</div>
+
+<div class="sib-op-table-wrap" data-sib-apr-list>
+  <div class="sib-apr-table">
+    <div class="sib-apr-table-head">
+      <div>상태</div>
+      <div>분류</div>
+      <div>신청번호</div>
+      <div>건명</div>
+      <div>결재 진행</div>
+      <div>일자</div>
+      <div class="text-right">조치</div>
+    </div>
+
+    {
+      sibApprovalRecords.map((rec) => (
+        <div
+          class={rowClass(rec)}
+          data-sib-apr-row
+          data-filters={rec.filterBuckets.join(' ')}
+          data-category={rec.category}
+          data-reference-date={rec.referenceDate}
+          data-search={`${rec.requestCode} ${rec.title} ${rec.category} ${rec.titleNote || ''}`.toLowerCase()}
+        >
+          <div class="sib-apr-table-status">
+            <span class={statusTagClass(rec)}>{rec.statusLabel}</span>
+            {rec.statusSub && <span class={statusSubClass(rec)}>{rec.statusSub}</span>}
+          </div>
+          <div class:list={['sib-apr-table-cat', rec.muted && 'muted', rec.rowStyle === 'review' && 'active']}>
+            {rec.category}
+          </div>
+          <div class:list={['sib-apr-table-code', rec.muted && 'muted']}>{rec.requestCode}</div>
+          <div class:list={['sib-apr-table-title', rec.muted && 'muted', rec.rowStyle === 'review' && 'active']}>
+            {rec.title}
+            {
+              rec.titleNote && (
+                <span class:list={['sib-apr-title-note', rec.titleNoteVariant === 'rejected' && 'rejected', rec.titleNoteVariant === 'muted' && 'muted']}>
+                  {rec.titleNote}
+                </span>
+              )
+            }
+          </div>
+          <div class="sib-apr-table-workflow">
+            {
+              rec.workflow ? (
+                <SibApprovalWorkflow steps={rec.workflow} />
+              ) : (
+                <span class="sib-apr-workflow-note">{rec.workflowNote}</span>
+              )
+            }
+          </div>
+          <div class={dateClass(rec)}>
+            {rec.dateMain}<br />
+            <span class="sib-op-table-sub">{rec.dateSub}</span>
+          </div>
+          <div class="sib-op-table-action">
+            <span class:list={['sib-apr-btn-link', rec.muted && 'muted']}>조회</span>
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="sib-op-table-foot">
+      <span data-sib-apr-foot-count>
+        총 {sibApprovalStats.total}건 중 1 — {Math.min(SIB_APR_PAGE_SIZE, sibApprovalRecords.length)} 표시
+      </span>
+      <div class="sib-op-pagination" data-sib-apr-pagination></div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ pageSize: SIB_APR_PAGE_SIZE, referenceDate: SIB_APR_REFERENCE_DATE }}>
+  const listRoot = document.querySelector('[data-sib-apr-list]');
+  if (listRoot) {
+    const rows = Array.from(listRoot.querySelectorAll('[data-sib-apr-row]'));
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-apr-filter]'));
+    const statCards = Array.from(document.querySelectorAll('[data-sib-apr-stat-filter]'));
+    const categorySelect = document.querySelector('[data-sib-apr-category]');
+    const periodSelect = document.querySelector('[data-sib-apr-period]');
+    const searchInput = document.querySelector('[data-sib-apr-search]');
+    const footCount = document.querySelector('[data-sib-apr-foot-count]');
+    const paginationRoot = document.querySelector('[data-sib-apr-pagination]');
+    const refDate = new Date(`${referenceDate}T00:00:00`);
+
+    let activeFilter = 'all';
+    let activeCategory = 'all';
+    let activePeriod = '6m';
+    let searchQuery = '';
+    let currentPage = 1;
+
+    function getPeriodCutoff(period) {
+      if (period === 'all') return null;
+      const cutoff = new Date(refDate);
+      cutoff.setMonth(cutoff.getMonth() - (period === '6m' ? 6 : 3));
+      return cutoff;
+    }
+
+    function rowMatchesFilters(row) {
+      const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
+      const category = row.getAttribute('data-category') || '';
+      const searchText = row.getAttribute('data-search') || '';
+      const referenceAt = row.getAttribute('data-reference-date') || '';
+      const query = searchQuery.trim().toLowerCase();
+      const cutoff = getPeriodCutoff(activePeriod);
+
+      const matchesFilter = activeFilter === 'all' || filters.includes(activeFilter);
+      const matchesCategory = activeCategory === 'all' || category === activeCategory;
+      const matchesSearch = !query || searchText.includes(query);
+      const matchesPeriod =
+        !cutoff || (referenceAt && new Date(`${referenceAt}T00:00:00`) >= cutoff);
+
+      return matchesFilter && matchesCategory && matchesSearch && matchesPeriod;
+    }
+
+    function getMatchingRows() {
+      return rows.filter((row) => rowMatchesFilters(row));
+    }
+
+    function setActiveTab(filter) {
+      activeFilter = filter;
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-apr-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function renderPagination(totalPages) {
+      if (!paginationRoot) return;
+
+      if (totalPages <= 1) {
+        paginationRoot.innerHTML = '';
+        paginationRoot.classList.add('is-hidden');
+        return;
+      }
+
+      paginationRoot.classList.remove('is-hidden');
+      paginationRoot.innerHTML = '';
+
+      const prev = document.createElement('button');
+      prev.type = 'button';
+      prev.className = `sib-op-page-btn${currentPage === 1 ? ' disabled' : ''}`;
+      prev.textContent = '‹';
+      prev.disabled = currentPage === 1;
+      prev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(prev);
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `sib-op-page-btn${page === currentPage ? ' active' : ''}`;
+        btn.textContent = String(page);
+        btn.addEventListener('click', () => {
+          currentPage = page;
+          applyFilters(false);
+        });
+        paginationRoot.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = `sib-op-page-btn${currentPage === totalPages ? ' disabled' : ''}`;
+      next.textContent = '›';
+      next.disabled = currentPage === totalPages;
+      next.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(next);
+    }
+
+    function applyFilters(resetPage = true) {
+      if (resetPage) currentPage = 1;
+
+      const matching = getMatchingRows();
+      const total = matching.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = Math.min(startIdx + pageSize, total);
+      const visibleOnPage = matching.slice(startIdx, endIdx);
+      const visibleSet = new Set(visibleOnPage);
+
+      rows.forEach((row) => {
+        row.classList.toggle('is-filtered-out', !visibleSet.has(row));
+      });
+
+      if (footCount) {
+        if (total === 0) {
+          footCount.textContent = '검색 결과 없음';
+        } else {
+          footCount.textContent = `총 ${total}건 중 ${startIdx + 1} — ${endIdx} 표시`;
+        }
+      }
+
+      renderPagination(totalPages);
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-apr-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    statCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-apr-stat-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    categorySelect?.addEventListener('change', () => {
+      activeCategory = categorySelect.value;
+      applyFilters();
+    });
+
+    periodSelect?.addEventListener('change', () => {
+      activePeriod = periodSelect.value;
+      applyFilters();
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    applyFilters();
+  }
+</script>

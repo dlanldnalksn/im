@@ -1,0 +1,49 @@
+---
+import type { SibWorkflowStep } from '../../data/sib-approvals-list';
+
+interface Props {
+  steps: SibWorkflowStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<div class="sib-apr-workflow">
+  {
+    steps.map((step, i) => (
+      <>
+        {
+          step.state === 'done' ? (
+            <div class="sib-apr-wf-dot done" aria-hidden="true">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+          ) : step.state === 'current' ? (
+            <div class="sib-apr-wf-dot current">{step.step}</div>
+          ) : step.state === 'rejected' ? (
+            <div class="sib-apr-wf-dot rejected" aria-hidden="true">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M6 18L18 6" stroke="#fff" stroke-width="3" stroke-linecap="round"></path>
+              </svg>
+            </div>
+          ) : (
+            <div class="sib-apr-wf-dot pending">{step.step}</div>
+          )
+        }
+        {
+          i < steps.length - 1 && (
+            <div
+              class:list={[
+                'sib-apr-wf-line',
+                step.state === 'done' && 'done',
+                step.state === 'current' && 'current',
+                step.state === 'rejected' && 'rejected',
+              ]}
+            />
+          )
+        }
+      </>
+    ))
+  }
+</div>

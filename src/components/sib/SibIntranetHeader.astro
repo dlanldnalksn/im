@@ -10,7 +10,7 @@ const nav = [
   { path: `${base}documents/`, label: '작전 명령', badge: 2, navKey: 'documents' },
   { path: `${base}personnel/lee-chan-young/`, label: '신상·인사', navKey: 'personnel' },
   { path: `${base}reports/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const, navKey: 'reports' },
-  { path: `${base}documents/`, label: '결재·신청', navKey: 'documents' },
+  { path: `${base}approvals/`, label: '결재·신청', navKey: 'approvals' },
   { path: `${base}documents/`, label: '규정·법령', navKey: 'documents' },
   { path: `${base}`, label: '공지·알림', hash: 'notices', navKey: 'dashboard' },
 ];
@@ -21,6 +21,7 @@ function isActive(item: (typeof nav)[0]) {
   if (item.label === '공지·알림') return pathnameEquals(pathname, item.path) && Astro.url.hash === '#notices';
   if (item.label === '작전 명령') return pathnameStartsWith(pathname, `${base}documents/`);
   if (item.label === '의무 보고') return pathnameStartsWith(pathname, `${base}reports/`);
+  if (item.label === '결재·신청') return pathnameStartsWith(pathname, `${base}approvals/`);
   return false;
 }
 
@@ -72,7 +73,7 @@ const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-di
 
     <div class="flex items-center gap-2.5 pl-3.5 border-l border-[#e5e7eb]">
       <div class="text-right hidden sm:block">
-        <div class="sib-agent-name">차출요원 {leeChanYoung.name}</div>
+        <div class="sib-agent-name">{leeChanYoung.name} 차출요원</div>
         <div class="sib-agent-code">{leeChanYoung.employeeId} · 2處</div>
       </div>
       <div class="w-9 h-9 bg-[#f5f6f8] border border-[#e0e2e7] rounded-full flex items-center justify-center text-xs text-[#666] font-bold font-serif">

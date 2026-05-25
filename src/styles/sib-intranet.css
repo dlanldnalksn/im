@@ -890,3 +890,295 @@
 .sib-rpt-btn-link.muted {
   @apply text-[#888] font-medium;
 }
+
+/* 결재·신청 */
+.sib-op-stat-card.accent-red {
+  border-left: 3px solid #8b2a2a;
+}
+
+.sib-op-stat-label.accent-red {
+  color: #8b2a2a;
+  font-weight: 700;
+}
+
+.sib-apr-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.sib-apr-btn-outline {
+  @apply bg-white border border-[#e0e2e7] text-[#525252] text-[12.5px] font-bold rounded cursor-pointer;
+  padding: 8px 14px;
+  letter-spacing: -0.01em;
+  font: inherit;
+  line-height: 1.2;
+}
+
+.sib-apr-new-btn {
+  @apply bg-[#1a1a1a] text-white text-[12.5px] font-bold rounded cursor-pointer border-0;
+  padding: 8px 16px;
+  letter-spacing: -0.01em;
+  font: inherit;
+  line-height: 1.2;
+}
+
+.sib-apr-table {
+  @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden min-w-[980px];
+}
+
+.sib-apr-table-head,
+.sib-apr-table-row {
+  display: grid;
+  grid-template-columns: 90px 110px 110px 1.4fr 150px 130px 80px;
+  gap: 14px;
+  align-items: center;
+}
+
+.sib-apr-table-head {
+  @apply border-b border-[#e5e7eb] bg-[#fafbfc] text-[11px] text-[#525252] font-bold;
+  padding: 13px 22px;
+  letter-spacing: -0.01em;
+}
+
+.sib-apr-table-row {
+  @apply border-b border-[#f0f0f2] cursor-pointer;
+  padding: 16px 22px;
+}
+
+.sib-apr-table-row.review {
+  @apply bg-[#fffbf3];
+  border-left: 3px solid #e8b870;
+  margin-left: -3px;
+}
+
+.sib-apr-table-row:hover {
+  @apply bg-[#fafafa];
+}
+
+.sib-apr-table-row.review:hover {
+  @apply bg-[#fff8eb];
+}
+
+.sib-apr-table-row.is-filtered-out {
+  display: none;
+}
+
+.sib-apr-table-status {
+  @apply flex flex-col items-start;
+  gap: 4px;
+}
+
+.sib-apr-tag {
+  @apply text-[10px] font-bold rounded-[2px] w-fit;
+  padding: 2px 7px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sib-apr-tag.review {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.sib-apr-tag.rejected {
+  background: #fef2ef;
+  color: #8b2a2a;
+  border: 1px solid #f5d8d0;
+}
+
+.sib-apr-tag.approved {
+  background: #e8f5ed;
+  border: 1px solid #c8e0d0;
+  color: #1a7a4d;
+}
+
+.sib-apr-tag.cancelled {
+  background: #f5f6f8;
+  border: 1px solid #e0e2e7;
+  color: #666;
+}
+
+.sib-apr-tag-sub {
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #525252;
+}
+
+.sib-apr-tag-sub.review {
+  color: #92400e;
+  font-weight: 700;
+}
+
+.sib-apr-tag-sub.rejected {
+  color: #8b2a2a;
+  font-weight: 600;
+}
+
+.sib-apr-tag-sub.approved {
+  color: #1a7a4d;
+  font-weight: 600;
+}
+
+.sib-apr-tag-sub.muted {
+  color: #888;
+  font-weight: 500;
+}
+
+.sib-apr-table-cat {
+  @apply text-[11.5px] font-semibold;
+  letter-spacing: -0.01em;
+  color: #525252;
+}
+
+.sib-apr-table-row.review .sib-apr-table-cat.active {
+  color: #1a1a1a;
+}
+
+.sib-apr-table-code {
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #525252;
+}
+
+.sib-apr-table-title {
+  @apply text-[13px] text-[#1a1a1a] font-semibold;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.sib-apr-table-row.review .sib-apr-table-title.active {
+  @apply font-bold;
+}
+
+.sib-apr-title-note {
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.sib-apr-title-note.rejected {
+  color: #8b2a2a;
+}
+
+.sib-apr-title-note.muted {
+  color: #888;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.sib-apr-table-cat.muted,
+.sib-apr-table-code.muted,
+.sib-apr-table-title.muted {
+  @apply text-[#888] font-medium;
+}
+
+.sib-apr-table-title.muted {
+  @apply font-medium text-[#525252];
+}
+
+.sib-apr-table-workflow {
+  min-width: 0;
+}
+
+.sib-apr-workflow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sib-apr-wf-dot {
+  @apply flex items-center justify-center flex-shrink-0 rounded-full;
+  width: 18px;
+  height: 18px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.sib-apr-wf-dot.done {
+  background: #22a06b;
+}
+
+.sib-apr-wf-dot.current {
+  width: 20px;
+  height: 20px;
+  background: #e8b870;
+  border: 2px solid #e8b870;
+  color: #fff;
+}
+
+.sib-apr-wf-dot.rejected {
+  background: #8b2a2a;
+}
+
+.sib-apr-wf-dot.pending {
+  background: #f5f6f8;
+  border: 1px solid #e5e7eb;
+  color: #888;
+}
+
+.sib-apr-wf-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.sib-apr-wf-line.done {
+  background: #22a06b;
+}
+
+.sib-apr-wf-line.current {
+  background: #e8b870;
+}
+
+.sib-apr-wf-line.rejected {
+  background: #8b2a2a;
+}
+
+.sib-apr-workflow-note {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+.sib-apr-table-date {
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #525252;
+  line-height: 1.3;
+}
+
+.sib-apr-table-date.review {
+  color: #525252;
+}
+
+.sib-apr-table-date.rejected {
+  color: #8b2a2a;
+}
+
+.sib-apr-table-date.approved {
+  color: #1a7a4d;
+}
+
+.sib-apr-table-date.muted {
+  color: #888;
+  font-weight: 500;
+}
+
+.sib-apr-btn-link {
+  @apply text-[11px] text-[#525252] font-semibold cursor-pointer;
+  letter-spacing: -0.01em;
+}
+
+.sib-apr-btn-link.muted {
+  @apply text-[#888] font-medium;
+}

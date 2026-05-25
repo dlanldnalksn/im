@@ -1,0 +1,33 @@
+---
+import IntranetLayout from '../../../layouts/IntranetLayout.astro';
+import SibIntranetLayout from '../../../layouts/SibIntranetLayout.astro';
+import SibApprovalsList from '../../../components/sib/SibApprovalsList.astro';
+import { intranetPortals, getPortalById } from '../../../data/intranet-portals';
+import { url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return intranetPortals.map((p) => ({ params: { portal: p.id } }));
+}
+
+const { portal: portalId } = Astro.params;
+const portal = getPortalById(portalId!);
+
+if (!portal) {
+  return Astro.redirect(url('intranet/login/'));
+}
+
+const isSib = portal.id === 'sib';
+---
+
+{
+  isSib ? (
+    <SibIntranetLayout title="결재·신청">
+      <SibApprovalsList />
+    </SibIntranetLayout>
+  ) : (
+    <IntranetLayout title="결재·신청" portal={portal}>
+      <h1 class="text-2xl font-bold mb-2">결재·신청</h1>
+      <p class="text-sm text-slate-600">이 포털에서는 결재·신청 기능을 제공하지 않습니다.</p>
+    </IntranetLayout>
+  )
+}
