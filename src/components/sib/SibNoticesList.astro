@@ -1,0 +1,372 @@
+---
+import { url } from '../../lib/url';
+import {
+  SIB_NTC_PAGE_SIZE,
+  sibNoticeBanner,
+  sibNoticeRecords,
+  sibNoticeStats,
+} from '../../data/sib-notices-list';
+import type { SibNoticeRecord } from '../../data/sib-notices-list';
+
+const base = 'intranet/sib/';
+
+const statCards = [
+  { label: '전체', value: sibNoticeStats.total, filter: 'all', accent: false },
+  { label: '긴급', value: sibNoticeStats.urgent, filter: 'urgent', accent: true },
+  { label: '공지', value: sibNoticeStats.notice, filter: 'notice', accent: false },
+  { label: '행정', value: sibNoticeStats.admin, filter: 'admin', accent: false },
+  { label: '인사', value: sibNoticeStats.hr, filter: 'hr', accent: false, muted: true },
+];
+
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '긴급', filter: 'urgent' },
+  { label: '공지', filter: 'notice' },
+  { label: '행정', filter: 'admin' },
+  { label: '인사', filter: 'hr' },
+];
+
+const deptOptions = ['전체', ...new Set(sibNoticeRecords.map((r) => r.department))];
+
+const periodOptions = [
+  { label: '최근 3개월', value: '3m' },
+  { label: '최근 6개월', value: '6m' },
+  { label: '전체', value: 'all' },
+];
+
+function rowClass(rec: SibNoticeRecord) {
+  if (rec.rowStyle === 'urgent') return 'sib-ntc-table-row urgent';
+  return 'sib-ntc-table-row';
+}
+
+function tagClass(rec: SibNoticeRecord) {
+  if (rec.filterKey === 'urgent') return 'sib-ntc-tag urgent';
+  if (rec.filterKey === 'admin') return 'sib-ntc-tag admin';
+  if (rec.filterKey === 'hr') return 'sib-ntc-tag hr';
+  return 'sib-ntc-tag notice';
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">공지·알림</span>
+</nav>
+
+<div class="sib-page-head">
+  <div>
+    <h1 class="sib-page-title">공지·알림</h1>
+    <p class="sib-page-subtitle">긴급 명령 · 일반 공지 · 행정 안내 · 인사 발령 외</p>
+  </div>
+  <div class="sib-ntc-head-links">
+    <span>알림 수신 설정</span>
+    <span class="sib-ntc-head-sep">|</span>
+    <span>전체 읽음 처리</span>
+  </div>
+</div>
+
+<div class="sib-reg-amendment">
+  <div class="sib-reg-amendment-body">
+    <span class="sib-reg-amendment-label">{sibNoticeBanner.label}</span>
+    <p class="sib-reg-amendment-text">
+      <span class="sib-reg-amendment-code">{sibNoticeBanner.code}</span>
+      {sibNoticeBanner.text}
+    </p>
+  </div>
+  <span class="sib-reg-amendment-link">상세 →</span>
+</div>
+
+<div class="sib-op-stat-grid" data-sib-ntc-stats>
+  {
+    statCards.map((s) => (
+      <button
+        type="button"
+        class:list={[
+          'sib-op-stat-card',
+          s.accent && 'accent',
+          s.muted && 'muted',
+        ]}
+        data-sib-ntc-stat-filter={s.filter}
+      >
+        <div class:list={['sib-op-stat-label', s.accent && 'accent']}>{s.label}</div>
+        <div class="sib-op-stat-value">
+          {s.value}<span class="sib-op-stat-unit">건</span>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
+<div class="sib-op-toolbar" data-sib-ntc-toolbar>
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="공지·알림 필터">
+    {
+      filterTabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-ntc-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+  <div class="sib-op-toolbar-right">
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">소관</span>
+      <select class="sib-op-select-native" data-sib-ntc-dept aria-label="소관 필터">
+        {
+          deptOptions.map((dept) => (
+            <option value={dept === '전체' ? 'all' : dept}>{dept}</option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">기간</span>
+      <select class="sib-op-select-native" data-sib-ntc-period aria-label="기간 필터">
+        {
+          periodOptions.map((opt) => (
+            <option value={opt.value} selected={opt.value === '3m'}>
+              {opt.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <input
+        type="search"
+        class="sib-op-search-input"
+        data-sib-ntc-search
+        placeholder="제목 / 키워드"
+        aria-label="제목 키워드 검색"
+      />
+    </label>
+  </div>
+</div>
+
+<div class="sib-op-table-wrap" data-sib-ntc-list>
+  <div class="sib-ntc-table">
+    <div class="sib-ntc-table-head">
+      <div>분류</div>
+      <div>공지번호</div>
+      <div>제목</div>
+      <div>소관 부서</div>
+      <div>게시일</div>
+      <div class="text-right">조치</div>
+    </div>
+
+    {
+      sibNoticeRecords.map((rec) => (
+        <div
+          class={rowClass(rec)}
+          data-sib-ntc-row
+          data-filter={rec.filterKey}
+          data-department={rec.department}
+          data-reference-date={rec.referenceDate}
+          data-search={`${rec.noticeCode} ${rec.title} ${rec.category} ${rec.department} ${rec.titleNote || ''}`.toLowerCase()}
+        >
+          <div><span class={tagClass(rec)}>{rec.category}</span></div>
+          <div class="sib-ntc-table-code">{rec.noticeCode}</div>
+          <div class:list={['sib-ntc-table-title', rec.rowStyle === 'urgent' && 'active']}>{rec.title}{rec.titleNote && (<><br /><span class:list={['sib-ntc-title-note', rec.titleNoteVariant === 'urgent' && 'urgent', rec.titleNoteVariant === 'muted' && 'muted']}>{rec.titleNote}</span></>)}</div>
+          <div class="sib-ntc-table-dept">{rec.department}<br /><span class="sib-op-table-sub">{rec.audience}</span></div>
+          <div class:list={['sib-ntc-table-date', rec.postedBold && 'bold']}>{rec.postedDate}<br /><span class="sib-op-table-sub">{rec.postedTime}</span></div>
+          <div class="sib-ntc-table-action">
+            {
+              rec.action === 'read' ? (
+                <span class="sib-ntc-btn-read">열람 →</span>
+              ) : (
+                <span class="sib-ntc-btn-link">조회 →</span>
+              )
+            }
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="sib-op-table-foot">
+      <span data-sib-ntc-foot-count>
+        총 {sibNoticeStats.total}건 중 1 — {Math.min(SIB_NTC_PAGE_SIZE, sibNoticeRecords.length)} 표시
+      </span>
+      <div class="sib-op-pagination" data-sib-ntc-pagination></div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ pageSize: SIB_NTC_PAGE_SIZE, referenceDate: '2026-05-24' }}>
+  const listRoot = document.querySelector('[data-sib-ntc-list]');
+  if (listRoot) {
+    const rows = Array.from(listRoot.querySelectorAll('[data-sib-ntc-row]'));
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-ntc-filter]'));
+    const statCards = Array.from(document.querySelectorAll('[data-sib-ntc-stat-filter]'));
+    const deptSelect = document.querySelector('[data-sib-ntc-dept]');
+    const periodSelect = document.querySelector('[data-sib-ntc-period]');
+    const searchInput = document.querySelector('[data-sib-ntc-search]');
+    const footCount = document.querySelector('[data-sib-ntc-foot-count]');
+    const paginationRoot = document.querySelector('[data-sib-ntc-pagination]');
+    const refDate = new Date(`${referenceDate}T00:00:00`);
+
+    let activeFilter = 'all';
+    let activeDept = 'all';
+    let activePeriod = '3m';
+    let searchQuery = '';
+    let currentPage = 1;
+
+    function getPeriodCutoff(period) {
+      if (period === 'all') return null;
+      const cutoff = new Date(refDate);
+      cutoff.setMonth(cutoff.getMonth() - (period === '6m' ? 6 : 3));
+      return cutoff;
+    }
+
+    function rowMatchesFilters(row) {
+      const filter = row.getAttribute('data-filter') || '';
+      const department = row.getAttribute('data-department') || '';
+      const searchText = row.getAttribute('data-search') || '';
+      const referenceAt = row.getAttribute('data-reference-date') || '';
+      const query = searchQuery.trim().toLowerCase();
+      const cutoff = getPeriodCutoff(activePeriod);
+
+      const matchesFilter = activeFilter === 'all' || filter === activeFilter;
+      const matchesDept = activeDept === 'all' || department === activeDept;
+      const matchesSearch = !query || searchText.includes(query);
+      const matchesPeriod =
+        !cutoff || (referenceAt && new Date(`${referenceAt}T00:00:00`) >= cutoff);
+
+      return matchesFilter && matchesDept && matchesSearch && matchesPeriod;
+    }
+
+    function getMatchingRows() {
+      return rows.filter((row) => rowMatchesFilters(row));
+    }
+
+    function setActiveTab(filter) {
+      activeFilter = filter;
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-ntc-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function renderPagination(totalPages) {
+      if (!paginationRoot) return;
+
+      if (totalPages <= 1) {
+        paginationRoot.innerHTML = '';
+        paginationRoot.classList.add('is-hidden');
+        return;
+      }
+
+      paginationRoot.classList.remove('is-hidden');
+      paginationRoot.innerHTML = '';
+
+      const prev = document.createElement('button');
+      prev.type = 'button';
+      prev.className = `sib-op-page-btn${currentPage === 1 ? ' disabled' : ''}`;
+      prev.textContent = '‹';
+      prev.disabled = currentPage === 1;
+      prev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(prev);
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `sib-op-page-btn${page === currentPage ? ' active' : ''}`;
+        btn.textContent = String(page);
+        btn.addEventListener('click', () => {
+          currentPage = page;
+          applyFilters(false);
+        });
+        paginationRoot.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = `sib-op-page-btn${currentPage === totalPages ? ' disabled' : ''}`;
+      next.textContent = '›';
+      next.disabled = currentPage === totalPages;
+      next.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(next);
+    }
+
+    function applyFilters(resetPage = true) {
+      if (resetPage) currentPage = 1;
+
+      const matching = getMatchingRows();
+      const filteredTotal = matching.length;
+      const totalPages = Math.max(1, Math.ceil(filteredTotal / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = Math.min(startIdx + pageSize, filteredTotal);
+      const visibleOnPage = matching.slice(startIdx, endIdx);
+      const visibleSet = new Set(visibleOnPage);
+
+      rows.forEach((row) => {
+        row.classList.toggle('is-filtered-out', !visibleSet.has(row));
+      });
+
+      if (footCount) {
+        if (filteredTotal === 0) {
+          footCount.textContent = '검색 결과 없음';
+        } else {
+          footCount.textContent = `총 ${filteredTotal}건 중 ${startIdx + 1} — ${endIdx} 표시`;
+        }
+      }
+
+      renderPagination(totalPages);
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-ntc-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    statCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-ntc-stat-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    deptSelect?.addEventListener('change', () => {
+      activeDept = deptSelect.value;
+      applyFilters();
+    });
+
+    periodSelect?.addEventListener('change', () => {
+      activePeriod = periodSelect.value;
+      applyFilters();
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    applyFilters();
+  }
+</script>

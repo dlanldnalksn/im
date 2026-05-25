@@ -901,27 +901,43 @@
   font-weight: 700;
 }
 
-.sib-apr-head-actions {
+.sib-apr-head-actions,
+.sib-reg-head-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
 }
 
-.sib-apr-btn-outline {
-  @apply bg-white border border-[#e0e2e7] text-[#525252] text-[12.5px] font-bold rounded cursor-pointer;
-  padding: 8px 14px;
+.sib-apr-btn-outline,
+.sib-reg-btn-outline,
+.sib-apr-new-btn,
+.sib-reg-fav-btn {
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  font: inherit;
   line-height: 1.2;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.sib-apr-new-btn {
-  @apply bg-[#1a1a1a] text-white text-[12.5px] font-bold rounded cursor-pointer border-0;
+.sib-apr-btn-outline,
+.sib-reg-btn-outline {
+  @apply bg-white border border-[#e0e2e7] text-[#525252];
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sib-apr-new-btn,
+.sib-reg-fav-btn {
+  @apply bg-[#1a1a1a] text-white border-0;
   padding: 8px 16px;
-  letter-spacing: -0.01em;
-  font: inherit;
-  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .sib-apr-table {
@@ -1198,32 +1214,6 @@
 }
 
 /* 규정·법령 */
-.sib-reg-head-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.sib-reg-btn-outline {
-  @apply bg-white border border-[#e0e2e7] text-[#525252] text-[12.5px] font-bold rounded cursor-pointer;
-  padding: 8px 14px;
-  letter-spacing: -0.01em;
-  font: inherit;
-  line-height: 1.2;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.sib-reg-fav-btn {
-  @apply bg-[#1a1a1a] text-white text-[12.5px] font-bold rounded cursor-pointer border-0;
-  padding: 8px 16px;
-  letter-spacing: -0.01em;
-  font: inherit;
-  line-height: 1.2;
-}
-
 .sib-reg-amendment {
   @apply bg-[#fff8f5] border border-[#f5d8d0] rounded flex flex-wrap justify-between items-center;
   border-left: 3px solid #8b2a2a;
@@ -1494,4 +1484,170 @@
 
 .sib-reg-btn-link.active {
   @apply text-[#1a1a1a] font-bold;
+}
+
+/* 공지·알림 */
+.sib-ntc-head-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 11.5px;
+  color: #666;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.sib-ntc-head-sep {
+  color: #bbb;
+}
+
+.sib-ntc-table {
+  @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden min-w-[980px];
+}
+
+.sib-ntc-table-head,
+.sib-ntc-table-row {
+  display: grid;
+  grid-template-columns: 80px 120px 1.8fr 140px 120px 80px;
+  column-gap: 14px;
+  align-items: center;
+}
+
+.sib-ntc-table-head {
+  @apply border-b border-[#e5e7eb] bg-[#fafbfc] text-[11px] text-[#525252] font-bold;
+  padding: 13px 22px;
+  letter-spacing: -0.01em;
+}
+
+.sib-ntc-table-row {
+  @apply border-b border-[#f0f0f2] cursor-pointer;
+  padding: 16px 22px;
+}
+
+.sib-ntc-table-row.urgent {
+  @apply bg-[#fff8f5];
+  box-shadow: inset 3px 0 0 #8b2a2a;
+}
+
+.sib-ntc-table-row:hover {
+  @apply bg-[#fafafa];
+}
+
+.sib-ntc-table-row.urgent:hover {
+  @apply bg-[#fff5f0];
+}
+
+.sib-ntc-table-row.is-filtered-out {
+  display: none;
+}
+
+.sib-ntc-tag {
+  @apply text-[10px] font-bold rounded-[2px] w-fit;
+  padding: 2px 7px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sib-ntc-tag.urgent {
+  background: #8b2a2a;
+  color: #fff;
+}
+
+.sib-ntc-tag.notice {
+  background: #f5f6f8;
+  border: 1px solid #e0e2e7;
+  color: #525252;
+}
+
+.sib-ntc-tag.admin {
+  background: #e0e9f5;
+  border: 1px solid #c8d8e8;
+  color: #1e4d6e;
+}
+
+.sib-ntc-tag.hr {
+  background: #f5f0fa;
+  border: 1px solid #ddc8e8;
+  color: #5a3a7a;
+}
+
+.sib-ntc-table-code {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #525252;
+}
+
+.sib-ntc-table-title {
+  @apply text-[13px] text-[#1a1a1a] font-semibold;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.sib-ntc-table-title.active {
+  @apply font-bold;
+}
+
+.sib-ntc-title-note {
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.sib-ntc-title-note.urgent {
+  color: #8b2a2a;
+}
+
+.sib-ntc-title-note.muted {
+  color: #888;
+  font-weight: 500;
+}
+
+.sib-ntc-table-dept {
+  @apply text-[11px] text-[#525252] font-medium;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.sib-ntc-table-date {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #525252;
+  line-height: 1.3;
+}
+
+.sib-ntc-table-date.bold {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.sib-ntc-table-date .sib-op-table-sub {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-weight: 600;
+  color: #666;
+}
+
+.sib-ntc-table-date:not(.bold) .sib-op-table-sub {
+  font-weight: 500;
+  color: #888;
+}
+
+.sib-ntc-table-action {
+  @apply text-right;
+}
+
+.sib-ntc-btn-read {
+  @apply inline-block bg-[#1a1a1a] text-white text-[11px] font-bold rounded-[3px] cursor-pointer;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  padding: 5px 11px;
+  letter-spacing: -0.01em;
+}
+
+.sib-ntc-btn-link {
+  @apply text-[11px] text-[#525252] font-semibold cursor-pointer;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.01em;
 }
