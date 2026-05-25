@@ -12,6 +12,10 @@
   margin: 0;
 }
 
+.sib-shell h1.sib-page-title {
+  margin: 0 0 4px;
+}
+
 .sib-secure-bar {
   @apply bg-[#1a1a1a] text-[#888] px-7 text-[11px] flex flex-wrap justify-between items-center gap-2;
   padding-top: 6px;
@@ -311,7 +315,6 @@
 
 .sib-page-title {
   @apply text-[22px] font-extrabold text-[#1a1a1a];
-  margin: 0 0 4px;
   letter-spacing: -0.025em;
   line-height: 1.15;
 }
@@ -686,14 +689,6 @@
   font-weight: 700;
 }
 
-.sib-rpt-new-btn {
-  @apply bg-[#1a1a1a] text-white text-[12.5px] font-bold rounded cursor-pointer border-0;
-  padding: 8px 16px;
-  letter-spacing: -0.01em;
-  font: inherit;
-  line-height: 1.2;
-}
-
 .sib-rpt-table {
   @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden min-w-[920px];
 }
@@ -912,7 +907,8 @@
 .sib-apr-btn-outline,
 .sib-reg-btn-outline,
 .sib-apr-new-btn,
-.sib-reg-fav-btn {
+.sib-reg-fav-btn,
+.sib-rpt-new-btn {
   font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   font-size: 12.5px;
   font-weight: 700;
@@ -932,7 +928,8 @@
 }
 
 .sib-apr-new-btn,
-.sib-reg-fav-btn {
+.sib-reg-fav-btn,
+.sib-rpt-new-btn {
   @apply bg-[#1a1a1a] text-white border-0;
   padding: 8px 16px;
   display: inline-flex;
