@@ -1747,5 +1747,604 @@ a.sib-reg-amendment {
 
 .sib-detail-back {
   @apply inline-block text-[12px] text-[#525252] font-semibold no-underline hover:underline;
+}
+
+.sib-detail-foot {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f2;
+}
+
+/* 신상·인사 */
+.sib-personnel-page {
+  padding-bottom: 48px;
+}
+
+.sib-prf-page-head {
   margin-bottom: 18px;
 }
+
+.sib-prf-head-meta {
+  @apply flex flex-wrap items-center gap-2 text-[11.5px] text-[#666] font-medium;
+}
+
+.sib-prf-head-sep {
+  color: #bbb;
+}
+
+.sib-prf-head-link {
+  @apply border-0 bg-transparent p-0 cursor-pointer font-semibold text-[#525252];
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+.sib-prf-layout {
+  @apply flex gap-3.5 items-stretch;
+}
+
+.sib-prf-sidebar {
+  @apply w-[340px] shrink-0 bg-white border border-[#e5e7eb] rounded-md flex flex-col;
+  padding: 24px 22px;
+}
+
+.sib-prf-photo-wrap {
+  @apply flex flex-col items-center gap-2;
+  margin-bottom: 18px;
+}
+
+.sib-prf-photo {
+  @apply w-[120px] h-[150px] bg-[#f5f6f8] border border-[#e0e2e7] rounded flex items-center justify-center text-[11px] text-[#bbb] font-semibold;
+}
+
+.sib-prf-photo-date {
+  @apply text-[10px] text-[#888] font-semibold;
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-prf-identity {
+  @apply text-center;
+  margin-bottom: 16px;
+}
+
+.sib-prf-name-row {
+  @apply flex items-baseline justify-center gap-2;
+  margin-bottom: 4px;
+}
+
+.sib-prf-name {
+  @apply text-[22px] font-extrabold text-[#1a1a1a];
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.sib-prf-name-hanja {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.sib-prf-role {
+  @apply text-[11.5px] text-[#525252] font-semibold;
+  margin-bottom: 6px;
+}
+
+.sib-prf-id {
+  @apply text-[10.5px] text-[#525252] font-semibold leading-snug;
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-prf-grade-list {
+  @apply flex flex-col gap-3.5 pt-4 border-t border-[#f0f0f2];
+}
+
+.sib-prf-grade-row {
+  @apply flex justify-between items-center;
+}
+
+.sib-prf-grade-label {
+  @apply text-[10.5px] text-[#888] font-semibold;
+}
+
+.sib-prf-grade-value {
+  @apply flex items-baseline gap-1.5;
+}
+
+.sib-prf-grade-main {
+  @apply text-lg font-extrabold text-[#1a1a1a] leading-none;
+  font-family: 'Nanum Myeongjo', serif;
+  letter-spacing: -0.03em;
+}
+
+.sib-prf-grade-sub {
+  @apply text-[10.5px] text-[#666] font-semibold;
+}
+
+.sib-prf-grade-sub.danger {
+  @apply text-imc-danger font-bold;
+}
+
+.sib-prf-main {
+  @apply flex-1 min-w-0 bg-white border border-[#e5e7eb] rounded-md overflow-hidden flex;
+}
+
+.sib-prf-vtabs {
+  @apply w-[170px] shrink-0 border-r border-[#e5e7eb] flex flex-col;
+  padding: 14px 0;
+}
+
+.sib-vtab {
+  padding: 11px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  border: 0;
+  border-left: 2.5px solid transparent;
+  margin-left: -1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  text-align: left;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+.sib-vtab.active {
+  color: #1a1a1a;
+  font-weight: 700;
+  border-left-color: #1a1a1a;
+  background: #fafbfc;
+}
+
+.sib-vtab:hover:not(.active) {
+  background: #fafbfc;
+  color: #525252;
+}
+
+.sib-vtab-lock {
+  @apply flex items-center gap-1.5;
+}
+
+.sib-tab-content {
+  display: none;
+}
+
+.sib-tab-content.active {
+  display: block;
+}
+
+.sib-prf-content {
+  @apply flex-1 min-w-0;
+  padding: 22px 24px;
+}
+
+.sib-prf-grid-2 {
+  @apply grid gap-7;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 960px) {
+  .sib-prf-layout {
+    @apply flex-col;
+  }
+
+  .sib-prf-sidebar {
+    @apply w-full;
+  }
+
+  .sib-prf-main {
+    @apply flex-col;
+  }
+
+  .sib-prf-vtabs {
+    @apply w-full flex-row overflow-x-auto border-r-0 border-b border-[#e5e7eb];
+    padding: 0;
+  }
+
+  .sib-vtab {
+    border-left: 0;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+  }
+
+  .sib-vtab.active {
+    border-left-color: transparent;
+    border-bottom-color: #1a1a1a;
+  }
+
+  .sib-prf-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sib-prf-section-title {
+  @apply text-[11px] text-[#525252] font-bold uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #f0f0f2;
+}
+
+.sib-prf-kv-list {
+  @apply flex flex-col gap-2.5;
+}
+
+.sib-prf-kv-list.wide .sib-prf-kv {
+  @apply items-start;
+}
+
+.sib-prf-kv-list.tight {
+  gap: 6px;
+}
+
+.sib-prf-kv {
+  @apply flex justify-between items-center text-xs;
+}
+
+.sib-prf-kv dt {
+  @apply text-[#888] font-medium shrink-0;
+}
+
+.sib-prf-kv dd {
+  @apply text-[#1a1a1a] font-semibold text-right m-0;
+}
+
+.sib-prf-kv dd.mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-prf-kv dd.muted {
+  @apply text-[#888] font-medium;
+}
+
+.sib-prf-kv-note {
+  @apply block text-[10.5px] text-[#666] font-medium;
+}
+
+.sib-prf-block-list {
+  @apply flex flex-col gap-4;
+}
+
+.sib-prf-block-list.compact {
+  gap: 14px;
+}
+
+.sib-prf-block-label {
+  @apply text-[10px] text-[#888] font-semibold;
+  margin-bottom: 5px;
+}
+
+.sib-prf-block-main {
+  @apply text-xs text-[#1a1a1a] font-semibold leading-snug;
+}
+
+.sib-prf-block-sub {
+  @apply text-[11px] text-[#525252] font-medium;
+  margin-top: 2px;
+}
+
+.sib-prf-block-desc {
+  @apply text-[10.5px] text-[#666] font-medium leading-snug;
+  margin-top: 3px;
+}
+
+.sib-prf-empty {
+  @apply text-xs text-[#888] italic font-medium;
+}
+
+.sib-prf-family {
+  @apply flex flex-col gap-1;
+}
+
+.sib-prf-family-row {
+  @apply flex justify-between text-[11px];
+}
+
+.sib-prf-family-row span:first-child {
+  @apply text-[#525252] font-medium;
+}
+
+.sib-prf-family-row span:last-child {
+  @apply text-[#888] font-medium;
+}
+
+.sib-prf-divider-top {
+  @apply pt-3 border-t border-[#f0f0f2];
+}
+
+.sib-prf-divider-top.spaced {
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.sib-prf-line-item {
+  @apply text-[11.5px] text-[#1a1a1a] font-medium leading-snug;
+}
+
+.sib-prf-timeline {
+  @apply flex flex-col gap-4;
+}
+
+.sib-prf-timeline-item {
+  @apply flex gap-3 items-start;
+}
+
+.sib-prf-timeline-date {
+  @apply flex flex-col items-center shrink-0 w-[72px];
+}
+
+.sib-prf-timeline-date span {
+  @apply text-[10.5px] text-[#525252] font-semibold;
+  font-family: 'Nanum Gothic Coding', monospace;
+}
+
+.sib-prf-timeline-date span.current {
+  @apply text-[#1a1a1a] font-bold;
+}
+
+.sib-prf-timeline-now {
+  @apply text-[9.5px] text-[#888] font-semibold;
+  margin-top: 2px;
+}
+
+.sib-prf-timeline-dot {
+  @apply w-2 h-2 bg-[#888] rounded-full shrink-0;
+  margin-top: 4px;
+}
+
+.sib-prf-timeline-dot.current {
+  @apply bg-imc-danger;
+}
+
+.sib-prf-timeline-title {
+  @apply text-xs text-[#1a1a1a] font-semibold leading-snug;
+}
+
+.sib-prf-timeline-title.current {
+  @apply font-bold;
+}
+
+.sib-prf-timeline-sub {
+  @apply text-[10.5px] text-[#525252] font-medium;
+  margin-top: 2px;
+}
+
+.sib-prf-stat-grid {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.sib-prf-stat-card {
+  @apply bg-[#fafbfc] border border-[#f0f0f2] rounded px-3.5 py-3;
+}
+
+.sib-prf-stat-value {
+  @apply text-xl font-extrabold text-[#1a1a1a] leading-none;
+  letter-spacing: -0.03em;
+}
+
+.sib-prf-stat-value span {
+  @apply text-[11px] text-[#888] font-bold ml-0.5;
+}
+
+.sib-prf-stat-label {
+  @apply text-[10.5px] text-[#888] font-semibold;
+  margin-top: 5px;
+}
+
+.sib-prf-stat-note {
+  @apply mt-3 px-3 py-2.5 bg-[#fafbfc] border border-[#f0f0f2] rounded;
+}
+
+.sib-prf-stat-note-value {
+  @apply text-[12.5px] text-[#1a1a1a] font-semibold;
+}
+
+.sib-prf-chips {
+  @apply flex flex-wrap gap-1;
+}
+
+.sib-prf-chip {
+  @apply bg-[#f5f6f8] border border-[#e0e2e7] text-[#525252] text-[10.5px] font-semibold px-1.5 py-0.5 rounded;
+}
+
+.sib-prf-rx-row {
+  @apply flex justify-between items-center text-[11.5px] gap-3;
+}
+
+.sib-prf-rx-row .mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10px;
+  @apply text-[#888] font-medium;
+}
+
+.sib-prf-rx-row .accent {
+  @apply text-[#92400e] font-bold;
+}
+
+.sib-prf-rx-row .bold {
+  @apply font-semibold text-[#1a1a1a];
+}
+
+.sib-prf-eval-list {
+  @apply flex flex-col gap-2;
+}
+
+.sib-prf-eval-row {
+  @apply flex justify-between items-center text-xs gap-3;
+}
+
+.sib-prf-eval-row .bold {
+  @apply font-semibold text-[#1a1a1a];
+}
+
+.sib-prf-eval-row .muted {
+  @apply text-[#525252];
+}
+
+.sib-prf-eval-row .italic {
+  font-style: italic;
+}
+
+.sib-prf-eval-row .mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10.5px;
+  @apply font-semibold text-[#525252];
+}
+
+.sib-prf-eval-row .mono.danger {
+  @apply text-imc-danger font-bold;
+}
+
+.sib-prf-badge {
+  @apply text-[10px] font-bold px-1.5 py-0.5 rounded;
+}
+
+.sib-prf-badge.good {
+  @apply bg-[#e8f5ed] border border-[#c8e0d0] text-[#1a7a4d];
+}
+
+.sib-prf-badge.ok {
+  @apply bg-[#e0e9f5] border border-[#c8d8e8] text-[#1e4d6e];
+}
+
+.sib-prf-badge.rejected {
+  @apply bg-[#fef2ef] border border-[#f5d8d0] text-imc-danger;
+}
+
+.sib-prf-note {
+  @apply text-[10px] text-[#666] font-medium leading-snug;
+  margin-top: 5px;
+}
+
+.sib-prf-warning-card {
+  @apply px-2.5 py-2 bg-[#fafbfc] border border-[#f0f0f2] rounded mb-1.5;
+}
+
+.sib-prf-warning-top {
+  @apply flex justify-between items-center text-[11px] font-semibold text-[#1a1a1a] mb-0.5;
+}
+
+.sib-prf-warning-top .mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  @apply text-[10px] text-[#888] font-medium;
+}
+
+.sib-prf-warning-code {
+  @apply text-[10px] text-[#525252] font-medium;
+}
+
+.sib-prf-deep-alert {
+  @apply flex justify-between items-center gap-3 mb-3.5 px-4 py-2.5 bg-[#fff8f5] border border-[#f5d8d0] border-l-[3px] border-l-imc-danger rounded;
+}
+
+.sib-prf-deep-alert-body {
+  @apply flex items-center gap-2.5 text-[11.5px] text-[#1a1a1a] font-bold;
+}
+
+.sib-prf-deep-alert-link {
+  @apply text-[10.5px] text-imc-danger font-bold shrink-0 cursor-pointer;
+}
+
+.sib-prf-metrics {
+  @apply flex flex-col gap-2.5;
+}
+
+.sib-prf-metric-head {
+  @apply flex justify-between text-[11.5px] font-semibold text-[#1a1a1a] mb-1;
+}
+
+.sib-prf-metric-head .mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10.5px;
+  @apply font-bold;
+}
+
+.sib-prf-metric-head .mono.danger {
+  @apply text-imc-danger;
+}
+
+.sib-prf-metric-head .mono.warn {
+  @apply text-[#92400e];
+}
+
+.sib-prf-bar {
+  @apply h-1 bg-[#f0f0f2] rounded overflow-hidden;
+}
+
+.sib-prf-bar-fill {
+  @apply h-full;
+}
+
+.sib-prf-bar-fill.danger {
+  @apply bg-imc-danger;
+}
+
+.sib-prf-bar-fill.warn {
+  background: #e8b870;
+}
+
+.sib-prf-bar-fill.neutral {
+  @apply bg-[#888];
+}
+
+.sib-prf-caution {
+  @apply mt-3.5 px-3 py-2.5 bg-[#fef2ef] border border-[#f5d8d0] rounded;
+}
+
+.sib-prf-caution-label {
+  @apply text-[10px] text-imc-danger font-bold mb-1;
+}
+
+.sib-prf-caution p {
+  @apply text-[11px] text-[#525252] font-medium leading-relaxed m-0;
+}
+
+.sib-prf-report {
+  @apply bg-[#fafbfc] border border-[#f0f0f2] rounded px-3.5 py-3;
+}
+
+.sib-prf-report-date {
+  @apply text-[10px] text-[#888] font-semibold mb-1.5;
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-prf-report p {
+  @apply text-[11.5px] text-[#1a1a1a] font-medium leading-relaxed m-0;
+  margin-top: 8px;
+}
+
+.sib-prf-report p:first-of-type {
+  margin-top: 0;
+}
+
+.sib-prf-report p .danger {
+  @apply text-imc-danger font-bold;
+}
+
+.sib-prf-report-author {
+  @apply text-[10px] text-[#888] font-semibold text-right;
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+  margin-top: 10px;
+}
+
+.sib-prf-next-eval {
+  @apply flex justify-between items-center text-[11px] mt-2.5 px-2.5 py-2 bg-[#fafbfc] border border-[#f0f0f2] rounded;
+}
+
+.sib-prf-next-eval .muted {
+  @apply text-[#888] font-medium;
+}
+
+.sib-prf-next-eval .mono {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10.5px;
+  @apply text-[#1a1a1a] font-semibold;
+}
+

@@ -1,0 +1,420 @@
+---
+import { url } from '../../lib/url';
+import { leeChanYoung } from '../../data/personnel/lee-chan-young';
+import {
+  sibPersonnelAbility,
+  sibPersonnelBasic,
+  sibPersonnelDeep,
+  sibPersonnelEval,
+  sibPersonnelHistory,
+  sibPersonnelMedical,
+  sibPersonnelProfileMeta,
+} from '../../data/sib-personnel-profile';
+
+const base = 'intranet/sib/';
+const meta = sibPersonnelProfileMeta;
+const p = leeChanYoung;
+
+function evalBadgeClass(tone: 'good' | 'ok') {
+  return tone === 'good' ? 'sib-prf-badge good' : 'sib-prf-badge ok';
+}
+
+function barClass(tone: 'danger' | 'warn' | 'neutral') {
+  if (tone === 'danger') return 'sib-prf-bar-fill danger';
+  if (tone === 'warn') return 'sib-prf-bar-fill warn';
+  return 'sib-prf-bar-fill neutral';
+}
+---
+
+<div class="sib-personnel-page">
+  <nav class="sib-breadcrumb" aria-label="경로">
+    <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+    <span class="sib-breadcrumb-sep">›</span>
+    <span class="sib-breadcrumb-current">신상·인사</span>
+  </nav>
+
+  <div class="sib-page-head sib-prf-page-head">
+    <div>
+      <h1 class="sib-page-title">신상·인사</h1>
+      <p class="sib-page-subtitle">신원 · 거주 · 차출 이력 · 능력 · 의료 · 평가</p>
+    </div>
+    <div class="sib-prf-head-meta">
+      <span>최종 갱신 {meta.updated}</span>
+      <span class="sib-prf-head-sep">|</span>
+      <button type="button" class="sib-prf-head-link">정보 수정 요청</button>
+    </div>
+  </div>
+
+  <div class="sib-prf-layout">
+    <aside class="sib-prf-sidebar">
+      <div class="sib-prf-photo-wrap">
+        <div class="sib-prf-photo">증명사진</div>
+        <div class="sib-prf-photo-date">PHOTO · {meta.photoDate}</div>
+      </div>
+
+      <div class="sib-prf-identity">
+        <div class="sib-prf-name-row">
+          <div class="sib-prf-name">{p.name}</div>
+          <div class="sib-prf-name-hanja">{meta.nameHanja}</div>
+        </div>
+        <div class="sib-prf-role">차출요원 · {meta.displayAge}</div>
+        <div class="sib-prf-id">
+          {p.employeeId}<br />
+          특수감찰국 2處 · 갑급
+        </div>
+      </div>
+
+      <div class="sib-prf-grade-list">
+        {
+          [
+            { label: '위험도 등급', ...meta.grades.risk },
+            { label: '작전 등급', ...meta.grades.ops },
+            { label: '봉인 상태', ...meta.grades.seal },
+            { label: '매칭·동기화', ...meta.grades.matching, danger: true },
+          ].map((g) => (
+            <div class="sib-prf-grade-row">
+              <span class="sib-prf-grade-label">{g.label}</span>
+              <div class="sib-prf-grade-value">
+                <span class="sib-prf-grade-main">{g.main}</span>
+                <span class:list={['sib-prf-grade-sub', g.danger && 'danger']}>{g.sub}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </aside>
+
+    <div class="sib-prf-main">
+      <nav class="sib-prf-vtabs" aria-label="신상·인사 탭">
+        <button type="button" class="sib-vtab active" data-tab="basic">기본·연락</button>
+        <button type="button" class="sib-vtab" data-tab="history">차출 이력</button>
+        <button type="button" class="sib-vtab" data-tab="ability">능력 정보</button>
+        <button type="button" class="sib-vtab" data-tab="medical">의료·신경</button>
+        <button type="button" class="sib-vtab" data-tab="eval">평가·인사</button>
+        <button type="button" class="sib-vtab" data-tab="deep">
+          <span class="sib-vtab-lock">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="1" stroke="#888" stroke-width="2"></rect>
+              <path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="2"></path>
+            </svg>
+            <span>심층 분석</span>
+          </span>
+        </button>
+      </nav>
+
+      <div class="sib-prf-content">
+        <div id="sib-tab-basic" class="sib-tab-content active">
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">기본 신상</h2>
+              <dl class="sib-prf-kv-list">
+                <div class="sib-prf-kv"><dt>성명</dt><dd>{p.name} ({meta.nameHanja})</dd></div>
+                <div class="sib-prf-kv"><dt>생년월일</dt><dd>{meta.birthDate} ({meta.displayAge})</dd></div>
+                <div class="sib-prf-kv"><dt>성별</dt><dd>남</dd></div>
+                <div class="sib-prf-kv"><dt>소속</dt><dd>특수감찰국 2處</dd></div>
+                <div class="sib-prf-kv"><dt>직급</dt><dd>갑급 차출요원</dd></div>
+                <div class="sib-prf-kv"><dt>기수</dt><dd>{meta.cohort}</dd></div>
+                <div class="sib-prf-kv"><dt>내선</dt><dd class="mono">{meta.extensionShort}</dd></div>
+              </dl>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">거주·연락</h2>
+              <div class="sib-prf-block-list">
+                <div>
+                  <div class="sib-prf-block-label">공식 숙소 · 의무 거주</div>
+                  <div class="sib-prf-block-main">{sibPersonnelBasic.officialAddress}</div>
+                  <div class="sib-prf-block-sub">{sibPersonnelBasic.officialDetail}</div>
+                </div>
+                <div>
+                  <div class="sib-prf-block-label">개인 거주지 · 관외 이동 허가 필요</div>
+                  <div class="sib-prf-block-main">{sibPersonnelBasic.personalAddress}</div>
+                  <div class="sib-prf-block-sub">{sibPersonnelBasic.personalDetail}</div>
+                </div>
+                <div>
+                  <div class="sib-prf-block-label">비상 연락망</div>
+                  <div class="sib-prf-empty">해당 없음</div>
+                </div>
+                <div>
+                  <div class="sib-prf-block-label">가족 (등록)</div>
+                  <div class="sib-prf-family">
+                    {
+                      sibPersonnelBasic.family.map((f) => (
+                        <div class="sib-prf-family-row">
+                          <span>{f.relation}</span>
+                          <span>{f.location}</span>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div id="sib-tab-history" class="sib-tab-content">
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">발령·차출 연혁</h2>
+              <div class="sib-prf-timeline">
+                {
+                  sibPersonnelHistory.timeline.map((item) => (
+                    <div class="sib-prf-timeline-item">
+                      <div class="sib-prf-timeline-date">
+                        <span class:list={[item.current && 'current']}>{item.date}</span>
+                        {item.current && <span class="sib-prf-timeline-now">현재</span>}
+                      </div>
+                      <div class:list={['sib-prf-timeline-dot', item.current && 'current']}></div>
+                      <div class="sib-prf-timeline-body">
+                        <div class:list={['sib-prf-timeline-title', item.current && 'current']}>{item.title}</div>
+                        <div class="sib-prf-timeline-sub">{item.sub}</div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">9년 누적 작전 통계</h2>
+              <div class="sib-prf-stat-grid">
+                {
+                  sibPersonnelHistory.stats.map((s) => (
+                    <div class="sib-prf-stat-card">
+                      <div class="sib-prf-stat-value">
+                        {s.value}<span>{s.unit}</span>
+                      </div>
+                      <div class="sib-prf-stat-label">{s.label}</div>
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="sib-prf-stat-note">
+                <div class="sib-prf-block-label">최근 12개월 평균</div>
+                <div class="sib-prf-stat-note-value">{sibPersonnelHistory.recentAvg}</div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div id="sib-tab-ability" class="sib-tab-content">
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">능력 개요</h2>
+              <dl class="sib-prf-kv-list wide">
+                {
+                  sibPersonnelAbility.overview.map((row) => (
+                    <div class="sib-prf-kv">
+                      <dt>{row.label}</dt>
+                      <dd>
+                        {row.value}
+                        {row.note && <span class="sib-prf-kv-note">{row.note}</span>}
+                      </dd>
+                    </div>
+                  ))
+                }
+              </dl>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">작동·반동</h2>
+              <div class="sib-prf-block-list">
+                <div>
+                  <div class="sib-prf-block-label">작동 방식</div>
+                  <div class="sib-prf-block-main">{sibPersonnelAbility.operation.title}</div>
+                  <div class="sib-prf-block-desc">{sibPersonnelAbility.operation.sub}</div>
+                </div>
+                <div class="sib-prf-divider-top">
+                  <div class="sib-prf-block-label">반동·후유증</div>
+                  {
+                    sibPersonnelAbility.backlash.map((line) => (
+                      <div class="sib-prf-line-item">{line}</div>
+                    ))
+                  }
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div id="sib-tab-medical" class="sib-tab-content">
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">신체·처방</h2>
+              <div class="sib-prf-block-list compact">
+                <div>
+                  <div class="sib-prf-block-label">신체 정보</div>
+                  <dl class="sib-prf-kv-list tight">
+                    {
+                      sibPersonnelMedical.body.map((row) => (
+                        <div class="sib-prf-kv">
+                          <dt>{row.label}</dt>
+                          <dd class:list={[row.mono && 'mono muted']}>{row.value}</dd>
+                        </div>
+                      ))
+                    }
+                  </dl>
+                </div>
+                <div class="sib-prf-divider-top">
+                  <div class="sib-prf-block-label">정기 처방</div>
+                  {
+                    sibPersonnelMedical.prescriptions.map((rx) => (
+                      <div class="sib-prf-rx-row">
+                        <span>{rx.name}</span>
+                        <span class:list={[rx.accent && 'accent', 'mono']}>{rx.date}</span>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">만성·신경 평가</h2>
+              <div class="sib-prf-block-list compact">
+                <div>
+                  <div class="sib-prf-block-label">만성 상태</div>
+                  <div class="sib-prf-chips">
+                    {sibPersonnelMedical.chronic.map((c) => <span class="sib-prf-chip">{c}</span>)}
+                  </div>
+                </div>
+                <div class="sib-prf-divider-top">
+                  <div class="sib-prf-block-label">검진·평가</div>
+                  {
+                    sibPersonnelMedical.checkups.map((row) => (
+                      <div class="sib-prf-rx-row">
+                        <span class:list={[row.accent && 'bold']}>{row.label}</span>
+                        <span class:list={[row.accent && 'accent', 'mono']}>{row.value}</span>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div id="sib-tab-eval" class="sib-tab-content">
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">분기 평가</h2>
+              <div class="sib-prf-eval-list">
+                {
+                  sibPersonnelEval.quarters.map((q) => (
+                    <div class="sib-prf-eval-row">
+                      <span class:list={[q.bold && 'bold']}>{q.label}</span>
+                      <span class={evalBadgeClass(q.tone)}>{q.grade}</span>
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="sib-prf-divider-top spaced">
+                <div class="sib-prf-block-label">적합도 평가 (매칭 관련)</div>
+                <div class="sib-prf-eval-row">
+                  <span class="bold">{sibPersonnelEval.matching.title}</span>
+                  <span class="sib-prf-badge rejected">{sibPersonnelEval.matching.badge}</span>
+                </div>
+                <div class="sib-prf-note">{sibPersonnelEval.matching.note}</div>
+              </div>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">표창·징계</h2>
+              <div class="sib-prf-eval-list">
+                {
+                  sibPersonnelEval.discipline.map((d) => (
+                    <div class="sib-prf-eval-row">
+                      <span class:list={[d.bold && 'bold', d.muted && 'muted italic']}>{d.label}</span>
+                      <span class:list={['mono', d.danger && 'danger']}>{d.value}</span>
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="sib-prf-divider-top spaced">
+                <div class="sib-prf-block-label">최근 경고 이력</div>
+                {
+                  sibPersonnelEval.warnings.map((w) => (
+                    <div class="sib-prf-warning-card">
+                      <div class="sib-prf-warning-top">
+                        <span>{w.title}</span>
+                        <span class="mono muted">{w.date}</span>
+                      </div>
+                      <div class="sib-prf-warning-code">{w.code}</div>
+                    </div>
+                  ))
+                }
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div id="sib-tab-deep" class="sib-tab-content">
+          <div class="sib-prf-deep-alert">
+            <div class="sib-prf-deep-alert-body">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="5" y="11" width="14" height="10" rx="1" stroke="#8b2a2a" stroke-width="2"></rect>
+                <path d="M8 11V7a4 4 0 018 0v4" stroke="#8b2a2a" stroke-width="2"></path>
+              </svg>
+              <span>감찰관 권한 필요 · 본인 열람 시 표시 항목 제한</span>
+            </div>
+            <span class="sib-prf-deep-alert-link">전체 열람 권한 요청 →</span>
+          </div>
+          <div class="sib-prf-grid-2">
+            <section>
+              <h2 class="sib-prf-section-title">심리·행동 지표</h2>
+              <div class="sib-prf-metrics">
+                {
+                  sibPersonnelDeep.metrics.map((m) => (
+                    <div class="sib-prf-metric">
+                      <div class="sib-prf-metric-head">
+                        <span>{m.label}</span>
+                        <span class:list={['mono', m.tone === 'danger' && 'danger', m.tone === 'warn' && 'warn']}>
+                          {m.level}
+                        </span>
+                      </div>
+                      <div class="sib-prf-bar">
+                        <div class={barClass(m.tone)} style={`width:${m.width}`}></div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="sib-prf-caution">
+                <div class="sib-prf-caution-label">주의 사항</div>
+                <p>{sibPersonnelDeep.caution}</p>
+              </div>
+            </section>
+            <section>
+              <h2 class="sib-prf-section-title">감찰관 소견</h2>
+              <div class="sib-prf-report">
+                <div class="sib-prf-report-date">{sibPersonnelDeep.report.date}</div>
+                {
+                  sibPersonnelDeep.report.paragraphs.map((para) => (
+                    <p>{para}</p>
+                  ))
+                }
+                <div class="sib-prf-report-author">{sibPersonnelDeep.report.author}</div>
+              </div>
+              <div class="sib-prf-next-eval">
+                <span class="muted">차기 종합 평가</span>
+                <span class="mono">{sibPersonnelDeep.report.nextEval}</span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function sibSwitchPersonnelTab(tabName: string) {
+    document.querySelectorAll('.sib-vtab').forEach((el) => el.classList.remove('active'));
+    document.querySelectorAll('.sib-tab-content').forEach((el) => el.classList.remove('active'));
+    document.querySelector(`.sib-vtab[data-tab="${tabName}"]`)?.classList.add('active');
+    document.getElementById(`sib-tab-${tabName}`)?.classList.add('active');
+  }
+
+  document.querySelectorAll('.sib-vtab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.getAttribute('data-tab');
+      if (tabName) sibSwitchPersonnelTab(tabName);
+    });
+  });
+</script>

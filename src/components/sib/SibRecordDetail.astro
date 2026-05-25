@@ -58,8 +58,6 @@ function tagClass(variant?: SibDetailTag['variant']) {
 </nav>
 
 <article class="sib-detail">
-  <a href={url(breadcrumbParentHref)} class="sib-detail-back">← {backLabel}</a>
-
   <header class="sib-detail-head">
     <div class="sib-detail-head-top">
       {
@@ -95,6 +93,9 @@ function tagClass(variant?: SibDetailTag['variant']) {
     }
   </div>
 
+  <footer class="sib-detail-foot">
+    <a href={url(breadcrumbParentHref)} class="sib-detail-back">← {backLabel}</a>
+  </footer>
 </article>
 
 {
