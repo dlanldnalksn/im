@@ -2327,6 +2327,93 @@ a.sib-reg-amendment {
   @apply text-imc-danger font-bold;
 }
 
+.sib-prf-report-highlight {
+  @apply text-imc-danger font-bold;
+}
+
+.sib-vtab-locked {
+  color: #aaa !important;
+}
+
+.sib-vtab-locked:not(.is-unlocked) .sib-vtab-lock {
+  color: #888;
+}
+
+.sib-vtab-locked.is-unlocked {
+  color: #888;
+}
+
+.sib-vtab-locked.is-unlocked.active {
+  color: #1a1a1a;
+}
+
+.sib-prf-deep-lock {
+  @apply flex flex-col items-center justify-center text-center;
+  min-height: 360px;
+  padding: 40px 24px;
+}
+
+.sib-prf-deep-lock-icon {
+  @apply mb-4;
+}
+
+.sib-prf-deep-lock-title {
+  @apply text-[15px] font-bold text-[#1a1a1a] m-0;
+  margin-bottom: 8px;
+}
+
+.sib-prf-deep-lock-desc {
+  @apply text-[12px] text-[#666] font-medium m-0;
+  margin-bottom: 22px;
+  max-width: 320px;
+}
+
+.sib-prf-deep-lock-form {
+  @apply w-full max-w-[280px] flex flex-col gap-2.5;
+}
+
+.sib-prf-deep-lock-label {
+  @apply flex flex-col gap-1.5 text-left text-[11px] text-[#888] font-semibold;
+}
+
+.sib-prf-deep-lock-input {
+  @apply w-full border border-[#e0e2e7] rounded bg-[#fafbfc] text-[#1a1a1a] text-[13px] font-medium;
+  padding: 9px 11px;
+  font-family: 'Nanum Gothic Coding', monospace;
+  letter-spacing: 0.05em;
+}
+
+.sib-prf-deep-lock-input:focus {
+  outline: none;
+  border-color: #8b2a2a;
+}
+
+.sib-prf-deep-lock-error {
+  @apply text-[11px] text-imc-danger font-semibold m-0 text-left;
+}
+
+.sib-prf-deep-lock-error.is-hidden {
+  display: none;
+}
+
+.sib-prf-deep-lock-btn {
+  @apply w-full border-0 rounded bg-[#1a1a1a] text-white text-[12px] font-bold cursor-pointer;
+  padding: 10px 14px;
+  font-family: Pretendard, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+}
+
+.sib-prf-deep-lock-btn:hover {
+  background: #333;
+}
+
+.sib-prf-deep-body.is-hidden {
+  display: none;
+}
+
+.sib-prf-deep-lock.is-hidden {
+  display: none;
+}
+
 .sib-prf-report-author {
   @apply text-[10px] text-[#888] font-semibold text-right;
   font-family: 'Nanum Gothic Coding', monospace;

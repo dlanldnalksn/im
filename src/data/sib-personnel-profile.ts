@@ -8,12 +8,15 @@ export const sibPersonnelProfileMeta = {
   cohort: '8기',
   extensionShort: '2147',
   grades: {
-    risk: { main: '二級', sub: '통제 대상' },
-    ops: { main: '乙', sub: '중위험·일반' },
-    seal: { main: '未實施', sub: '처방 중' },
-    matching: { main: '未매칭', sub: '대기 중' },
+    risk: { main: '2급' },
+    ops: { main: '甲' },
+    seal: { main: '미실시' },
+    matching: { main: '미매칭' },
   },
 };
+
+/** 심층 분석 탭 보안 코드 (내선 번호) */
+export const sibDeepAccessCode = '0147';
 
 export const sibPersonnelBasic = {
   officialAddress: '서울특별시 양천구 목동서로 124',
@@ -32,7 +35,7 @@ export const sibPersonnelHistory = {
     {
       date: '2017.04',
       current: true,
-      title: '특수감찰국 2處 배치',
+      title: '특수감찰국 2처 배치',
       sub: '갑급 차출요원 · 진압·호송·잠복 임무 수행',
     },
     {
@@ -143,7 +146,7 @@ export const sibPersonnelDeep = {
     ],
     highlight:
       '중장기적으로는 매칭 강제 배정 또는 봉인 등급 상향 검토가 권고됨.',
-    author: '감찰관 J. ███ · 2處 직속',
+    author: '감찰관 J. ███ · 2처 직속',
     nextEval: '2026.07.15 예정',
   },
 };

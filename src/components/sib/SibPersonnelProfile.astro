@@ -2,6 +2,7 @@
 import { url } from '../../lib/url';
 import { leeChanYoung } from '../../data/personnel/lee-chan-young';
 import {
+  sibDeepAccessCode,
   sibPersonnelAbility,
   sibPersonnelBasic,
   sibPersonnelDeep,
@@ -60,7 +61,7 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
         <div class="sib-prf-role">차출요원 · {meta.displayAge}</div>
         <div class="sib-prf-id">
           {p.employeeId}<br />
-          특수감찰국 2處 · 갑급
+          특수감찰국 2처
         </div>
       </div>
 
@@ -70,13 +71,12 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
             { label: '위험도 등급', ...meta.grades.risk },
             { label: '작전 등급', ...meta.grades.ops },
             { label: '봉인 상태', ...meta.grades.seal },
-            { label: '매칭·동기화', ...meta.grades.matching, danger: true },
+            { label: '매칭·동기화', ...meta.grades.matching },
           ].map((g) => (
             <div class="sib-prf-grade-row">
               <span class="sib-prf-grade-label">{g.label}</span>
               <div class="sib-prf-grade-value">
                 <span class="sib-prf-grade-main">{g.main}</span>
-                <span class:list={['sib-prf-grade-sub', g.danger && 'danger']}>{g.sub}</span>
               </div>
             </div>
           ))
@@ -91,11 +91,11 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
         <button type="button" class="sib-vtab" data-tab="ability">능력 정보</button>
         <button type="button" class="sib-vtab" data-tab="medical">의료·신경</button>
         <button type="button" class="sib-vtab" data-tab="eval">평가·인사</button>
-        <button type="button" class="sib-vtab" data-tab="deep">
+        <button type="button" class="sib-vtab sib-vtab-locked" data-tab="deep" data-requires-unlock>
           <span class="sib-vtab-lock">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="5" y="11" width="14" height="10" rx="1" stroke="#888" stroke-width="2"></rect>
-              <path d="M8 11V7a4 4 0 018 0v4" stroke="#888" stroke-width="2"></path>
+              <rect x="5" y="11" width="14" height="10" rx="1" stroke="currentColor" stroke-width="2"></rect>
+              <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" stroke-width="2"></path>
             </svg>
             <span>심층 분석</span>
           </span>
@@ -111,7 +111,7 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
                 <div class="sib-prf-kv"><dt>성명</dt><dd>{p.name} ({meta.nameHanja})</dd></div>
                 <div class="sib-prf-kv"><dt>생년월일</dt><dd>{meta.birthDate} ({meta.displayAge})</dd></div>
                 <div class="sib-prf-kv"><dt>성별</dt><dd>남</dd></div>
-                <div class="sib-prf-kv"><dt>소속</dt><dd>특수감찰국 2處</dd></div>
+                <div class="sib-prf-kv"><dt>소속</dt><dd>특수감찰국 2처</dd></div>
                 <div class="sib-prf-kv"><dt>직급</dt><dd>갑급 차출요원</dd></div>
                 <div class="sib-prf-kv"><dt>기수</dt><dd>{meta.cohort}</dd></div>
                 <div class="sib-prf-kv"><dt>내선</dt><dd class="mono">{meta.extensionShort}</dd></div>
@@ -345,6 +345,32 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
         </div>
 
         <div id="sib-tab-deep" class="sib-tab-content">
+          <div class="sib-prf-deep-lock" data-deep-lock>
+            <div class="sib-prf-deep-lock-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <rect x="5" y="11" width="14" height="10" rx="1" stroke="#8b2a2a" stroke-width="2"></rect>
+                <path d="M8 11V7a4 4 0 018 0v4" stroke="#8b2a2a" stroke-width="2"></path>
+              </svg>
+            </div>
+            <p class="sib-prf-deep-lock-title">심층 분석 · 2급 이상 열람</p>
+            <p class="sib-prf-deep-lock-desc">감찰관 권한 또는 본인 보안 코드 입력 후 열람할 수 있습니다.</p>
+            <form class="sib-prf-deep-lock-form" data-deep-unlock-form>
+              <label class="sib-prf-deep-lock-label">
+                <span>보안 코드</span>
+                <input
+                  type="password"
+                  class="sib-prf-deep-lock-input"
+                  data-deep-code-input
+                  placeholder="보안 코드 입력"
+                  autocomplete="off"
+                />
+              </label>
+              <p class="sib-prf-deep-lock-error is-hidden" data-deep-error>보안 코드가 올바르지 않습니다.</p>
+              <button type="submit" class="sib-prf-deep-lock-btn">열람 인증</button>
+            </form>
+          </div>
+
+          <div class="sib-prf-deep-body is-hidden" data-deep-body>
           <div class="sib-prf-deep-alert">
             <div class="sib-prf-deep-alert-body">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -385,8 +411,17 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
               <div class="sib-prf-report">
                 <div class="sib-prf-report-date">{sibPersonnelDeep.report.date}</div>
                 {
-                  sibPersonnelDeep.report.paragraphs.map((para) => (
-                    <p>{para}</p>
+                  sibPersonnelDeep.report.paragraphs.map((para, i) => (
+                    <p>
+                      {i === 2 ? (
+                        <>
+                          {para.replace(sibPersonnelDeep.report.highlight, '').trim()}{' '}
+                          <span class="sib-prf-report-highlight">{sibPersonnelDeep.report.highlight}</span>
+                        </>
+                      ) : (
+                        para
+                      )}
+                    </p>
                   ))
                 }
                 <div class="sib-prf-report-author">{sibPersonnelDeep.report.author}</div>
@@ -397,14 +432,34 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
               </div>
             </section>
           </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  function sibSwitchPersonnelTab(tabName: string) {
+<script define:vars={{ deepAccessCode: sibDeepAccessCode }}>
+  const DEEP_STORAGE_KEY = 'sib-deep-unlocked';
+  const deepTab = document.querySelector('.sib-vtab[data-tab="deep"]');
+  const deepLock = document.querySelector('[data-deep-lock]');
+  const deepBody = document.querySelector('[data-deep-body]');
+  const unlockForm = document.querySelector('[data-deep-unlock-form]');
+  const codeInput = document.querySelector('[data-deep-code-input]');
+  const deepError = document.querySelector('[data-deep-error]');
+
+  function isDeepUnlocked() {
+    return sessionStorage.getItem(DEEP_STORAGE_KEY) === '1';
+  }
+
+  function syncDeepLockState() {
+    const unlocked = isDeepUnlocked();
+    deepTab?.classList.toggle('is-unlocked', unlocked);
+    deepLock?.classList.toggle('is-hidden', unlocked);
+    deepBody?.classList.toggle('is-hidden', !unlocked);
+  }
+
+  function sibSwitchPersonnelTab(tabName) {
     document.querySelectorAll('.sib-vtab').forEach((el) => el.classList.remove('active'));
     document.querySelectorAll('.sib-tab-content').forEach((el) => el.classList.remove('active'));
     document.querySelector(`.sib-vtab[data-tab="${tabName}"]`)?.classList.add('active');
@@ -417,4 +472,19 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
       if (tabName) sibSwitchPersonnelTab(tabName);
     });
   });
+
+  unlockForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const value = codeInput?.value.trim() || '';
+    if (value === deepAccessCode) {
+      sessionStorage.setItem(DEEP_STORAGE_KEY, '1');
+      deepError?.classList.add('is-hidden');
+      syncDeepLockState();
+      return;
+    }
+    deepError?.classList.remove('is-hidden');
+    if (codeInput) codeInput.value = '';
+  });
+
+  syncDeepLockState();
 </script>
