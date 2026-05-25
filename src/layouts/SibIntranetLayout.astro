@@ -97,6 +97,22 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
         /* ignore */
       }
 
+      function getSibRoute(pathname) {
+        const match = pathname.match(
+          /\/intranet\/sib\/(documents|reports|approvals|regulations|notices)(?:\/([^/?#]+))?\/?/,
+        );
+        if (!match) return null;
+        return { section: match[1], recordId: match[2] || null };
+      }
+
+      const SIB_SECTION_TITLES = {
+        documents: '작전 명령',
+        reports: '의무 보고',
+        approvals: '결재·신청',
+        regulations: '규정·법령',
+        notices: '공지·알림',
+      };
+
       window.addEventListener('pageshow', (event) => {
         syncSibNavLinks();
 
@@ -105,17 +121,11 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
           return;
         }
 
-        const path = window.location.pathname;
-        const title = document.title;
-        if (path.includes('/reports') && !title.includes('의무 보고')) {
-          window.location.reload();
-        } else if (path.includes('/documents') && !title.includes('작전 명령')) {
-          window.location.reload();
-        } else if (path.includes('/approvals') && !title.includes('결재·신청')) {
-          window.location.reload();
-        } else if (path.includes('/regulations') && !title.includes('규정·법령')) {
-          window.location.reload();
-        } else if (path.includes('/notices') && !title.includes('공지·알림')) {
+        const route = getSibRoute(window.location.pathname);
+        if (!route || route.recordId) return;
+
+        const expectedTitle = SIB_SECTION_TITLES[route.section];
+        if (expectedTitle && !document.title.includes(expectedTitle)) {
           window.location.reload();
         }
       });
