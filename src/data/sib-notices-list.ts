@@ -21,14 +21,7 @@ export interface SibNoticeRecord {
 }
 
 export const SIB_NTC_PAGE_SIZE = 11;
-
-export const sibNoticeStats = {
-  total: 38,
-  urgent: 1,
-  notice: 21,
-  admin: 11,
-  hr: 5,
-};
+export const SIB_NTC_REFERENCE_DATE = '2026-05-24';
 
 export const sibNoticeBanner = {
   code: 'URG-2026-008',
@@ -231,14 +224,19 @@ function buildNoticeRecords(): SibNoticeRecord[] {
   const counts: Record<SibNoticeFilterKey, number> = { urgent: 0, notice: 0, admin: 0, hr: 0 };
   for (const record of records) counts[record.filterKey] += 1;
 
+  const ref = new Date(`${SIB_NTC_REFERENCE_DATE}T00:00:00`);
   let gen = 1;
+
   for (const filterKey of ['notice', 'admin', 'hr'] as const) {
     const meta = CATEGORY_TARGETS[filterKey];
     while (counts[filterKey] < meta.target) {
-      const year = 2025 + (gen % 2);
-      const month = String((gen % 12) + 1).padStart(2, '0');
-      const day = String((gen % 27) + 1).padStart(2, '0');
       const codeNum = String(100 - counts[filterKey]).padStart(3, '0');
+      const date = new Date(ref);
+      date.setDate(date.getDate() - gen * 4);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
       records.push({
         id: `ntc-gen-${filterKey}-${gen}`,
         rowStyle: 'normal',
@@ -260,7 +258,19 @@ function buildNoticeRecords(): SibNoticeRecord[] {
     }
   }
 
-  return records.sort((a, b) => b.referenceDate.localeCompare(a.referenceDate));
+  return records.sort((a, b) => {
+    if (a.filterKey === 'urgent' && b.filterKey !== 'urgent') return -1;
+    if (b.filterKey === 'urgent' && a.filterKey !== 'urgent') return 1;
+    return b.referenceDate.localeCompare(a.referenceDate);
+  });
 }
 
 export const sibNoticeRecords = buildNoticeRecords();
+
+export const sibNoticeStats = {
+  total: sibNoticeRecords.length,
+  urgent: sibNoticeRecords.filter((r) => r.filterKey === 'urgent').length,
+  notice: sibNoticeRecords.filter((r) => r.filterKey === 'notice').length,
+  admin: sibNoticeRecords.filter((r) => r.filterKey === 'admin').length,
+  hr: sibNoticeRecords.filter((r) => r.filterKey === 'hr').length,
+};

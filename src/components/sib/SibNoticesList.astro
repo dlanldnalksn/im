@@ -130,7 +130,7 @@ function tagClass(rec: SibNoticeRecord) {
       <select class="sib-op-select-native" data-sib-ntc-period aria-label="기간 필터">
         {
           periodOptions.map((opt) => (
-            <option value={opt.value} selected={opt.value === '3m'}>
+            <option value={opt.value} selected={opt.value === 'all'}>
               {opt.label}
             </option>
           ))
@@ -217,7 +217,7 @@ function tagClass(rec: SibNoticeRecord) {
 
     let activeFilter = 'all';
     let activeDept = 'all';
-    let activePeriod = '3m';
+    let activePeriod = 'all';
     let searchQuery = '';
     let currentPage = 1;
 
