@@ -943,8 +943,10 @@
   letter-spacing: -0.01em;
 }
 
-.sib-apr-table-head > div:nth-child(6) {
+.sib-apr-table-col-date {
   padding-left: 18px;
+  text-align: left;
+  justify-self: stretch;
 }
 
 .sib-apr-table-row {
@@ -954,8 +956,7 @@
 
 .sib-apr-table-row.review {
   @apply bg-[#fffbf3];
-  border-left: 3px solid #e8b870;
-  margin-left: -3px;
+  box-shadow: inset 3px 0 0 #e8b870;
 }
 
 .sib-apr-table-row:hover {
@@ -1155,18 +1156,18 @@
 }
 
 .sib-apr-table-date {
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  font-family: 'Nanum Gothic Coding', monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
   color: #525252;
   line-height: 1.35;
-  padding-left: 18px;
 }
 
 .sib-apr-table-date .sib-op-table-sub {
-  font-family: inherit;
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 

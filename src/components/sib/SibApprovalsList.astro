@@ -58,6 +58,7 @@ function rowClass(rec: SibApprovalRecord) {
 function dateClass(rec: SibApprovalRecord) {
   return [
     'sib-apr-table-date',
+    'sib-apr-table-col-date',
     rec.muted && 'muted',
     rec.dateVariant === 'review' && 'review',
     rec.dateVariant === 'rejected' && 'rejected',
@@ -180,7 +181,7 @@ function dateClass(rec: SibApprovalRecord) {
       <div>신청번호</div>
       <div>건명</div>
       <div>결재 진행</div>
-      <div>일자</div>
+      <div class="sib-apr-table-col-date">일자</div>
       <div class="text-right">조치</div>
     </div>
 
