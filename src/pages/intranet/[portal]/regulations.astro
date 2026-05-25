@@ -1,0 +1,33 @@
+---
+import IntranetLayout from '../../../layouts/IntranetLayout.astro';
+import SibIntranetLayout from '../../../layouts/SibIntranetLayout.astro';
+import SibRegulationsList from '../../../components/sib/SibRegulationsList.astro';
+import { intranetPortals, getPortalById } from '../../../data/intranet-portals';
+import { url } from '../../../lib/url';
+
+export function getStaticPaths() {
+  return intranetPortals.map((p) => ({ params: { portal: p.id } }));
+}
+
+const { portal: portalId } = Astro.params;
+const portal = getPortalById(portalId!);
+
+if (!portal) {
+  return Astro.redirect(url('intranet/login/'));
+}
+
+const isSib = portal.id === 'sib';
+---
+
+{
+  isSib ? (
+    <SibIntranetLayout title="규정·법령">
+      <SibRegulationsList />
+    </SibIntranetLayout>
+  ) : (
+    <IntranetLayout title="규정·법령" portal={portal}>
+      <h1 class="text-2xl font-bold mb-2">규정·법령</h1>
+      <p class="text-sm text-slate-600">이 포털에서는 규정·법령 기능을 제공하지 않습니다.</p>
+    </IntranetLayout>
+  )
+}

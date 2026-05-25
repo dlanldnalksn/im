@@ -1,0 +1,358 @@
+---
+import { url } from '../../lib/url';
+import {
+  SIB_REG_PAGE_SIZE,
+  SIB_REG_TOTAL_DOCUMENTS,
+  sibRegulationAmendment,
+  sibRegulationCategories,
+  sibRegulationRecords,
+} from '../../data/sib-regulations-list';
+import type { SibRegulationRecord } from '../../data/sib-regulations-list';
+
+const base = 'intranet/sib/';
+
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '상위 법령', filter: 'law' },
+  { label: '위원회 고시', filter: 'pmc' },
+  { label: '특감국 내규', filter: 'sib' },
+  { label: '차출요원 복무', filter: 'duty' },
+];
+
+const sortOptions = [
+  { label: '최근 개정순', value: 'recent' },
+  { label: '시행일순', value: 'effective' },
+  { label: '법령 번호순', value: 'code' },
+];
+
+function rowClass(rec: SibRegulationRecord) {
+  if (rec.rowStyle === 'revised') return 'sib-reg-table-row revised';
+  return 'sib-reg-table-row';
+}
+
+function statusTagClass(rec: SibRegulationRecord) {
+  if (rec.statusVariant === 'revised') return 'sib-reg-tag revised';
+  return 'sib-reg-tag active';
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url(`${base}`)} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">규정·법령</span>
+</nav>
+
+<div class="sib-page-head">
+  <div>
+    <h1 class="sib-page-title">규정·법령</h1>
+    <p class="sib-page-subtitle">이능관리법 · 시행령 · 특수감찰국 내규 · 차출요원 복무 규정 외</p>
+  </div>
+  <div class="sib-reg-head-actions">
+    <button type="button" class="sib-reg-btn-outline">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 17v.01M12 14a2 2 0 002-2c0-1.5-2-2-2-4a2 2 0 014 0M12 22a10 10 0 110-20 10 10 0 010 20z" stroke="#525252" stroke-width="1.6" stroke-linecap="round"></path>
+      </svg>
+      규정 문의
+    </button>
+    <button type="button" class="sib-reg-fav-btn">즐겨찾기 ★ 3</button>
+  </div>
+</div>
+
+<div class="sib-reg-amendment">
+  <div class="sib-reg-amendment-body">
+    <span class="sib-reg-amendment-label">최근 개정</span>
+    <p class="sib-reg-amendment-text">
+      <span class="sib-reg-amendment-code">{sibRegulationAmendment.code}</span>
+      {sibRegulationAmendment.title} — <strong>{sibRegulationAmendment.highlight}</strong> ({sibRegulationAmendment.effectiveDate} 시행)
+    </p>
+  </div>
+  <span class="sib-reg-amendment-link">개정안 →</span>
+</div>
+
+<div class="sib-reg-category-grid">
+  {
+    sibRegulationCategories.map((cat) => (
+      <button
+        type="button"
+        class:list={['sib-reg-category-card', cat.accent && 'accent']}
+        data-sib-reg-category-filter={cat.filterKey}
+      >
+        <div class="sib-reg-category-top">
+          <div class="sib-reg-category-title">{cat.title}</div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 18l6-6-6-6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <p class="sib-reg-category-desc">{cat.description}</p>
+        <div class="sib-reg-category-foot">
+          <span>{cat.count}개 문서</span>
+          <span class="sib-reg-category-code">{cat.code}</span>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
+<div class="sib-op-toolbar" data-sib-reg-toolbar>
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="규정·법령 필터">
+    {
+      filterTabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-reg-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div>
+  <div class="sib-op-toolbar-right">
+    <label class="sib-op-select">
+      <span class="sib-op-select-label">정렬</span>
+      <select class="sib-op-select-native" data-sib-reg-sort aria-label="정렬">
+        {
+          sortOptions.map((opt) => (
+            <option value={opt.value} selected={opt.value === 'recent'}>
+              {opt.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="sib-op-select-caret" aria-hidden="true">▾</span>
+    </label>
+    <label class="sib-op-search sib-reg-search">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="#888" stroke-width="2"></circle>
+        <path d="M21 21l-4-4" stroke="#888" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <input
+        type="search"
+        class="sib-op-search-input"
+        data-sib-reg-search
+        placeholder="법령 / 조항 / 키워드 검색"
+        aria-label="법령 조항 키워드 검색"
+      />
+    </label>
+  </div>
+</div>
+
+<div class="sib-op-table-wrap" data-sib-reg-list>
+  <div class="sib-reg-table">
+    <div class="sib-reg-table-head">
+      <div>분류</div>
+      <div>법령 번호</div>
+      <div>소관 부서</div>
+      <div>제목</div>
+      <div>시행일</div>
+      <div class="text-right">조치</div>
+    </div>
+
+    {
+      sibRegulationRecords.map((rec) => (
+        <div
+          class={rowClass(rec)}
+          data-sib-reg-row
+          data-filter={rec.filterKey}
+          data-reference-date={rec.referenceDate}
+          data-rule-code={rec.ruleCode}
+          data-search={`${rec.ruleCode} ${rec.title} ${rec.category} ${rec.department} ${rec.titleNote || ''}`.toLowerCase()}
+        >
+          <div class="sib-reg-table-status">
+            <span class={statusTagClass(rec)}>{rec.statusLabel}</span>
+            <span class="sib-reg-table-cat-sub">{rec.category}</span>
+          </div>
+          <div class:list={['sib-reg-table-code', rec.rowStyle === 'revised' && 'active']}>{rec.ruleCode}</div>
+          <div class="sib-reg-table-dept">{rec.department}</div>
+          <div class:list={['sib-reg-table-title', rec.rowStyle === 'revised' && 'active']}>{rec.title}{rec.titleNote && (<><br /><span class:list={['sib-reg-title-note', rec.titleNoteVariant === 'revised' && 'revised', rec.titleNoteVariant === 'muted' && 'muted']}>{rec.titleNote}</span></>)}</div>
+          <div class:list={['sib-reg-table-date', rec.effectiveDateBold && 'bold']}>{rec.effectiveDate}</div>
+          <div class="sib-reg-table-action">
+            {
+              rec.starred ? (
+                <svg class="sib-reg-star filled" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 17.27l5.18 3.13-1.37-5.89L20.4 9.59l-5.99-.52L12 3.5l-2.41 5.57L3.6 9.59l4.59 4.92-1.37 5.89z"></path>
+                </svg>
+              ) : (
+                <svg class="sib-reg-star" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 17.27l5.18 3.13-1.37-5.89L20.4 9.59l-5.99-.52L12 3.5l-2.41 5.57L3.6 9.59l4.59 4.92-1.37 5.89z" stroke="#888" stroke-width="2"></path>
+                </svg>
+              )
+            }
+            <span class:list={['sib-reg-btn-link', rec.rowStyle === 'revised' && 'active']}>조회 →</span>
+          </div>
+        </div>
+      ))
+    }
+
+    <div class="sib-op-table-foot">
+      <span data-sib-reg-foot-count>
+        총 {SIB_REG_TOTAL_DOCUMENTS}개 문서 중 1 — {Math.min(SIB_REG_PAGE_SIZE, sibRegulationRecords.length)} 표시
+      </span>
+      <div class="sib-op-pagination" data-sib-reg-pagination></div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ pageSize: SIB_REG_PAGE_SIZE, totalDocuments: SIB_REG_TOTAL_DOCUMENTS }}>
+  const listRoot = document.querySelector('[data-sib-reg-list]');
+  if (listRoot) {
+    const rows = Array.from(listRoot.querySelectorAll('[data-sib-reg-row]'));
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-reg-filter]'));
+    const categoryCards = Array.from(document.querySelectorAll('[data-sib-reg-category-filter]'));
+    const sortSelect = document.querySelector('[data-sib-reg-sort]');
+    const searchInput = document.querySelector('[data-sib-reg-search]');
+    const footCount = document.querySelector('[data-sib-reg-foot-count]');
+    const paginationRoot = document.querySelector('[data-sib-reg-pagination]');
+
+    let activeFilter = 'all';
+    let activeSort = 'recent';
+    let searchQuery = '';
+    let currentPage = 1;
+
+    function rowMatchesFilters(row) {
+      const filter = row.getAttribute('data-filter') || '';
+      const searchText = row.getAttribute('data-search') || '';
+      const query = searchQuery.trim().toLowerCase();
+      const matchesFilter = activeFilter === 'all' || filter === activeFilter;
+      const matchesSearch = !query || searchText.includes(query);
+      return matchesFilter && matchesSearch;
+    }
+
+    function sortRows(matching) {
+      const sorted = [...matching];
+      sorted.sort((a, b) => {
+        if (activeSort === 'code') {
+          return (a.getAttribute('data-rule-code') || '').localeCompare(b.getAttribute('data-rule-code') || '');
+        }
+        if (activeSort === 'effective') {
+          return (b.getAttribute('data-reference-date') || '').localeCompare(a.getAttribute('data-reference-date') || '');
+        }
+        return (b.getAttribute('data-reference-date') || '').localeCompare(a.getAttribute('data-reference-date') || '');
+      });
+      return sorted;
+    }
+
+    function getMatchingRows() {
+      return sortRows(rows.filter((row) => rowMatchesFilters(row)));
+    }
+
+    function setActiveTab(filter) {
+      activeFilter = filter;
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-reg-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
+
+    function renderPagination(totalPages) {
+      if (!paginationRoot) return;
+
+      if (totalPages <= 1) {
+        paginationRoot.innerHTML = '';
+        paginationRoot.classList.add('is-hidden');
+        return;
+      }
+
+      paginationRoot.classList.remove('is-hidden');
+      paginationRoot.innerHTML = '';
+
+      const prev = document.createElement('button');
+      prev.type = 'button';
+      prev.className = `sib-op-page-btn${currentPage === 1 ? ' disabled' : ''}`;
+      prev.textContent = '‹';
+      prev.disabled = currentPage === 1;
+      prev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(prev);
+
+      const maxButtons = Math.min(totalPages, 3);
+      for (let page = 1; page <= maxButtons; page += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `sib-op-page-btn${page === currentPage ? ' active' : ''}`;
+        btn.textContent = String(page);
+        btn.addEventListener('click', () => {
+          currentPage = page;
+          applyFilters(false);
+        });
+        paginationRoot.appendChild(btn);
+      }
+
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = `sib-op-page-btn${currentPage === totalPages ? ' disabled' : ''}`;
+      next.textContent = '›';
+      next.disabled = currentPage === totalPages;
+      next.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          applyFilters(false);
+        }
+      });
+      paginationRoot.appendChild(next);
+    }
+
+    function applyFilters(resetPage = true) {
+      if (resetPage) currentPage = 1;
+
+      const matching = getMatchingRows();
+      const filteredTotal = matching.length;
+      const totalPages = Math.max(1, Math.ceil(filteredTotal / pageSize));
+
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = Math.min(startIdx + pageSize, filteredTotal);
+      const visibleOnPage = matching.slice(startIdx, endIdx);
+      const visibleSet = new Set(visibleOnPage);
+
+      rows.forEach((row) => {
+        row.classList.toggle('is-filtered-out', !visibleSet.has(row));
+      });
+
+      if (footCount) {
+        const displayTotal = activeFilter === 'all' && !searchQuery.trim() ? totalDocuments : filteredTotal;
+        if (filteredTotal === 0) {
+          footCount.textContent = '검색 결과 없음';
+        } else {
+          footCount.textContent = `총 ${displayTotal}개 문서 중 ${startIdx + 1} — ${endIdx} 표시`;
+        }
+      }
+
+      renderPagination(totalPages);
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-reg-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-reg-category-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    sortSelect?.addEventListener('change', () => {
+      activeSort = sortSelect.value;
+      applyFilters();
+    });
+
+    searchInput?.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      applyFilters();
+    });
+
+    applyFilters();
+  }
+</script>

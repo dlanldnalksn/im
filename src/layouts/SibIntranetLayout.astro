@@ -50,6 +50,7 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
         documents: `${sibBase}documents/`,
         reports: `${sibBase}reports/`,
         approvals: `${sibBase}approvals/`,
+        regulations: `${sibBase}regulations/`,
         personnel: `${sibBase}personnel/lee-chan-young/`,
       };
 
@@ -94,6 +95,8 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
         } else if (path.includes('/documents') && !title.includes('작전 명령')) {
           window.location.reload();
         } else if (path.includes('/approvals') && !title.includes('결재·신청')) {
+          window.location.reload();
+        } else if (path.includes('/regulations') && !title.includes('규정·법령')) {
           window.location.reload();
         }
       });

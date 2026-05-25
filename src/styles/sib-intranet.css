@@ -1196,3 +1196,302 @@
 .sib-apr-btn-link.muted {
   @apply text-[#888] font-medium;
 }
+
+/* 규정·법령 */
+.sib-reg-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.sib-reg-btn-outline {
+  @apply bg-white border border-[#e0e2e7] text-[#525252] text-[12.5px] font-bold rounded cursor-pointer;
+  padding: 8px 14px;
+  letter-spacing: -0.01em;
+  font: inherit;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sib-reg-fav-btn {
+  @apply bg-[#1a1a1a] text-white text-[12.5px] font-bold rounded cursor-pointer border-0;
+  padding: 8px 16px;
+  letter-spacing: -0.01em;
+  font: inherit;
+  line-height: 1.2;
+}
+
+.sib-reg-amendment {
+  @apply bg-[#fff8f5] border border-[#f5d8d0] rounded flex flex-wrap justify-between items-center;
+  border-left: 3px solid #8b2a2a;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.sib-reg-amendment-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sib-reg-amendment-label {
+  @apply text-[11px] text-imc-danger font-bold bg-white border border-[#f5d8d0] rounded-[2px] shrink-0;
+  padding: 3px 9px;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-amendment-text {
+  @apply text-[13px] text-[#1a1a1a] font-semibold;
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+}
+
+.sib-reg-amendment-text strong {
+  @apply text-imc-danger font-bold;
+}
+
+.sib-reg-amendment-code {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 11.5px;
+  color: #8b2a2a;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.sib-reg-amendment-link {
+  @apply text-[11.5px] text-imc-danger font-bold cursor-pointer shrink-0;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1024px) {
+  .sib-reg-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sib-reg-category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sib-reg-category-card {
+  @apply bg-white border border-[#e5e7eb] rounded-md text-left cursor-pointer w-full;
+  padding: 18px 20px;
+  font: inherit;
+  color: inherit;
+}
+
+.sib-reg-category-card:hover {
+  @apply bg-[#fafbfc];
+}
+
+.sib-reg-category-card.accent {
+  border-left: 3px solid #8b2a2a;
+}
+
+.sib-reg-category-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.sib-reg-category-title {
+  @apply text-[13.5px] font-extrabold text-[#1a1a1a];
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.sib-reg-category-desc {
+  @apply text-[11px] text-[#666] font-medium;
+  margin: 0 0 14px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-category-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f2;
+  font-size: 10.5px;
+  color: #888;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-category-code {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10px;
+  color: #525252;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.sib-reg-search {
+  width: 240px;
+}
+
+.sib-reg-table {
+  @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden min-w-[980px];
+}
+
+.sib-reg-table-head,
+.sib-reg-table-row {
+  display: grid;
+  grid-template-columns: 110px 130px 130px 1.6fr 110px 100px;
+  column-gap: 14px;
+  align-items: center;
+}
+
+.sib-reg-table-head {
+  @apply border-b border-[#e5e7eb] bg-[#fafbfc] text-[11px] text-[#525252] font-bold;
+  padding: 13px 22px;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-table-row {
+  @apply border-b border-[#f0f0f2] cursor-pointer;
+  padding: 16px 22px;
+}
+
+.sib-reg-table-row.revised {
+  @apply bg-[#fff8f5];
+  box-shadow: inset 3px 0 0 #8b2a2a;
+}
+
+.sib-reg-table-row:hover {
+  @apply bg-[#fafafa];
+}
+
+.sib-reg-table-row.revised:hover {
+  @apply bg-[#fff5f0];
+}
+
+.sib-reg-table-row.is-filtered-out {
+  display: none;
+}
+
+.sib-reg-table-status {
+  @apply flex flex-col items-start;
+  gap: 4px;
+}
+
+.sib-reg-tag {
+  @apply text-[10px] font-bold rounded-[2px] w-fit;
+  padding: 2px 7px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sib-reg-tag.revised {
+  background: #fef2ef;
+  color: #8b2a2a;
+  border: 1px solid #f5d8d0;
+}
+
+.sib-reg-tag.active {
+  background: #f5f6f8;
+  border: 1px solid #e0e2e7;
+  color: #525252;
+}
+
+.sib-reg-table-cat-sub {
+  @apply text-[10.5px] text-[#525252] font-semibold;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-table-code {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #525252;
+}
+
+.sib-reg-table-code.active {
+  color: #1a1a1a;
+}
+
+.sib-reg-table-dept {
+  @apply text-[11px] text-[#525252] font-medium;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-table-title {
+  @apply text-[13px] text-[#1a1a1a] font-semibold;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.sib-reg-table-title.active {
+  @apply font-bold;
+}
+
+.sib-reg-title-note {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.sib-reg-title-note.revised {
+  color: #8b2a2a;
+}
+
+.sib-reg-title-note.muted {
+  color: #888;
+  font-weight: 500;
+}
+
+.sib-reg-table-date {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #525252;
+}
+
+.sib-reg-table-date.bold {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.sib-reg-table-action {
+  @apply text-right flex justify-end items-center;
+  gap: 6px;
+}
+
+.sib-reg-star {
+  flex-shrink: 0;
+}
+
+.sib-reg-star.filled {
+  fill: #8b2a2a;
+}
+
+.sib-reg-btn-link {
+  @apply text-[11px] text-[#525252] font-semibold cursor-pointer;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-btn-link.active {
+  @apply text-[#1a1a1a] font-bold;
+}

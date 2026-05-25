@@ -11,7 +11,7 @@ const nav = [
   { path: `${base}personnel/lee-chan-young/`, label: '신상·인사', navKey: 'personnel' },
   { path: `${base}reports/`, label: '의무 보고', badge: 1, badgeClass: 'amber' as const, navKey: 'reports' },
   { path: `${base}approvals/`, label: '결재·신청', navKey: 'approvals' },
-  { path: `${base}documents/`, label: '규정·법령', navKey: 'documents' },
+  { path: `${base}regulations/`, label: '규정·법령', navKey: 'regulations' },
   { path: `${base}`, label: '공지·알림', hash: 'notices', navKey: 'dashboard' },
 ];
 
@@ -22,6 +22,7 @@ function isActive(item: (typeof nav)[0]) {
   if (item.label === '작전 명령') return pathnameStartsWith(pathname, `${base}documents/`);
   if (item.label === '의무 보고') return pathnameStartsWith(pathname, `${base}reports/`);
   if (item.label === '결재·신청') return pathnameStartsWith(pathname, `${base}approvals/`);
+  if (item.label === '규정·법령') return pathnameStartsWith(pathname, `${base}regulations/`);
   return false;
 }
 
