@@ -21,7 +21,6 @@ export interface SibRegulationRecord {
 }
 
 export const SIB_REG_PAGE_SIZE = 9;
-export const SIB_REG_TOTAL_DOCUMENTS = 114;
 
 export const sibRegulationCategories = [
   {
@@ -472,6 +471,56 @@ const fillerRecords: SibRegulationRecord[] = [
   },
 ];
 
-export const sibRegulationRecords: SibRegulationRecord[] = [...templateRecords, ...fillerRecords].sort(
-  (a, b) => b.referenceDate.localeCompare(a.referenceDate),
-);
+const CATEGORY_TARGETS: Record<
+  SibRegulationFilterKey,
+  { category: SibRegulationCategory; prefix: string; dept: string; target: number }
+> = {
+  law: { category: '상위 법령', prefix: 'LAW', dept: '법무처', target: 12 },
+  pmc: { category: '위원회 고시', prefix: 'PMC', dept: '감찰관실', target: 28 },
+  sib: { category: '특감국 내규', prefix: 'SIB-RULE', dept: '행정과', target: 43 },
+  duty: { category: '차출요원 복무', prefix: 'DUTY', dept: '조정원·의무과', target: 31 },
+};
+
+function buildRegulationRecords(): SibRegulationRecord[] {
+  const records: SibRegulationRecord[] = [...templateRecords, ...fillerRecords];
+  const counts: Record<SibRegulationFilterKey, number> = { law: 0, pmc: 0, sib: 0, duty: 0 };
+  for (const record of records) counts[record.filterKey] += 1;
+
+  let gen = 1;
+  for (const filterKey of ['law', 'pmc', 'sib', 'duty'] as const) {
+    const meta = CATEGORY_TARGETS[filterKey];
+    while (counts[filterKey] < meta.target) {
+      const year = 2015 + (gen % 11);
+      const month = String((gen % 12) + 1).padStart(2, '0');
+      const day = String((gen % 27) + 1).padStart(2, '0');
+      const codeNum = String(100 + counts[filterKey]).padStart(3, '0');
+      const ruleCode =
+        filterKey === 'sib' ? `${meta.prefix}-${codeNum}` : `${meta.prefix}-${codeNum}`;
+
+      records.push({
+        id: `reg-gen-${filterKey}-${gen}`,
+        rowStyle: 'normal',
+        statusLabel: '시행 중',
+        statusVariant: 'active',
+        category: meta.category,
+        filterKey,
+        ruleCode,
+        department: meta.dept,
+        title: `${meta.category} 운영 규정 (${codeNum})`,
+        titleNote: '내부 열람용',
+        titleNoteVariant: 'muted',
+        effectiveDate: `${year}.${month}.${day}`,
+        starred: false,
+        referenceDate: `${year}-${month}-${day}`,
+      });
+
+      counts[filterKey] += 1;
+      gen += 1;
+    }
+  }
+
+  return records.sort((a, b) => b.referenceDate.localeCompare(a.referenceDate));
+}
+
+export const sibRegulationRecords = buildRegulationRecords();
+export const SIB_REG_TOTAL_DOCUMENTS = sibRegulationRecords.length;

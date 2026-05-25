@@ -195,7 +195,7 @@ function statusTagClass(rec: SibRegulationRecord) {
   </div>
 </div>
 
-<script define:vars={{ pageSize: SIB_REG_PAGE_SIZE, totalDocuments: SIB_REG_TOTAL_DOCUMENTS }}>
+<script define:vars={{ pageSize: SIB_REG_PAGE_SIZE }}>
   const listRoot = document.querySelector('[data-sib-reg-list]');
   if (listRoot) {
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-reg-row]'));
@@ -272,7 +272,7 @@ function statusTagClass(rec: SibRegulationRecord) {
       });
       paginationRoot.appendChild(prev);
 
-      const maxButtons = Math.min(totalPages, 3);
+      const maxButtons = totalPages;
       for (let page = 1; page <= maxButtons; page += 1) {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -318,11 +318,10 @@ function statusTagClass(rec: SibRegulationRecord) {
       });
 
       if (footCount) {
-        const displayTotal = activeFilter === 'all' && !searchQuery.trim() ? totalDocuments : filteredTotal;
         if (filteredTotal === 0) {
           footCount.textContent = '검색 결과 없음';
         } else {
-          footCount.textContent = `총 ${displayTotal}개 문서 중 ${startIdx + 1} — ${endIdx} 표시`;
+          footCount.textContent = `총 ${filteredTotal}개 문서 중 ${startIdx + 1} — ${endIdx} 표시`;
         }
       }
 
