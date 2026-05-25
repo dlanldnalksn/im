@@ -49,7 +49,14 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
   <div class="sib-prf-layout">
     <aside class="sib-prf-sidebar">
       <div class="sib-prf-photo-wrap">
-        <div class="sib-prf-photo">증명사진</div>
+        <img
+          src={url(meta.photoSrc)}
+          alt={`${p.name} 증명사진`}
+          class="sib-prf-photo"
+          width="120"
+          height="150"
+          loading="eager"
+        />
         <div class="sib-prf-photo-date">PHOTO · {meta.photoDate}</div>
       </div>
 

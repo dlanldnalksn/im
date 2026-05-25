@@ -1810,7 +1810,8 @@ a.sib-reg-amendment {
 }
 
 .sib-prf-photo {
-  @apply w-[120px] h-[150px] bg-[#f5f6f8] border border-[#e0e2e7] rounded flex items-center justify-center text-[11px] text-[#bbb] font-semibold;
+  @apply w-[120px] h-[150px] bg-[#f5f6f8] border border-[#e0e2e7] rounded object-cover object-top;
+  display: block;
 }
 
 .sib-prf-photo-date {

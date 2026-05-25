@@ -2,6 +2,7 @@
 export const sibPersonnelProfileMeta = {
   updated: '2026.05.18',
   photoDate: '2024.11',
+  photoSrc: 'images/personnel/lee-chan-young.jpg',
   nameHanja: '李燦榮',
   displayAge: '만 25세',
   birthDate: '2001.04.12',
