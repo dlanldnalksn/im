@@ -320,8 +320,8 @@ function barClass(tone: 'danger' | 'warn' | 'neutral') {
                 {
                   sibPersonnelEval.discipline.map((d) => (
                     <div class="sib-prf-eval-row">
-                      <span class:list={[d.bold && 'bold', d.muted && 'muted']}>{d.label}</span>
-                      <span class:list={['mono', d.danger && 'danger', d.muted && 'muted']}>{d.value}</span>
+                      <span class:list={[d.bold && 'bold', d.empty && 'muted']}>{d.label}</span>
+                      <span class:list={[d.empty && 'sib-prf-empty', !d.empty && 'mono', d.danger && 'danger', d.muted && 'muted']}>{d.value}</span>
                     </div>
                   ))
                 }

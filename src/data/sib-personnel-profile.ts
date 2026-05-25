@@ -118,7 +118,7 @@ export const sibPersonnelEval = {
   discipline: [
     { label: '표창 (특별 작전 공로)', value: '5건', bold: true },
     { label: '경고 (과잉 진압 의혹)', value: '2건', danger: true },
-    { label: '징계', value: '해당 없음', muted: true },
+    { label: '징계', value: '해당 없음', empty: true },
   ],
   warnings: [
     { title: '과잉 진압 의혹 · 사후 진술 요구', date: '2025.11', code: 'OP-2025-0742 · 의도성 인정 不' },

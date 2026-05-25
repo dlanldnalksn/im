@@ -2034,7 +2034,7 @@ a.sib-reg-amendment {
 }
 
 .sib-prf-empty {
-  @apply text-xs text-[#888] italic font-medium;
+  @apply text-xs text-[#aaa] italic font-medium;
 }
 
 .sib-prf-family {
