@@ -11,106 +11,194 @@ const portalConfigs = intranetPortals.map((p) => ({
   name: p.name,
   prefix: p.employeePrefix,
   password: p.password,
-  accent: p.accent,
 }));
+
+const notices = [
+  { title: '[전산] 3처 7번 보호처분소 데이터망 연동 작업 안내', date: '2026.05.23' },
+  { title: '[행정] 신규 등재자 심사 대장 전산 양식 배포', date: '2026.05.20' },
+  { title: '[보안] 2분기 전 직원 내부망 패스워드 일괄 변경', date: '2026.05.18' },
+  { title: '[의료] 조정원 억제제 재고 연동 시스템 오류 복구', date: '2026.05.15' },
+];
 ---
 
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href={import.meta.env.BASE_URL} />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>내부망 로그인 | 이능관리위원회</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>이능관리위원회 통합업무포털</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap"
-      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
     />
   </head>
-  <body class="min-h-screen bg-[#1a1a1a] font-sans flex flex-col">
-    <div class="flex flex-1 items-center justify-center p-4">
-    <div class="w-full max-w-lg bg-white border border-[#d0d0d0] shadow-2xl p-8">
-      <p class="font-mono text-[10px] text-imc-danger font-bold text-center tracking-widest mb-2">INTERNAL ACCESS</p>
-      <h1 class="text-xl font-extrabold text-center tracking-tight">산하 기관 내부망 로그인</h1>
-      <p class="text-sm text-imc-muted text-center mt-2 mb-6">
-        기관 코드·사번·비밀번호에 따라 접속 포털이 분리됩니다.
-      </p>
+  <body class="imc-login-body">
+    <div class="imc-portal-container">
+      <aside class="imc-info-panel">
+        <h1>이능관리위원회 통합업무포털</h1>
+        <p class="imc-info-sub">SAMC Enterprise Portal System</p>
 
-      <form id="login-form" class="space-y-4">
-        <div>
-          <label for="org-code" class="block text-xs font-semibold text-imc-ink mb-1">기관 코드</label>
-          <select
-            id="org-code"
-            class="w-full border border-[#d0d3d9] px-3 py-2.5 text-sm outline-none focus:border-imc-primary bg-white"
-          >
-            <option value="">— 사번으로 자동 판별 —</option>
+        <div class="imc-notice-board">
+          <h3>시스템 공지사항 <span>+</span></h3>
+          <ul>
             {
-              intranetPortals.map((p) => (
-                <option value={p.code}>
-                  {p.code} · {p.name}
-                </option>
+              notices.map((item) => (
+                <li>
+                  <span>{item.title}</span>
+                  <span class="imc-notice-date">{item.date}</span>
+                </li>
               ))
             }
-          </select>
+          </ul>
         </div>
-        <div>
-          <label for="employee-id" class="block text-xs font-semibold text-imc-ink mb-1">사번</label>
-          <input
-            id="employee-id"
-            type="text"
-            class="w-full border border-[#d0d3d9] px-3 py-2.5 text-sm outline-none focus:border-imc-primary font-mono"
-            placeholder="SIB-2-08-0147"
-            autocomplete="username"
-          />
-          <p class="text-[11px] text-imc-muted mt-1">예: TG-0(본청), TG-2(특감국), CA-/AD-/IR-(산하)</p>
-        </div>
-        <div>
-          <label for="password" class="block text-xs font-semibold text-imc-ink mb-1">비밀번호</label>
-          <input
-            id="password"
-            type="password"
-            class="w-full border border-[#d0d3d9] px-3 py-2.5 text-sm outline-none focus:border-imc-primary"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-        <p id="login-error" class="text-sm text-imc-danger hidden">기관·사번·비밀번호를 확인하세요.</p>
-        <button type="submit" class="w-full bg-imc-ink text-white py-3 text-sm font-bold hover:bg-[#333] transition-colors">
-          해당 내부망 접속
-        </button>
-      </form>
 
-      <details class="mt-6 border border-[#e8e8e8] p-3 text-xs text-imc-muted">
-        <summary class="cursor-pointer font-semibold text-imc-ink">데모 접속 정보 (RP용)</summary>
-        <ul class="mt-2 space-y-1 font-mono">
-          {
-            intranetPortals.map((p) => (
-              <li>
-                <span style={`color: ${p.accent}`}>{p.code}</span> · {p.employeePrefix}… · {p.password}
-              </li>
-            ))
-          }
-        </ul>
-      </details>
+        <div class="imc-security-plugins">
+          <h4>필수 보안 모듈 설치 현황</h4>
+          <div class="imc-plugin-item">
+            <span>통합인증모듈 (S-Auth v2.1)</span>
+            <span class="imc-plugin-status installed">설치완료</span>
+          </div>
+          <div class="imc-plugin-item">
+            <span>가상키패드보안 (KeyGuard Pro)</span>
+            <span class="imc-plugin-status installed">설치완료</span>
+          </div>
+          <div class="imc-plugin-item">
+            <span>망분리제어 (NetBlocker 3.0)</span>
+            <span class="imc-plugin-status">미설치</span>
+          </div>
+          <button type="button" class="imc-plugin-download">미설치 모듈 수동 다운로드</button>
+        </div>
+      </aside>
 
-      <p class="mt-6 text-center">
-        <a href={homeUrl} class="text-xs text-imc-muted hover:text-imc-ink">← 대외 누리집</a>
-      </p>
+      <main class="imc-login-panel">
+        <h2 class="imc-login-title">내부망 시스템 로그인</h2>
+
+        <form id="login-form" class="imc-login-form" novalidate>
+          <input type="hidden" id="org-code" name="org-code" value="" />
+
+          <div class="imc-form-group imc-network-group">
+            <div class="imc-network-select" role="radiogroup" aria-label="망 구분">
+              <label class="imc-network-label">
+                <input type="radio" name="network" value="general" checked data-network="general" />
+                <div class="imc-network-box">
+                  일반 업무망<br />
+                  <span class="imc-network-sub">(중앙행정청/조정원)</span>
+                </div>
+              </label>
+              <label class="imc-network-label">
+                <input type="radio" name="network" value="closed" data-network="closed" />
+                <div class="imc-network-box">
+                  특수 폐쇄망<br />
+                  <span class="imc-network-sub">(특수감찰국/이능연구원)</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="imc-form-group">
+            <label for="employee-id">직원번호 (EMP-ID)</label>
+            <input
+              type="text"
+              id="employee-id"
+              name="employee-id"
+              autocomplete="username"
+              placeholder="직원번호 8자리를 입력하세요"
+              required
+            />
+            <p class="imc-field-hint">예: TG-0(본청), TG-2(특감국), CA-/AD-/IR-(산하)</p>
+          </div>
+
+          <div class="imc-form-group">
+            <label for="password">비밀번호 (PASSWORD)</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              autocomplete="current-password"
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
+
+          <div class="imc-checkbox-group">
+            <label class="imc-checkbox-label">
+              <input type="checkbox" id="save-id" />
+              직원번호 저장
+            </label>
+            <label class="imc-checkbox-label">
+              <input type="checkbox" id="secure-keypad" />
+              가상키패드 사용
+            </label>
+          </div>
+
+          <p id="login-error" class="imc-login-error hidden">기관·사번·비밀번호를 확인하세요.</p>
+
+          <button type="submit" class="imc-btn-login">시스템 접속</button>
+
+          <details class="imc-demo-panel">
+            <summary>데모 접속 정보 (RP용)</summary>
+            <ul>
+              {
+                intranetPortals.map((p) => (
+                  <li>
+                    {p.code} · {p.employeePrefix}… · {p.password}
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+
+          <p class="imc-legal-warning">
+            본 시스템은 이능관리위원회 보안기밀취급법 제12조에 의거하여 보호받는 주요정보통신기반시설입니다. 인가되지
+            않은 사용자가 접속을 시도하거나 시스템 내의 데이터를 무단으로 열람, 복제, 유출할 경우 위원회 내부 보안 규정
+            및 관련 법령에 따라 5년 이하의 징역 또는 중징계에 처해질 수 있습니다.
+          </p>
+        </form>
+
+        <a href={homeUrl} class="imc-home-link">← 대외 누리집</a>
+      </main>
     </div>
-    </div>
-    <script define:vars={{ portalConfigs, loginPath }}>
+
+    <script define:vars={{ loginPath, portalConfigs }}>
+      const CLOSED_PREFIXES = ['TG-2', 'IR-'];
+      const GENERAL_PREFIXES = ['TG-0', 'CA-', 'AD-'];
+
       const form = document.getElementById('login-form');
       const err = document.getElementById('login-error');
+      const orgCodeInput = document.getElementById('org-code');
+      const employeeInput = document.getElementById('employee-id');
+      const saveIdCheckbox = document.getElementById('save-id');
+      const networkInputs = document.querySelectorAll('[data-network]');
 
       const storedPortal = sessionStorage.getItem('imc_intranet_portal');
       if (sessionStorage.getItem('imc_intranet_auth') === '1' && storedPortal) {
         window.location.replace(`${loginPath.replace(/login\/?$/, '')}${storedPortal}/`);
       }
+
+      const savedId = localStorage.getItem('imc_login_employee_id');
+      if (savedId && employeeInput) {
+        employeeInput.value = savedId;
+        if (saveIdCheckbox) saveIdCheckbox.checked = true;
+      }
+
+      function networkForEmployee(emp) {
+        const upper = emp.trim().toUpperCase();
+        if (CLOSED_PREFIXES.some((prefix) => upper.startsWith(prefix))) return 'closed';
+        if (GENERAL_PREFIXES.some((prefix) => upper.startsWith(prefix))) return 'general';
+        return null;
+      }
+
+      function syncNetworkFromEmployee() {
+        const value = employeeInput?.value || '';
+        const network = networkForEmployee(value);
+        if (!network) return;
+        networkInputs.forEach((input) => {
+          input.checked = input.getAttribute('data-network') === network;
+        });
+      }
+
+      employeeInput?.addEventListener('input', syncNetworkFromEmployee);
 
       function resolve(orgCode, employeeId, password) {
         const code = orgCode.trim().toUpperCase();
@@ -123,22 +211,383 @@ const portalConfigs = intranetPortals.map((p) => ({
         return portal;
       }
 
-      form?.addEventListener('submit', (e) => {
-        e.preventDefault();
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
         err?.classList.add('hidden');
-        const orgCode = document.getElementById('org-code')?.value || '';
-        const employeeId = document.getElementById('employee-id')?.value || '';
+
+        const orgCode = orgCodeInput?.value || '';
+        const employeeId = employeeInput?.value || '';
         const password = document.getElementById('password')?.value || '';
         const portal = resolve(orgCode, employeeId, password);
+
         if (portal) {
+          if (saveIdCheckbox?.checked) {
+            localStorage.setItem('imc_login_employee_id', employeeId.trim());
+          } else {
+            localStorage.removeItem('imc_login_employee_id');
+          }
+
           sessionStorage.setItem('imc_intranet_auth', '1');
           sessionStorage.setItem('imc_intranet_portal', portal.id);
           const base = loginPath.replace(/login\/?$/, '');
           window.location.href = `${base}${portal.id}/`;
-        } else {
-          err?.classList.remove('hidden');
+          return;
         }
+
+        err?.classList.remove('hidden');
       });
+
+      syncNetworkFromEmployee();
     </script>
   </body>
 </html>
+
+<style is:global>
+  :root {
+    --imc-gov-blue: #1e3a8a;
+    --imc-border-color: #cbd5e1;
+    --imc-text-dark: #333333;
+    --imc-text-gray: #64748b;
+  }
+
+  .imc-login-body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 24px 16px;
+    min-height: 100vh;
+    font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    background-color: #e2e8f0;
+    color: var(--imc-text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.02em;
+  }
+
+  .imc-login-body *,
+  .imc-login-body *::before,
+  .imc-login-body *::after {
+    box-sizing: border-box;
+  }
+
+  .imc-portal-container {
+    width: min(900px, 100%);
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    border-top: 4px solid var(--imc-gov-blue);
+  }
+
+  .imc-info-panel {
+    width: 50%;
+    background: #f8fafc;
+    padding: 40px;
+    border-right: 1px solid var(--imc-border-color);
+  }
+
+  .imc-info-panel h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--imc-gov-blue);
+    margin: 0 0 8px;
+    letter-spacing: -0.05em;
+  }
+
+  .imc-info-sub {
+    font-size: 13px;
+    color: var(--imc-text-gray);
+    margin: 0 0 40px;
+    font-weight: 600;
+  }
+
+  .imc-notice-board h3 {
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--imc-text-dark);
+    padding-bottom: 8px;
+    margin: 0 0 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .imc-notice-board ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .imc-notice-board li {
+    font-size: 12.5px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--imc-border-color);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--imc-text-dark);
+    cursor: pointer;
+  }
+
+  .imc-notice-board li:hover {
+    text-decoration: underline;
+  }
+
+  .imc-notice-date {
+    color: var(--imc-text-gray);
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .imc-security-plugins {
+    margin-top: 40px;
+    background: #fff;
+    border: 1px solid var(--imc-border-color);
+    padding: 16px;
+  }
+
+  .imc-security-plugins h4 {
+    font-size: 12px;
+    margin: 0 0 12px;
+    color: var(--imc-text-dark);
+  }
+
+  .imc-plugin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    margin-bottom: 8px;
+    color: var(--imc-text-gray);
+  }
+
+  .imc-plugin-status {
+    font-weight: 700;
+    color: #dc2626;
+  }
+
+  .imc-plugin-status.installed {
+    color: #16a34a;
+  }
+
+  .imc-plugin-download {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    color: #475569;
+    font-family: inherit;
+  }
+
+  .imc-login-panel {
+    width: 50%;
+    padding: 32px 40px 28px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .imc-login-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 18px;
+    color: var(--imc-text-dark);
+    text-align: center;
+  }
+
+  .imc-login-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .imc-form-group {
+    margin-bottom: 14px;
+  }
+
+  .imc-network-group {
+    margin-bottom: 16px;
+  }
+
+  .imc-form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--imc-text-dark);
+  }
+
+  .imc-form-group input[type='text'],
+  .imc-form-group input[type='password'] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--imc-border-color);
+    font-size: 14px;
+    outline: none;
+    background: #fafafa;
+    font-family: Tahoma, sans-serif;
+  }
+
+  .imc-form-group input:focus {
+    border-color: var(--imc-gov-blue);
+    background: #fff;
+  }
+
+  .imc-field-hint {
+    margin: 6px 0 0;
+    font-size: 11px;
+    color: var(--imc-text-gray);
+  }
+
+  .imc-network-select {
+    display: flex;
+    gap: 10px;
+  }
+
+  .imc-network-label {
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .imc-network-label input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .imc-network-box {
+    border: 1px solid var(--imc-border-color);
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--imc-text-gray);
+    background: #f8fafc;
+    transition: 0.2s;
+    line-height: 1.35;
+  }
+
+  .imc-network-sub {
+    font-size: 10px;
+    font-weight: 400;
+  }
+
+  .imc-network-label input:checked ~ .imc-network-box {
+    border-color: var(--imc-gov-blue);
+    color: var(--imc-gov-blue);
+    background: #eff6ff;
+  }
+
+  .imc-checkbox-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    font-size: 12px;
+    color: var(--imc-text-gray);
+    margin-bottom: 16px;
+  }
+
+  .imc-checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .imc-login-error {
+    margin: 0 0 12px;
+    font-size: 12px;
+    color: #dc2626;
+    font-weight: 600;
+  }
+
+  .imc-login-error.hidden {
+    display: none;
+  }
+
+  .imc-btn-login {
+    width: 100%;
+    background: var(--imc-gov-blue);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: inherit;
+  }
+
+  .imc-btn-login:hover {
+    background: #152c6b;
+  }
+
+  .imc-demo-panel {
+    margin-top: 18px;
+    border: 1px solid var(--imc-border-color);
+    background: #f8fafc;
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: var(--imc-text-gray);
+  }
+
+  .imc-demo-panel summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--imc-text-dark);
+  }
+
+  .imc-demo-panel ul {
+    margin: 10px 0 0;
+    padding-left: 16px;
+    line-height: 1.6;
+  }
+
+  .imc-legal-warning {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.55;
+    text-align: justify;
+  }
+
+  .imc-home-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--imc-text-gray);
+    text-decoration: none;
+  }
+
+  .imc-home-link:hover {
+    color: var(--imc-text-dark);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 820px) {
+    .imc-portal-container {
+      flex-direction: column;
+    }
+
+    .imc-info-panel,
+    .imc-login-panel {
+      width: 100%;
+    }
+
+    .imc-info-panel {
+      border-right: 0;
+      border-bottom: 1px solid var(--imc-border-color);
+      padding: 28px 24px;
+    }
+
+    .imc-login-panel {
+      padding: 28px 24px 24px;
+    }
+  }
+</style>
