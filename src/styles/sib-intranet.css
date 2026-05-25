@@ -1745,12 +1745,7 @@ a.sib-reg-amendment {
   margin-bottom: 0;
 }
 
-.sib-detail-foot {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid #f0f0f2;
-}
-
 .sib-detail-back {
-  @apply text-[12px] text-[#525252] font-semibold no-underline hover:underline;
+  @apply inline-block text-[12px] text-[#525252] font-semibold no-underline hover:underline;
+  margin-bottom: 18px;
 }
