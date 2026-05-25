@@ -2331,20 +2331,20 @@ a.sib-reg-amendment {
   @apply text-imc-danger font-bold;
 }
 
-.sib-vtab-locked {
-  color: #aaa !important;
-}
-
-.sib-vtab-locked:not(.is-unlocked) .sib-vtab-lock {
+.sib-vtab-locked:not(.active) {
   color: #888;
 }
 
-.sib-vtab-locked.is-unlocked {
+.sib-vtab-locked:not(.active) .sib-vtab-lock {
   color: #888;
 }
 
+.sib-vtab-locked.active,
 .sib-vtab-locked.is-unlocked.active {
   color: #1a1a1a;
+  font-weight: 700;
+  border-left-color: #1a1a1a;
+  background: #fafbfc;
 }
 
 .sib-prf-deep-lock {
