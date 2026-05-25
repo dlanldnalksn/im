@@ -1,0 +1,42 @@
+---
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
+import SibRecordDetail from '../../../../components/sib/SibRecordDetail.astro';
+import { getSibRegulationById, sibRegulationRecords } from '../../../../data/sib-regulations-list';
+import { getRegulationDetail } from '../../../../lib/sib-detail-content';
+import { url } from '../../../../lib/url';
+
+export function getStaticPaths() {
+  return sibRegulationRecords.map((rec) => ({
+    params: { portal: 'sib', id: rec.id },
+  }));
+}
+
+const { id } = Astro.params;
+const rec = getSibRegulationById(id!);
+
+if (!rec) {
+  return Astro.redirect(url('intranet/sib/regulations/'));
+}
+
+const detail = getRegulationDetail(rec);
+const base = 'intranet/sib/regulations/';
+---
+
+<SibIntranetLayout title={rec.title}>
+  <SibRecordDetail
+    breadcrumbParent="규정·법령"
+    breadcrumbParentHref={base}
+    breadcrumbCurrent={rec.ruleCode}
+    title={rec.title}
+    code={rec.ruleCode}
+    tags={[
+      {
+        label: rec.statusLabel,
+        variant: rec.statusVariant === 'revised' ? 'revised' : 'active',
+      },
+      { label: rec.category, variant: 'gray' },
+    ]}
+    fields={detail.fields}
+    body={detail.body}
+  />
+</SibIntranetLayout>

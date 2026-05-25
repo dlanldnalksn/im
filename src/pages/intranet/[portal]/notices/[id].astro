@@ -1,0 +1,43 @@
+---
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
+import SibRecordDetail from '../../../../components/sib/SibRecordDetail.astro';
+import { getSibNoticeById, sibNoticeRecords } from '../../../../data/sib-notices-list';
+import { getNoticeDetail } from '../../../../lib/sib-detail-content';
+import { url } from '../../../../lib/url';
+
+export function getStaticPaths() {
+  return sibNoticeRecords.map((rec) => ({
+    params: { portal: 'sib', id: rec.id },
+  }));
+}
+
+const { id } = Astro.params;
+const rec = getSibNoticeById(id!);
+
+if (!rec) {
+  return Astro.redirect(url('intranet/sib/notices/'));
+}
+
+const detail = getNoticeDetail(rec);
+const base = 'intranet/sib/notices/';
+---
+
+<SibIntranetLayout title={rec.title}>
+  <SibRecordDetail
+    breadcrumbParent="공지·알림"
+    breadcrumbParentHref={base}
+    breadcrumbCurrent={rec.noticeCode}
+    title={rec.title}
+    code={rec.noticeCode}
+    tags={[
+      {
+        label: rec.category,
+        variant: rec.filterKey === 'urgent' ? 'red' : 'gray',
+      },
+    ]}
+    fields={detail.fields}
+    body={detail.body}
+    readStore="notices"
+    recordId={rec.id}
+  />
+</SibIntranetLayout>

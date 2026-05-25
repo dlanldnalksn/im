@@ -351,3 +351,8 @@ export const sibApprovalRecords: SibApprovalRecord[] = [
     referenceDate: '2026-01-05',
   },
 ];
+
+export function getSibApprovalById(id: string) {
+  return sibApprovalRecords.find((rec) => rec.id === id);
+}
+

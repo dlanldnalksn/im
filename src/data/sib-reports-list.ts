@@ -213,3 +213,10 @@ export const sibReportRecords: SibReportRecord[] = [
     referenceDate: '2026-03-18',
   },
 ];
+
+export function getSibReportById(id: string) {
+  return sibReportRecords.find((rpt) => rpt.id === id);
+}
+
+export const sibDashboardReports = sibReportRecords.slice(0, 3);
+

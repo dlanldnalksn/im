@@ -8,6 +8,10 @@ import {
 } from '../../data/sib-operations-list';
 import type { SibOpStatusTag, SibOperationRecord } from '../../data/sib-operations-list';
 
+const unreadOpIds = sibOperationRecords
+  .filter((op) => op.filterBuckets.includes('unread'))
+  .map((op) => op.id);
+
 const base = 'intranet/sib/';
 const updated = '2026.05.24 14:22';
 
@@ -152,9 +156,11 @@ function rowClass(op: SibOperationRecord) {
 
     {
       sibOperationRecords.map((op) => (
-        <div
+        <a
+          href={url(`${base}documents/${op.id}/`)}
           class={rowClass(op)}
           data-sib-op-row
+          data-op-id={op.id}
           data-filters={op.filterBuckets.join(' ')}
           data-category={op.category}
           data-issued-at={op.issuedAt}
@@ -187,7 +193,7 @@ function rowClass(op: SibOperationRecord) {
               )
             }
           </div>
-        </div>
+        </a>
       ))
     }
 
@@ -200,9 +206,33 @@ function rowClass(op: SibOperationRecord) {
   </div>
 </div>
 
-<script define:vars={{ pageSize: SIB_OP_PAGE_SIZE, referenceDate: SIB_OP_REFERENCE_DATE }}>
+<script define:vars={{ pageSize: SIB_OP_PAGE_SIZE, referenceDate: SIB_OP_REFERENCE_DATE, unreadOpIds }}>
   const listRoot = document.querySelector('[data-sib-op-list]');
   if (listRoot) {
+    const readOps = new Set(JSON.parse(localStorage.getItem('sib-read-ops') || '[]'));
+
+    function syncUnreadState() {
+      let unreadCount = 0;
+      listRoot.querySelectorAll('[data-sib-op-row]').forEach((row) => {
+        const id = row.getAttribute('data-op-id');
+        const filters = (row.getAttribute('data-filters') || '').split(' ').filter(Boolean);
+        if (id && readOps.has(id) && filters.includes('unread')) {
+          row.setAttribute('data-filters', filters.filter((f) => f !== 'unread').join(' '));
+          row.querySelectorAll('.sib-op-tag-unread').forEach((tag) => tag.remove());
+        }
+        if ((row.getAttribute('data-filters') || '').includes('unread')) unreadCount += 1;
+      });
+
+      const unreadStat = document.querySelector('[data-sib-op-stat-filter="unread"] .sib-op-stat-value');
+      if (unreadStat) {
+        unreadStat.innerHTML = `${unreadCount}<span class="sib-op-stat-unit">건</span>`;
+      }
+    }
+
+    syncUnreadState();
+
+    const params = new URLSearchParams(window.location.search);
+    const initialFilter = params.get('filter');
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-op-row]'));
     const filterTabs = Array.from(document.querySelectorAll('[data-sib-op-filter]'));
     const statCards = Array.from(document.querySelectorAll('[data-sib-op-stat-filter]'));
@@ -365,5 +395,10 @@ function rowClass(op: SibOperationRecord) {
     });
 
     applyFilters();
+
+    if (initialFilter === 'unread') {
+      setActiveTab('unread');
+      applyFilters();
+    }
   }
 </script>

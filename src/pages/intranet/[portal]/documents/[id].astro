@@ -1,0 +1,41 @@
+---
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
+import SibRecordDetail from '../../../../components/sib/SibRecordDetail.astro';
+import { getSibOperationById, sibOperationRecords } from '../../../../data/sib-operations-list';
+import { getOperationDetail } from '../../../../lib/sib-detail-content';
+import { url } from '../../../../lib/url';
+
+export function getStaticPaths() {
+  return sibOperationRecords.map((op) => ({
+    params: { portal: 'sib', id: op.id },
+  }));
+}
+
+const { id } = Astro.params;
+const op = getSibOperationById(id!);
+
+if (!op) {
+  return Astro.redirect(url('intranet/sib/documents/'));
+}
+
+const detail = getOperationDetail(op);
+const base = 'intranet/sib/documents/';
+---
+
+<SibIntranetLayout title={op.title}>
+  <SibRecordDetail
+    breadcrumbParent="작전 명령"
+    breadcrumbParentHref={base}
+    breadcrumbCurrent={op.code}
+    title={op.title}
+    code={op.code}
+    tags={op.statusTags.map((t) => ({
+      label: t.label,
+      variant: t.variant === 'red' ? 'red' : t.variant === 'amber' ? 'amber' : 'gray',
+    }))}
+    fields={detail.fields}
+    body={detail.body}
+    readStore="operations"
+    recordId={op.id}
+  />
+</SibIntranetLayout>

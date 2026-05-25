@@ -1,0 +1,46 @@
+---
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
+import SibRecordDetail from '../../../../components/sib/SibRecordDetail.astro';
+import { getSibApprovalById, sibApprovalRecords } from '../../../../data/sib-approvals-list';
+import { getApprovalDetail } from '../../../../lib/sib-detail-content';
+import { url } from '../../../../lib/url';
+
+export function getStaticPaths() {
+  return sibApprovalRecords.map((rec) => ({
+    params: { portal: 'sib', id: rec.id },
+  }));
+}
+
+const { id } = Astro.params;
+const rec = getSibApprovalById(id!);
+
+if (!rec) {
+  return Astro.redirect(url('intranet/sib/approvals/'));
+}
+
+const detail = getApprovalDetail(rec);
+const base = 'intranet/sib/approvals/';
+---
+
+<SibIntranetLayout title={rec.title}>
+  <SibRecordDetail
+    breadcrumbParent="결재·신청"
+    breadcrumbParentHref={base}
+    breadcrumbCurrent={rec.requestCode}
+    title={rec.title}
+    code={rec.requestCode}
+    tags={[
+      {
+        label: rec.statusLabel,
+        variant:
+          rec.statusVariant === 'review'
+            ? 'review'
+            : rec.statusVariant === 'rejected'
+              ? 'red'
+              : 'gray',
+      },
+    ]}
+    fields={detail.fields}
+    body={detail.body}
+  />
+</SibIntranetLayout>

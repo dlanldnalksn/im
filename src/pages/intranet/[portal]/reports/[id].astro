@@ -1,0 +1,39 @@
+---
+import SibIntranetLayout from '../../../../layouts/SibIntranetLayout.astro';
+import SibRecordDetail from '../../../../components/sib/SibRecordDetail.astro';
+import { getSibReportById, sibReportRecords } from '../../../../data/sib-reports-list';
+import { getReportDetail } from '../../../../lib/sib-detail-content';
+import { url } from '../../../../lib/url';
+
+export function getStaticPaths() {
+  return sibReportRecords.map((rpt) => ({
+    params: { portal: 'sib', id: rpt.id },
+  }));
+}
+
+const { id } = Astro.params;
+const rpt = getSibReportById(id!);
+
+if (!rpt) {
+  return Astro.redirect(url('intranet/sib/reports/'));
+}
+
+const detail = getReportDetail(rpt);
+const base = 'intranet/sib/reports/';
+---
+
+<SibIntranetLayout title={rpt.title}>
+  <SibRecordDetail
+    breadcrumbParent="의무 보고"
+    breadcrumbParentHref={base}
+    breadcrumbCurrent={rpt.formCode}
+    title={rpt.title}
+    code={rpt.formCode}
+    tags={rpt.statusTags.map((t) => ({
+      label: t.label,
+      variant: t.variant === 'urgent' ? 'amber' : 'gray',
+    }))}
+    fields={detail.fields}
+    body={detail.body}
+  />
+</SibIntranetLayout>

@@ -524,3 +524,8 @@ function buildRegulationRecords(): SibRegulationRecord[] {
 
 export const sibRegulationRecords = buildRegulationRecords();
 export const SIB_REG_TOTAL_DOCUMENTS = sibRegulationRecords.length;
+
+export function getSibRegulationById(id: string) {
+  return sibRegulationRecords.find((rec) => rec.id === id);
+}
+

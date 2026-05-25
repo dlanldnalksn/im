@@ -1,0 +1,116 @@
+---
+import { url } from '../../lib/url';
+
+export interface SibDetailTag {
+  label: string;
+  variant?: 'red' | 'amber' | 'gray' | 'review' | 'revised' | 'active';
+}
+
+export interface SibDetailField {
+  label: string;
+  value: string;
+  mono?: boolean;
+}
+
+interface Props {
+  breadcrumbParent: string;
+  breadcrumbParentHref: string;
+  breadcrumbCurrent: string;
+  title: string;
+  code?: string;
+  tags?: SibDetailTag[];
+  fields: SibDetailField[];
+  body: string[];
+  backLabel?: string;
+  readStore?: 'operations' | 'notices';
+  recordId?: string;
+}
+
+const {
+  breadcrumbParent,
+  breadcrumbParentHref,
+  breadcrumbCurrent,
+  title,
+  code,
+  tags = [],
+  fields,
+  body,
+  backLabel = '목록으로',
+  readStore,
+  recordId,
+} = Astro.props;
+
+function tagClass(variant?: SibDetailTag['variant']) {
+  if (variant === 'red') return 'sib-tag red';
+  if (variant === 'amber') return 'sib-tag amber';
+  if (variant === 'review') return 'sib-tag amber';
+  if (variant === 'revised') return 'sib-tag amber';
+  return 'sib-tag gray';
+}
+---
+
+<nav class="sib-breadcrumb" aria-label="경로">
+  <a href={url('intranet/sib/')} class="sib-breadcrumb-link">대시보드</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <a href={url(breadcrumbParentHref)} class="sib-breadcrumb-link">{breadcrumbParent}</a>
+  <span class="sib-breadcrumb-sep">›</span>
+  <span class="sib-breadcrumb-current">{breadcrumbCurrent}</span>
+</nav>
+
+<article class="sib-detail">
+  <header class="sib-detail-head">
+    <div class="sib-detail-head-top">
+      {
+        tags.length > 0 && (
+          <div class="sib-detail-tags">
+            {tags.map((tag) => (
+              <span class={tagClass(tag.variant)}>{tag.label}</span>
+            ))}
+          </div>
+        )
+      }
+      {code && <span class="sib-detail-code">{code}</span>}
+    </div>
+    <h1 class="sib-detail-title">{title}</h1>
+  </header>
+
+  <div class="sib-detail-meta">
+    {
+      fields.map((field) => (
+        <div class="sib-detail-meta-row">
+          <span class="sib-detail-meta-label">{field.label}</span>
+          <span class:list={['sib-detail-meta-value', field.mono && 'mono']}>{field.value}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="sib-detail-body">
+    {
+      body.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))
+    }
+  </div>
+
+  <footer class="sib-detail-foot">
+    <a href={url(breadcrumbParentHref)} class="sib-detail-back">{backLabel} →</a>
+  </footer>
+</article>
+
+{
+  readStore && recordId && (
+    <script define:vars={{ readStore, recordId }}>
+      const key = readStore === 'operations' ? 'sib-read-ops' : 'sib-read-notices';
+      try {
+        const read = JSON.parse(localStorage.getItem(key) || '[]');
+        if (!read.includes(recordId)) {
+          read.push(recordId);
+          localStorage.setItem(key, JSON.stringify(read));
+        }
+      } catch {
+        /* ignore */
+      }
+    </script>
+  )
+}

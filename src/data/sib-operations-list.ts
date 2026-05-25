@@ -277,3 +277,10 @@ export const sibOperationRecords: SibOperationRecord[] = [
     issuedAt: '2026-02-24',
   },
 ];
+
+export function getSibOperationById(id: string) {
+  return sibOperationRecords.find((op) => op.id === id);
+}
+
+export const sibDashboardOperations = sibOperationRecords.slice(0, 4);
+

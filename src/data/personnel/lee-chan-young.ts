@@ -9,7 +9,7 @@ export const leeChanYoung: PersonnelRecord = {
   org: '특수감찰국',
   department: '2처 집행처',
   role: '차출 요원',
-  employeeId: 'TG-2-26-0147',
+  employeeId: 'SIB-2-08-0147',
   residence: {
     official: '특감국 차출요원 숙소 B동 417호',
     personal: '서울특별시 마포구 연남로 38, 304호',

@@ -81,6 +81,22 @@ const pageTitle = `${title} | 특수감찰국 인트라넷`;
 
       syncSibNavLinks();
 
+      try {
+        const unreadIds = ['op-0341', 'op-0338'];
+        const read = new Set(JSON.parse(localStorage.getItem('sib-read-ops') || '[]'));
+        const unreadCount = unreadIds.filter((id) => !read.has(id)).length;
+        document.querySelectorAll('[data-sib-nav="documents"] .sib-nav-badge').forEach((badge) => {
+          if (unreadCount > 0) {
+            badge.textContent = String(unreadCount);
+            badge.classList.remove('is-hidden');
+          } else {
+            badge.classList.add('is-hidden');
+          }
+        });
+      } catch {
+        /* ignore */
+      }
+
       window.addEventListener('pageshow', (event) => {
         syncSibNavLinks();
 

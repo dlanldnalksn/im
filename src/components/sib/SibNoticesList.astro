@@ -65,7 +65,7 @@ function tagClass(rec: SibNoticeRecord) {
   </div>
 </div>
 
-<div class="sib-reg-amendment">
+<a href={url(`${base}notices/ntc-008/`)} class="sib-reg-amendment no-underline text-inherit">
   <div class="sib-reg-amendment-body">
     <span class="sib-reg-amendment-label">{sibNoticeBanner.label}</span>
     <p class="sib-reg-amendment-text">
@@ -73,8 +73,8 @@ function tagClass(rec: SibNoticeRecord) {
       {sibNoticeBanner.text}
     </p>
   </div>
-  <span class="sib-reg-amendment-link">상세 →</span>
-</div>
+  <span class="sib-reg-amendment-link">자세히 →</span>
+</a>
 
 <div class="sib-op-stat-grid" data-sib-ntc-stats>
   {
@@ -167,7 +167,8 @@ function tagClass(rec: SibNoticeRecord) {
 
     {
       sibNoticeRecords.map((rec) => (
-        <div
+        <a
+          href={url(`${base}notices/${rec.id}/`)}
           class={rowClass(rec)}
           data-sib-ntc-row
           data-filter={rec.filterKey}
@@ -189,7 +190,7 @@ function tagClass(rec: SibNoticeRecord) {
               )
             }
           </div>
-        </div>
+        </a>
       ))
     }
 

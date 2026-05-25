@@ -274,3 +274,10 @@ export const sibNoticeStats = {
   admin: sibNoticeRecords.filter((r) => r.filterKey === 'admin').length,
   hr: sibNoticeRecords.filter((r) => r.filterKey === 'hr').length,
 };
+
+export function getSibNoticeById(id: string) {
+  return sibNoticeRecords.find((rec) => rec.id === id);
+}
+
+export const sibDashboardNotices = sibNoticeRecords.slice(0, 4);
+

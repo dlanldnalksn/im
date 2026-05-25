@@ -58,7 +58,7 @@ function statusTagClass(rec: SibRegulationRecord) {
   </div>
 </div>
 
-<div class="sib-reg-amendment">
+<a href={url(`${base}regulations/reg-024/`)} class="sib-reg-amendment no-underline text-inherit">
   <div class="sib-reg-amendment-body">
     <span class="sib-reg-amendment-label">최근 개정</span>
     <p class="sib-reg-amendment-text">
@@ -67,7 +67,7 @@ function statusTagClass(rec: SibRegulationRecord) {
     </p>
   </div>
   <span class="sib-reg-amendment-link">개정안 →</span>
-</div>
+</a>
 
 <div class="sib-reg-category-grid">
   {
@@ -152,7 +152,8 @@ function statusTagClass(rec: SibRegulationRecord) {
 
     {
       sibRegulationRecords.map((rec) => (
-        <div
+        <a
+          href={url(`${base}regulations/${rec.id}/`)}
           class={rowClass(rec)}
           data-sib-reg-row
           data-filter={rec.filterKey}
@@ -182,7 +183,7 @@ function statusTagClass(rec: SibRegulationRecord) {
             }
             <span class:list={['sib-reg-btn-link', rec.rowStyle === 'revised' && 'active']}>조회 →</span>
           </div>
-        </div>
+        </a>
       ))
     }
 

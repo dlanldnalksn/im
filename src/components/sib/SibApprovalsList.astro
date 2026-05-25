@@ -187,7 +187,8 @@ function dateClass(rec: SibApprovalRecord) {
 
     {
       sibApprovalRecords.map((rec) => (
-        <div
+        <a
+          href={url(`${base}approvals/${rec.id}/`)}
           class={rowClass(rec)}
           data-sib-apr-row
           data-filters={rec.filterBuckets.join(' ')}
@@ -226,7 +227,7 @@ function dateClass(rec: SibApprovalRecord) {
           <div class="sib-op-table-action">
             <span class:list={['sib-apr-btn-link', rec.muted && 'muted']}>조회 →</span>
           </div>
-        </div>
+        </a>
       ))
     }
 

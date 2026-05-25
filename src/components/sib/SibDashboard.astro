@@ -1,10 +1,30 @@
 ---
 import { url } from '../../lib/url';
-import { sibOperations } from '../../data/sib-dashboard';
+import {
+  sibDashboardOperations,
+  sibOperationRecords,
+  sibOperationStats,
+} from '../../data/sib-operations-list';
+import { sibDashboardReports } from '../../data/sib-reports-list';
+import { sibDashboardNotices, sibNoticeBanner } from '../../data/sib-notices-list';
 import SibOpCode from './SibOpCode.astro';
 
 const base = `intranet/sib/`;
 const updated = '2026.05.24 14:22';
+const unreadOpIds = sibOperationRecords
+  .filter((op) => op.filterBuckets.includes('unread'))
+  .map((op) => op.id);
+
+function opTagClass(variant: string) {
+  if (variant === 'red') return 'red';
+  if (variant === 'amber') return 'amber';
+  return 'gray';
+}
+
+function noticeTagClass(filterKey: string) {
+  if (filterKey === 'urgent') return 'red';
+  return 'gray';
+}
 ---
 
 <div class="sib-page-head">
@@ -23,7 +43,7 @@ const updated = '2026.05.24 14:22';
     <span class="sib-tag red">긴급 · D-3</span>
     <span class="text-[13px] font-medium text-[#1a1a1a]">신천 사건 15주기 추모일 (05.27) — 차출요원 전원 비상 대기, 출입 제한 강화 조치</span>
   </div>
-  <a href={url('notices/')} class="text-[11.5px] text-imc-danger font-bold no-underline hover:underline">자세히 →</a>
+  <a href={url(`${base}notices/ntc-008/`)} class="text-[11.5px] text-imc-danger font-bold no-underline hover:underline">자세히 →</a>
 </div>
 
 <div class="sib-stat-grid">
@@ -100,36 +120,56 @@ const updated = '2026.05.24 14:22';
     <div class="sib-panel-head">
       <span class="sib-panel-head-title">작전 명령서</span>
       <div class="flex gap-3.5 items-center text-[11.5px]">
-        <span class="text-imc-danger font-bold">미열람 2건</span>
-        <a href={url(`${base}documents/`)} class="text-[#525252] font-semibold no-underline hover:underline">전체보기</a>
+        <a
+          href={url(`${base}documents/?filter=unread`)}
+          class="text-imc-danger font-bold no-underline hover:underline"
+          data-sib-unread-link
+        >
+          미열람 {sibOperationStats.unread}건
+        </a>
+        <a href={url(`${base}documents/`)} class="text-[#525252] font-semibold no-underline hover:underline">전체보기 →</a>
       </div>
     </div>
     {
-      sibOperations.map((op, i) => (
-        <a
-          href={url(`${base}documents/`)}
-          class:list={[
-            'sib-op-row',
-            op.priority === 'priority' && 'priority',
-            op.priority === 'urgent' && 'urgent',
-            i === sibOperations.length - 1 && 'border-b-0',
-          ]}
-        >
-          <div class:list={['sib-op-bar', op.priority === 'priority' && 'bg-imc-danger', op.priority === 'urgent' && 'bg-[#e8b870]', op.priority === 'done' && 'bg-[#e0e2e7]']}></div>
-          <div class="flex-1 min-w-0">
-            <div class="sib-op-tags">
-              <span class:list={['sib-tag', op.tagClass]}>{op.tag}</span>
-              <SibOpCode code={op.code} muted={op.muted} />
-              {op.grade && (
-                <span class:list={['text-[11px]', op.muted ? 'text-[#888]' : 'text-[#666]']}>{op.grade}</span>
-              )}
+      sibDashboardOperations.map((op, i) => {
+        const primaryTag = op.statusTags.find((t) => t.variant !== 'unread') ?? op.statusTags[0];
+        return (
+          <a
+            href={url(`${base}documents/${op.id}/`)}
+            class:list={[
+              'sib-op-row',
+              op.rowStyle === 'priority' && 'priority',
+              op.rowStyle === 'urgent' && 'urgent',
+              i === sibDashboardOperations.length - 1 && 'border-b-0',
+            ]}
+            data-sib-op-id={op.id}
+            data-sib-op-unread={op.filterBuckets.includes('unread') ? 'true' : 'false'}
+          >
+            <div
+              class:list={[
+                'sib-op-bar',
+                op.rowStyle === 'priority' && 'bg-imc-danger',
+                op.rowStyle === 'urgent' && 'bg-[#e8b870]',
+                op.muted && 'bg-[#e0e2e7]',
+              ]}
+            ></div>
+            <div class="flex-1 min-w-0">
+              <div class="sib-op-tags">
+                {primaryTag && <span class:list={['sib-tag', opTagClass(primaryTag.variant)]}>{primaryTag.label}</span>}
+                <SibOpCode code={op.code} muted={op.muted} />
+                <span class:list={['text-[11px]', op.muted ? 'text-[#888]' : 'text-[#666]']}>{op.category}</span>
+              </div>
+              <p class:list={['sib-op-title', op.muted && 'font-semibold text-[#525252]']}>{op.title}</p>
+              <p class:list={['sib-op-meta', op.muted && 'text-[#888]']}>
+                {op.scheduleMain} · {op.scheduleSub} · {op.issuer}
+              </p>
             </div>
-            <p class:list={['sib-op-title', op.muted && 'font-semibold text-[#525252]']}>{op.title}</p>
-            <p class:list={['sib-op-meta', op.muted && 'text-[#888]']}>{op.meta}</p>
-          </div>
-          <span class:list={['shrink-0 text-sm', op.muted ? 'text-[#aaa]' : 'text-[#525252]']}>→</span>
-        </a>
-      ))
+            <span class:list={['shrink-0 text-[11.5px] font-semibold', op.muted ? 'text-[#aaa]' : 'text-[#525252]']}>
+              자세히 →
+            </span>
+          </a>
+        );
+      })
     }
   </div>
 
@@ -140,67 +180,82 @@ const updated = '2026.05.24 14:22';
       </a>
       <div class="flex gap-3.5 items-center text-[11.5px]">
         <span class="text-[#92400e] font-bold">기한 임박 1건</span>
-        <a href={url(`${base}reports/`)} class="text-[#525252] font-semibold no-underline hover:underline" data-sib-link="reports">전체보기</a>
+        <a href={url(`${base}reports/`)} class="text-[#525252] font-semibold no-underline hover:underline" data-sib-link="reports">전체보기 →</a>
       </div>
     </div>
-    <a href={url(`${base}reports/`)} class="sib-report-row bg-[#fffbf3] hover:bg-[#fff8eb]" data-sib-link="reports">
-      <div class="flex items-center gap-2" style="margin-bottom:6px;">
-        <span class="sib-tag amber">기한 임박</span>
-        <span class="text-[11px] text-[#92400e] font-bold">D-1</span>
-      </div>
-      <p class="text-[13px] font-bold text-[#1a1a1a]" style="margin-bottom:4px;line-height:1.4;">월간 정기 진술서 (5월분)</p>
-      <p class="sib-op-meta">기한 05.25 23:59 · 양식 <span class="sib-mono-inline">M-FORM-03</span></p>
-    </a>
-    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]" data-sib-link="reports">
-      <div class="flex items-center gap-2" style="margin-bottom:6px;">
-        <span class="sib-tag gray">정기</span>
-        <span class="text-[11px] font-semibold text-[#525252]">D-7</span>
-      </div>
-      <p class="text-[13px] font-semibold text-[#525252]" style="margin-bottom:4px;line-height:1.4;">분기 정기 검진 (2분기)</p>
-      <p class="sib-op-meta text-[#888]">조정원 본원 · 예약 필요</p>
-    </a>
-    <a href={url(`${base}reports/`)} class="sib-report-row hover:bg-[#fafafa]" data-sib-link="reports">
-      <div class="flex items-center gap-2" style="margin-bottom:6px;">
-        <span class="sib-tag gray">정기</span>
-        <span class="text-[11px] font-semibold text-[#525252]">D-12</span>
-      </div>
-      <p class="text-[13px] font-semibold text-[#525252]" style="margin-bottom:4px;line-height:1.4;">차단제 처방 갱신</p>
-      <p class="sib-op-meta text-[#888]">조정원 의료센터 · 자동 갱신 가능</p>
-    </a>
+    {
+      sibDashboardReports.map((rpt, i) => (
+        <a
+          href={url(`${base}reports/${rpt.id}/`)}
+          class:list={[
+            'sib-report-row hover:bg-[#fafafa]',
+            rpt.rowStyle === 'urgent' && 'bg-[#fffbf3] hover:bg-[#fff8eb]',
+            i === sibDashboardReports.length - 1 && 'border-b-0',
+          ]}
+          data-sib-link="reports"
+        >
+          <div class="flex items-center gap-2" style="margin-bottom:6px;">
+            {
+              rpt.statusTags.map((tag) => (
+                <span class:list={['sib-tag', tag.variant === 'urgent' ? 'amber' : 'gray']}>{tag.label}</span>
+              ))
+            }
+            <span class:list={['text-[11px]', rpt.statusSubVariant === 'urgent' ? 'text-[#92400e] font-bold' : 'font-semibold text-[#525252]']}>
+              {rpt.statusSub}
+            </span>
+          </div>
+          <p class:list={['text-[13px]', rpt.rowStyle === 'urgent' ? 'font-bold text-[#1a1a1a]' : 'font-semibold text-[#525252]']} style="margin-bottom:4px;line-height:1.4;">
+            {rpt.title}
+          </p>
+          <p class="sib-op-meta">
+            기한 {rpt.deadlineMain} · {rpt.deadlineSub} · 양식 <span class="sib-mono-inline">{rpt.formCode}</span>
+          </p>
+        </a>
+      ))
+    }
   </div>
 </div>
 
 <div class="sib-panel" id="notices">
   <div class="sib-panel-head">
     <span class="sib-panel-head-title">내부 공지</span>
-    <a href={url(`${base}documents/`)} class="text-[11.5px] text-[#525252] font-semibold no-underline hover:underline">전체보기</a>
+    <a href={url(`${base}notices/`)} class="text-[11.5px] text-[#525252] font-semibold no-underline hover:underline">전체보기 →</a>
   </div>
-  <a href={url(`${base}documents/`)} class="sib-notice-row">
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <span class="sib-tag red shrink-0">긴급</span>
-      <span class="text-[12.5px] font-semibold text-[#1a1a1a] truncate">전 차출요원 비상 대기 명령 (05.25 00:00 — 05.28 24:00)</span>
-    </div>
-    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.23</span>
-  </a>
-  <a href={url(`${base}documents/`)} class="sib-notice-row">
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <span class="sib-tag gray shrink-0">공지</span>
-      <span class="text-[12.5px] text-[#525252] font-medium truncate">차출요원 숙소 출입 게이트 보안 시스템 업데이트 안내</span>
-    </div>
-    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.22</span>
-  </a>
-  <a href={url(`${base}documents/`)} class="sib-notice-row">
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <span class="sib-tag gray shrink-0">공지</span>
-      <span class="text-[12.5px] text-[#525252] font-medium truncate">2026년도 동기화 매칭 우선순위 산정 기준 개정 안내</span>
-    </div>
-    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.18</span>
-  </a>
-  <a href={url(`${base}documents/`)} class="sib-notice-row">
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-      <span class="sib-tag gray shrink-0">행정</span>
-      <span class="text-[12.5px] text-[#525252] font-medium truncate">분기 정기 진료 일정 배정 안내 (2분기)</span>
-    </div>
-    <span class="text-[11px] text-[#888] shrink-0 font-semibold">2026.05.15</span>
-  </a>
+  {
+    sibDashboardNotices.map((ntc, i) => (
+      <a
+        href={url(`${base}notices/${ntc.id}/`)}
+        class:list={['sib-notice-row', i === sibDashboardNotices.length - 1 && 'border-b-0']}
+      >
+        <div class="flex items-center gap-3 flex-1 min-w-0">
+          <span class:list={['sib-tag shrink-0', noticeTagClass(ntc.filterKey)]}>{ntc.category}</span>
+          <span class="text-[12.5px] font-semibold text-[#1a1a1a] truncate">{ntc.title}</span>
+        </div>
+        <span class="text-[11px] text-[#888] shrink-0 font-semibold">{ntc.postedDate}</span>
+      </a>
+    ))
+  }
 </div>
+
+<script define:vars={{ unreadOpIds }}>
+  try {
+    const read = new Set(JSON.parse(localStorage.getItem('sib-read-ops') || '[]'));
+    document.querySelectorAll('[data-sib-op-unread="true"]').forEach((row) => {
+      const id = row.getAttribute('data-sib-op-id');
+      if (id && read.has(id)) row.removeAttribute('data-sib-op-unread');
+    });
+
+    const unreadLink = document.querySelector('[data-sib-unread-link]');
+    const count = unreadOpIds.filter((id) => !read.has(id)).length;
+
+    if (unreadLink) {
+      unreadLink.textContent = `미열람 ${count}건`;
+      if (count === 0) {
+        unreadLink.classList.remove('text-imc-danger');
+        unreadLink.classList.add('text-[#888]');
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+</script>
