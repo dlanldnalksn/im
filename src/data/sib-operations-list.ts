@@ -47,7 +47,7 @@ export const sibOperationRecords: SibOperationRecord[] = [
     category: '갑급 작전 지원',
     code: 'OP-2026-0341',
     title: '[극비] 수도권 마포구역 미등재자 거점 진압 작전 — 차출 명령',
-    issuer: '2처 작전과',
+    issuer: '2처',
     issuedDate: '2026.05.23 발령',
     scheduleMain: '2026.05.25 04:00',
     scheduleSub: '본청 B3',

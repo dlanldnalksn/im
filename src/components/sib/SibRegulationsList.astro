@@ -10,6 +10,7 @@ import {
 import type { SibRegulationRecord } from '../../data/sib-regulations-list';
 
 const base = 'intranet/sib/';
+const defaultFavoriteIds = sibRegulationRecords.filter((rec) => rec.starred).map((rec) => rec.id);
 
 const filterTabs = [
   { label: '전체', filter: 'all' },
@@ -54,7 +55,9 @@ function statusTagClass(rec: SibRegulationRecord) {
       </svg>
       규정 문의
     </button>
-    <button type="button" class="sib-reg-fav-btn">즐겨찾기 ★ 3</button>
+    <button type="button" class="sib-reg-fav-btn" data-sib-reg-fav-btn>
+      즐겨찾기 ★ <span data-sib-reg-fav-count>{defaultFavoriteIds.length}</span>
+    </button>
   </div>
 </div>
 
@@ -152,14 +155,17 @@ function statusTagClass(rec: SibRegulationRecord) {
 
     {
       sibRegulationRecords.map((rec) => (
-        <a
-          href={url(`${base}regulations/${rec.id}/`)}
+        <div
           class={rowClass(rec)}
           data-sib-reg-row
+          data-reg-id={rec.id}
+          data-href={url(`${base}regulations/${rec.id}/`)}
           data-filter={rec.filterKey}
           data-reference-date={rec.referenceDate}
           data-rule-code={rec.ruleCode}
           data-search={`${rec.ruleCode} ${rec.title} ${rec.category} ${rec.department} ${rec.titleNote || ''}`.toLowerCase()}
+          role="link"
+          tabindex="0"
         >
           <div class="sib-reg-table-status">
             <span class={statusTagClass(rec)}>{rec.statusLabel}</span>
@@ -170,20 +176,32 @@ function statusTagClass(rec: SibRegulationRecord) {
           <div class:list={['sib-reg-table-title', rec.rowStyle === 'revised' && 'active']}>{rec.title}{rec.titleNote && (<><br /><span class:list={['sib-reg-title-note', rec.titleNoteVariant === 'revised' && 'revised', rec.titleNoteVariant === 'muted' && 'muted']}>{rec.titleNote}</span></>)}</div>
           <div class:list={['sib-reg-table-date', rec.effectiveDateBold && 'bold']}>{rec.effectiveDate}</div>
           <div class="sib-reg-table-action">
-            {
-              rec.starred ? (
-                <svg class="sib-reg-star filled" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 17.27l5.18 3.13-1.37-5.89L20.4 9.59l-5.99-.52L12 3.5l-2.41 5.57L3.6 9.59l4.59 4.92-1.37 5.89z"></path>
-                </svg>
-              ) : (
-                <svg class="sib-reg-star" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M12 17.27l5.18 3.13-1.37-5.89L20.4 9.59l-5.99-.52L12 3.5l-2.41 5.57L3.6 9.59l4.59 4.92-1.37 5.89z" stroke="#888" stroke-width="2"></path>
-                </svg>
-              )
-            }
+            <button
+              type="button"
+              class="sib-reg-star-btn"
+              data-sib-reg-star
+              data-reg-id={rec.id}
+              aria-label={rec.starred ? '즐겨찾기 해제' : '즐겨찾기 추가'}
+              aria-pressed={rec.starred ? 'true' : 'false'}
+            >
+              <svg
+                class:list={['sib-reg-star', rec.starred && 'filled']}
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill={rec.starred ? 'currentColor' : 'none'}
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 17.27l5.18 3.13-1.37-5.89L20.4 9.59l-5.99-.52L12 3.5l-2.41 5.57L3.6 9.59l4.59 4.92-1.37 5.89z"
+                  stroke={rec.starred ? 'none' : '#888'}
+                  stroke-width={rec.starred ? '0' : '2'}
+                ></path>
+              </svg>
+            </button>
             <span class:list={['sib-reg-btn-link', rec.rowStyle === 'revised' && 'active']}>조회 →</span>
           </div>
-        </a>
+        </div>
       ))
     }
 
@@ -196,7 +214,80 @@ function statusTagClass(rec: SibRegulationRecord) {
   </div>
 </div>
 
-<script define:vars={{ pageSize: SIB_REG_PAGE_SIZE }}>
+<script define:vars={{ pageSize: SIB_REG_PAGE_SIZE, defaultFavoriteIds }}>
+  const FAV_STORAGE_KEY = 'sib-reg-favorites';
+
+  function loadFavorites() {
+    try {
+      const raw = localStorage.getItem(FAV_STORAGE_KEY);
+      if (raw) return new Set(JSON.parse(raw));
+    } catch {
+      /* ignore */
+    }
+    return new Set(defaultFavoriteIds);
+  }
+
+  function saveFavorites(favorites) {
+    localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify([...favorites]));
+  }
+
+  function syncStarButton(btn, isFavorite) {
+    const svg = btn.querySelector('.sib-reg-star');
+    const path = btn.querySelector('path');
+    btn.setAttribute('aria-pressed', isFavorite ? 'true' : 'false');
+    btn.setAttribute('aria-label', isFavorite ? '즐겨찾기 해제' : '즐겨찾기 추가');
+    svg?.classList.toggle('filled', isFavorite);
+    if (svg) svg.setAttribute('fill', isFavorite ? 'currentColor' : 'none');
+    if (path) {
+      path.setAttribute('stroke', isFavorite ? 'none' : '#888');
+      path.setAttribute('stroke-width', isFavorite ? '0' : '2');
+    }
+  }
+
+  function updateFavoriteCount(favorites) {
+    const countEl = document.querySelector('[data-sib-reg-fav-count]');
+    if (countEl) countEl.textContent = String(favorites.size);
+  }
+
+  let favorites = loadFavorites();
+  if (!localStorage.getItem(FAV_STORAGE_KEY)) {
+    saveFavorites(favorites);
+  }
+
+  document.querySelectorAll('[data-sib-reg-star]').forEach((btn) => {
+    const id = btn.getAttribute('data-reg-id');
+    if (!id) return;
+    syncStarButton(btn, favorites.has(id));
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (favorites.has(id)) favorites.delete(id);
+      else favorites.add(id);
+      saveFavorites(favorites);
+      syncStarButton(btn, favorites.has(id));
+      updateFavoriteCount(favorites);
+    });
+  });
+
+  updateFavoriteCount(favorites);
+
+  document.querySelectorAll('[data-sib-reg-row][data-href]').forEach((row) => {
+    const navigate = () => {
+      const href = row.getAttribute('data-href');
+      if (href) window.location.href = href;
+    };
+    row.addEventListener('click', (event) => {
+      if (event.target.closest('[data-sib-reg-star]')) return;
+      navigate();
+    });
+    row.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (event.target.closest('[data-sib-reg-star]')) return;
+      event.preventDefault();
+      navigate();
+    });
+  });
+
   const listRoot = document.querySelector('[data-sib-reg-list]');
   if (listRoot) {
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-reg-row]'));
