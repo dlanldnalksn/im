@@ -4,38 +4,12 @@ import {
   SIB_REG_PAGE_SIZE,
   SIB_REG_TOTAL_DOCUMENTS,
   sibRegulationAmendment,
+  sibRegulationCategories,
   sibRegulationRecords,
 } from '../../data/sib-regulations-list';
 import type { SibRegulationRecord } from '../../data/sib-regulations-list';
 
 const base = 'intranet/sib/';
-
-const relatedNav = [
-  {
-    title: '작전 명령',
-    description: '차출 명령 · 작전 지시 · 미열람 확인',
-    href: `${base}documents/`,
-    code: 'OP',
-  },
-  {
-    title: '의무 보고',
-    description: '정기·수시 보고 · 제출 기한',
-    href: `${base}reports/`,
-    code: 'RPT',
-  },
-  {
-    title: '결재·신청',
-    description: '매칭·이동·처방 · 승인 현황',
-    href: `${base}approvals/`,
-    code: 'APR',
-  },
-  {
-    title: '공지·알림',
-    description: '전체 공지 · 긴급 알림',
-    href: `${base}notices/`,
-    code: 'NTC',
-  },
-];
 
 const filterTabs = [
   { label: '전체', filter: 'all' },
@@ -115,22 +89,26 @@ function statusTagClass(rec: SibRegulationRecord) {
   <span class="sib-reg-amendment-link">개정안 →</span>
 </a>
 
-<div class="sib-reg-nav-grid">
+<div class="sib-reg-category-grid">
   {
-    relatedNav.map((item) => (
-      <a href={url(item.href)} class="sib-reg-nav-card no-underline text-inherit">
-        <div class="sib-reg-nav-card-top">
-          <div class="sib-reg-nav-card-title">{item.title}</div>
+    sibRegulationCategories.map((cat) => (
+      <button
+        type="button"
+        class:list={['sib-reg-category-card', cat.accent && 'accent']}
+        data-sib-reg-category-filter={cat.filterKey}
+      >
+        <div class="sib-reg-category-top">
+          <div class="sib-reg-category-title">{cat.title}</div>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M9 18l6-6-6-6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </div>
-        <p class="sib-reg-nav-card-desc">{item.description}</p>
-        <div class="sib-reg-nav-card-foot">
-          <span>바로가기</span>
-          <span class="sib-reg-nav-card-code">{item.code}</span>
+        <p class="sib-reg-category-desc">{cat.description}</p>
+        <div class="sib-reg-category-foot">
+          <span>{cat.count}개 문서</span>
+          <span class="sib-reg-category-code">{cat.code}</span>
         </div>
-      </a>
+      </button>
     ))
   }
 </div>
@@ -397,6 +375,7 @@ function statusTagClass(rec: SibRegulationRecord) {
     });
 
     const filterTabs = Array.from(document.querySelectorAll('[data-sib-reg-filter]'));
+    const categoryCards = Array.from(document.querySelectorAll('[data-sib-reg-category-filter]'));
     const sortSelect = document.querySelector('[data-sib-reg-sort]');
     const searchInput = document.querySelector('[data-sib-reg-search]');
     const footCount = document.querySelector('[data-sib-reg-foot-count]');
@@ -530,6 +509,13 @@ function statusTagClass(rec: SibRegulationRecord) {
     filterTabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         setActiveTab(tab.getAttribute('data-sib-reg-filter') || 'all');
+        applyFilters();
+      });
+    });
+
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActiveTab(card.getAttribute('data-sib-reg-category-filter') || 'all');
         applyFilters();
       });
     });
