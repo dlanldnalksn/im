@@ -4,18 +4,19 @@ import {
   SIB_REG_PAGE_SIZE,
   SIB_REG_TOTAL_DOCUMENTS,
   sibRegulationAmendment,
+  sibRegulationCategories,
   sibRegulationRecords,
 } from '../../data/sib-regulations-list';
 import type { SibRegulationRecord } from '../../data/sib-regulations-list';
 
 const base = 'intranet/sib/';
 
-const filterTabs = [
-  { label: '전체', filter: 'all' },
-  { label: '상위 법령', filter: 'law' },
-  { label: '위원회 고시', filter: 'pmc' },
-  { label: '특감국 내규', filter: 'sib' },
-  { label: '차출요원 복무', filter: 'duty' },
+const quickNav = [
+  { label: '작전 명령', href: `${base}documents/` },
+  { label: '의무 보고', href: `${base}reports/` },
+  { label: '결재·신청', href: `${base}approvals/` },
+  { label: '공지·알림', href: `${base}notices/` },
+  { label: '신상·인사', href: `${base}personnel/lee-chan-young/` },
 ];
 
 const sortOptions = [
@@ -88,22 +89,41 @@ function statusTagClass(rec: SibRegulationRecord) {
   <span class="sib-reg-amendment-link">개정안 →</span>
 </a>
 
+<div class="sib-reg-category-grid">
+  {
+    sibRegulationCategories.map((cat) => (
+      <button
+        type="button"
+        class:list={['sib-reg-category-card', cat.accent && 'accent']}
+        data-sib-reg-category-filter={cat.filterKey}
+      >
+        <div class="sib-reg-category-top">
+          <div class="sib-reg-category-title">{cat.title}</div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 18l6-6-6-6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <p class="sib-reg-category-desc">{cat.description}</p>
+        <div class="sib-reg-category-foot">
+          <span>{cat.count}개 문서</span>
+          <span class="sib-reg-category-code">{cat.code}</span>
+        </div>
+      </button>
+    ))
+  }
+</div>
+
 <div class="sib-op-toolbar" data-sib-reg-toolbar>
-  <div class="sib-op-filter-tabs" role="tablist" aria-label="규정·법령 필터">
+  <nav class="sib-reg-quick-nav" aria-label="관련 메뉴 빠른 이동">
     {
-      filterTabs.map((tab, i) => (
-        <button
-          type="button"
-          role="tab"
-          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
-          data-sib-reg-filter={tab.filter}
-          aria-selected={i === 0 ? 'true' : 'false'}
-        >
-          {tab.label}
-        </button>
+      quickNav.map((item) => (
+        <a href={url(item.href)} class="sib-reg-quick-nav-link">
+          {item.label}
+          <span aria-hidden="true">→</span>
+        </a>
       ))
     }
-  </div>
+  </nav>
   <div class="sib-op-toolbar-right">
     <label class="sib-op-select">
       <span class="sib-op-select-label">정렬</span>
@@ -207,7 +227,8 @@ function statusTagClass(rec: SibRegulationRecord) {
 </div>
 
 <script define:vars={{ pageSize: SIB_REG_PAGE_SIZE }}>
-  const FAV_STORAGE_KEY = 'sib-reg-favorites-v2';
+  const FAV_STORAGE_KEY = 'sib-reg-favorites-v3';
+  const LEGACY_FAV_KEYS = ['sib-reg-favorites', 'sib-reg-favorites-v2'];
 
   function loadFavorites() {
     try {
@@ -216,6 +237,7 @@ function statusTagClass(rec: SibRegulationRecord) {
     } catch {
       /* ignore */
     }
+    LEGACY_FAV_KEYS.forEach((key) => localStorage.removeItem(key));
     return new Set();
   }
 
@@ -303,7 +325,7 @@ function statusTagClass(rec: SibRegulationRecord) {
   const listRoot = document.querySelector('[data-sib-reg-list]');
   if (listRoot) {
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-reg-row]'));
-    const filterTabs = Array.from(document.querySelectorAll('[data-sib-reg-filter]'));
+    const categoryCards = Array.from(document.querySelectorAll('[data-sib-reg-category-filter]'));
     const sortSelect = document.querySelector('[data-sib-reg-sort]');
     const searchInput = document.querySelector('[data-sib-reg-search]');
     const footCount = document.querySelector('[data-sib-reg-foot-count]');
@@ -343,12 +365,11 @@ function statusTagClass(rec: SibRegulationRecord) {
       return sortRows(rows.filter((row) => rowMatchesFilters(row)));
     }
 
-    function setActiveTab(filter) {
+    function setActiveCategory(filter) {
       activeFilter = filter;
-      filterTabs.forEach((tab) => {
-        const isActive = tab.getAttribute('data-sib-reg-filter') === filter;
-        tab.classList.toggle('is-active', isActive);
-        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      categoryCards.forEach((card) => {
+        const key = card.getAttribute('data-sib-reg-category-filter') || '';
+        card.classList.toggle('is-active', filter !== 'all' && key === filter);
       });
     }
 
@@ -433,9 +454,11 @@ function statusTagClass(rec: SibRegulationRecord) {
       renderPagination(totalPages);
     }
 
-    filterTabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        setActiveTab(tab.getAttribute('data-sib-reg-filter') || 'all');
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const key = card.getAttribute('data-sib-reg-category-filter') || 'all';
+        if (activeFilter === key) setActiveCategory('all');
+        else setActiveCategory(key);
         applyFilters();
       });
     });
@@ -451,6 +474,7 @@ function statusTagClass(rec: SibRegulationRecord) {
     });
 
     applyFiltersRef = applyFilters;
+    setActiveCategory('all');
     applyFilters();
   }
 </script>

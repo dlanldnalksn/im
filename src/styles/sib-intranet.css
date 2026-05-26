@@ -950,6 +950,40 @@
   box-shadow: inset 0 0 0 1px #6b1f1f;
 }
 
+.sib-reg-quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.sib-reg-quick-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid #e0e2e7;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  color: #525252;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.sib-reg-quick-nav-link:hover {
+  background: #fafbfc;
+  border-color: #cbd5e1;
+  color: #1a1a1a;
+}
+
+.sib-reg-quick-nav-link span {
+  font-size: 11px;
+  color: #888;
+}
+
 .sib-reg-inquiry-modal {
   position: fixed;
   inset: 0;
@@ -1402,6 +1436,16 @@
 
 .sib-reg-category-card.accent {
   border-left: 3px solid #8b2a2a;
+}
+
+.sib-reg-category-card.is-active {
+  border-color: #1a1a1a;
+  background: #fafbfc;
+  box-shadow: inset 0 0 0 1px #1a1a1a;
+}
+
+.sib-reg-category-card.is-active .sib-reg-category-title {
+  color: #1a1a1a;
 }
 
 .sib-reg-category-top {
