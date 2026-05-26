@@ -945,144 +945,6 @@
   gap: 6px;
 }
 
-.sib-reg-fav-btn.is-active {
-  @apply bg-[#8b2a2a];
-  box-shadow: inset 0 0 0 1px #6b1f1f;
-}
-
-.sib-reg-quick-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.sib-reg-quick-nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 8px 12px;
-  border: 1px solid #e0e2e7;
-  border-radius: 4px;
-  background: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  color: #525252;
-  text-decoration: none;
-  letter-spacing: -0.02em;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-
-.sib-reg-quick-nav-link:hover {
-  background: #fafbfc;
-  border-color: #cbd5e1;
-  color: #1a1a1a;
-}
-
-.sib-reg-quick-nav-link span {
-  font-size: 11px;
-  color: #888;
-}
-
-.sib-reg-inquiry-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.sib-reg-inquiry-modal.is-hidden {
-  display: none;
-}
-
-.sib-reg-inquiry-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-}
-
-.sib-reg-inquiry-panel {
-  position: relative;
-  width: min(420px, 100%);
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 22px 24px 20px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-}
-
-.sib-reg-inquiry-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.sib-reg-inquiry-head h2 {
-  font-size: 16px;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.sib-reg-inquiry-close {
-  border: 0;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  color: #888;
-  cursor: pointer;
-  padding: 0 4px;
-}
-
-.sib-reg-inquiry-lead {
-  font-size: 12.5px;
-  color: #525252;
-  margin: 0 0 14px;
-  line-height: 1.5;
-}
-
-.sib-reg-inquiry-dl {
-  margin: 0 0 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sib-reg-inquiry-dl div {
-  display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 10px;
-  font-size: 12px;
-}
-
-.sib-reg-inquiry-dl dt {
-  color: #888;
-  font-weight: 700;
-}
-
-.sib-reg-inquiry-dl dd {
-  margin: 0;
-  color: #1a1a1a;
-  font-weight: 600;
-}
-
-.sib-reg-inquiry-confirm {
-  width: 100%;
-  border: 0;
-  background: #1a1a1a;
-  color: #fff;
-  padding: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
 .sib-apr-table {
   @apply bg-white border border-[#e5e7eb] rounded-md overflow-hidden min-w-[980px];
 }
@@ -1404,6 +1266,176 @@
   letter-spacing: -0.01em;
 }
 
+.sib-reg-fav-btn.is-active {
+  background: #8b2a2a;
+}
+
+.sib-reg-inquiry-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.sib-reg-inquiry-modal.is-hidden {
+  display: none !important;
+}
+
+.sib-reg-inquiry-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.sib-reg-inquiry-panel {
+  position: relative;
+  width: min(420px, 100%);
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 22px 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.sib-reg-inquiry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sib-reg-inquiry-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.sib-reg-inquiry-close {
+  border: 0;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: #888;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.sib-reg-inquiry-lead {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: #525252;
+  line-height: 1.5;
+}
+
+.sib-reg-inquiry-dl {
+  margin: 0 0 18px;
+}
+
+.sib-reg-inquiry-dl div {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f2;
+  font-size: 12px;
+}
+
+.sib-reg-inquiry-dl dt {
+  color: #888;
+  font-weight: 700;
+}
+
+.sib-reg-inquiry-dl dd {
+  margin: 0;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.sib-reg-inquiry-confirm {
+  width: 100%;
+  border: 0;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sib-reg-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1024px) {
+  .sib-reg-nav-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sib-reg-nav-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sib-reg-nav-card {
+  @apply bg-white border border-[#e5e7eb] rounded-md block;
+  padding: 18px 20px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.sib-reg-nav-card:hover {
+  @apply bg-[#fafbfc] border-[#cbd5e1];
+}
+
+.sib-reg-nav-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.sib-reg-nav-card-title {
+  @apply text-[13.5px] font-extrabold text-[#1a1a1a];
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.sib-reg-nav-card-desc {
+  @apply text-[11px] text-[#666] font-medium;
+  margin: 0 0 12px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.sib-reg-nav-card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f2;
+  font-size: 10.5px;
+  color: #888;
+  font-weight: 600;
+}
+
+.sib-reg-nav-card-code {
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 10px;
+  color: #525252;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
 .sib-reg-category-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1436,16 +1468,6 @@
 
 .sib-reg-category-card.accent {
   border-left: 3px solid #8b2a2a;
-}
-
-.sib-reg-category-card.is-active {
-  border-color: #1a1a1a;
-  background: #fafbfc;
-  box-shadow: inset 0 0 0 1px #1a1a1a;
-}
-
-.sib-reg-category-card.is-active .sib-reg-category-title {
-  color: #1a1a1a;
 }
 
 .sib-reg-category-top {

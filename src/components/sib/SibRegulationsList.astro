@@ -4,19 +4,45 @@ import {
   SIB_REG_PAGE_SIZE,
   SIB_REG_TOTAL_DOCUMENTS,
   sibRegulationAmendment,
-  sibRegulationCategories,
   sibRegulationRecords,
 } from '../../data/sib-regulations-list';
 import type { SibRegulationRecord } from '../../data/sib-regulations-list';
 
 const base = 'intranet/sib/';
 
-const quickNav = [
-  { label: '작전 명령', href: `${base}documents/` },
-  { label: '의무 보고', href: `${base}reports/` },
-  { label: '결재·신청', href: `${base}approvals/` },
-  { label: '공지·알림', href: `${base}notices/` },
-  { label: '신상·인사', href: `${base}personnel/lee-chan-young/` },
+const relatedNav = [
+  {
+    title: '작전 명령',
+    description: '차출 명령 · 작전 지시 · 미열람 확인',
+    href: `${base}documents/`,
+    code: 'OP',
+  },
+  {
+    title: '의무 보고',
+    description: '정기·수시 보고 · 제출 기한',
+    href: `${base}reports/`,
+    code: 'RPT',
+  },
+  {
+    title: '결재·신청',
+    description: '매칭·이동·처방 · 승인 현황',
+    href: `${base}approvals/`,
+    code: 'APR',
+  },
+  {
+    title: '공지·알림',
+    description: '전체 공지 · 긴급 알림',
+    href: `${base}notices/`,
+    code: 'NTC',
+  },
+];
+
+const filterTabs = [
+  { label: '전체', filter: 'all' },
+  { label: '상위 법령', filter: 'law' },
+  { label: '위원회 고시', filter: 'pmc' },
+  { label: '특감국 내규', filter: 'sib' },
+  { label: '차출요원 복무', filter: 'duty' },
 ];
 
 const sortOptions = [
@@ -89,41 +115,42 @@ function statusTagClass(rec: SibRegulationRecord) {
   <span class="sib-reg-amendment-link">개정안 →</span>
 </a>
 
-<div class="sib-reg-category-grid">
+<div class="sib-reg-nav-grid">
   {
-    sibRegulationCategories.map((cat) => (
-      <button
-        type="button"
-        class:list={['sib-reg-category-card', cat.accent && 'accent']}
-        data-sib-reg-category-filter={cat.filterKey}
-      >
-        <div class="sib-reg-category-top">
-          <div class="sib-reg-category-title">{cat.title}</div>
+    relatedNav.map((item) => (
+      <a href={url(item.href)} class="sib-reg-nav-card no-underline text-inherit">
+        <div class="sib-reg-nav-card-top">
+          <div class="sib-reg-nav-card-title">{item.title}</div>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M9 18l6-6-6-6" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </div>
-        <p class="sib-reg-category-desc">{cat.description}</p>
-        <div class="sib-reg-category-foot">
-          <span>{cat.count}개 문서</span>
-          <span class="sib-reg-category-code">{cat.code}</span>
+        <p class="sib-reg-nav-card-desc">{item.description}</p>
+        <div class="sib-reg-nav-card-foot">
+          <span>바로가기</span>
+          <span class="sib-reg-nav-card-code">{item.code}</span>
         </div>
-      </button>
+      </a>
     ))
   }
 </div>
 
 <div class="sib-op-toolbar" data-sib-reg-toolbar>
-  <nav class="sib-reg-quick-nav" aria-label="관련 메뉴 빠른 이동">
+  <div class="sib-op-filter-tabs" role="tablist" aria-label="규정·법령 필터">
     {
-      quickNav.map((item) => (
-        <a href={url(item.href)} class="sib-reg-quick-nav-link">
-          {item.label}
-          <span aria-hidden="true">→</span>
-        </a>
+      filterTabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['sib-op-filter-tab', i === 0 && 'is-active']}
+          data-sib-reg-filter={tab.filter}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {tab.label}
+        </button>
       ))
     }
-  </nav>
+  </div>
   <div class="sib-op-toolbar-right">
     <label class="sib-op-select">
       <span class="sib-op-select-label">정렬</span>
@@ -230,15 +257,22 @@ function statusTagClass(rec: SibRegulationRecord) {
   const FAV_STORAGE_KEY = 'sib-reg-favorites-v3';
   const LEGACY_FAV_KEYS = ['sib-reg-favorites', 'sib-reg-favorites-v2'];
 
-  function loadFavorites() {
+  function loadFavorites(validIds) {
+    LEGACY_FAV_KEYS.forEach((key) => localStorage.removeItem(key));
     try {
       const raw = localStorage.getItem(FAV_STORAGE_KEY);
-      if (raw) return new Set(JSON.parse(raw));
+      if (!raw) return new Set();
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return new Set();
+      const cleaned = parsed.filter((id) => typeof id === 'string' && validIds.has(id));
+      if (cleaned.length !== parsed.length) {
+        localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(cleaned));
+      }
+      return new Set(cleaned);
     } catch {
-      /* ignore */
+      localStorage.removeItem(FAV_STORAGE_KEY);
+      return new Set();
     }
-    LEGACY_FAV_KEYS.forEach((key) => localStorage.removeItem(key));
-    return new Set();
   }
 
   function saveFavorites(favorites) {
@@ -263,12 +297,18 @@ function statusTagClass(rec: SibRegulationRecord) {
     if (countEl) countEl.textContent = String(favorites.size);
   }
 
-  let favorites = loadFavorites();
+  let favorites = new Set();
   let showFavoritesOnly = false;
   let applyFiltersRef = null;
 
   const favBtn = document.querySelector('[data-sib-reg-fav-btn]');
   favBtn?.addEventListener('click', () => {
+    if (favorites.size === 0) {
+      showFavoritesOnly = false;
+      favBtn.classList.remove('is-active');
+      favBtn.setAttribute('aria-pressed', 'false');
+      return;
+    }
     showFavoritesOnly = !showFavoritesOnly;
     favBtn.classList.toggle('is-active', showFavoritesOnly);
     favBtn.setAttribute('aria-pressed', showFavoritesOnly ? 'true' : 'false');
@@ -287,45 +327,53 @@ function statusTagClass(rec: SibRegulationRecord) {
     if (event.key === 'Escape' && !inquiryModal?.classList.contains('is-hidden')) closeInquiry();
   });
 
-  document.querySelectorAll('[data-sib-reg-star]').forEach((btn) => {
-    const id = btn.getAttribute('data-reg-id');
-    if (!id) return;
-    syncStarButton(btn, favorites.has(id));
-    btn.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (favorites.has(id)) favorites.delete(id);
-      else favorites.add(id);
-      saveFavorites(favorites);
-      syncStarButton(btn, favorites.has(id));
-      updateFavoriteCount(favorites);
-      if (showFavoritesOnly) applyFiltersRef?.();
-    });
-  });
-
-  updateFavoriteCount(favorites);
-
-  document.querySelectorAll('[data-sib-reg-row][data-href]').forEach((row) => {
-    const navigate = () => {
-      const href = row.getAttribute('data-href');
-      if (href) window.location.href = href;
-    };
-    row.addEventListener('click', (event) => {
-      if (event.target.closest('[data-sib-reg-star]')) return;
-      navigate();
-    });
-    row.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      if (event.target.closest('[data-sib-reg-star]')) return;
-      event.preventDefault();
-      navigate();
-    });
-  });
-
   const listRoot = document.querySelector('[data-sib-reg-list]');
   if (listRoot) {
     const rows = Array.from(listRoot.querySelectorAll('[data-sib-reg-row]'));
-    const categoryCards = Array.from(document.querySelectorAll('[data-sib-reg-category-filter]'));
+    const validRegIds = new Set(rows.map((row) => row.getAttribute('data-reg-id')).filter(Boolean));
+    favorites = loadFavorites(validRegIds);
+
+    document.querySelectorAll('[data-sib-reg-star]').forEach((btn) => {
+      const id = btn.getAttribute('data-reg-id');
+      if (!id) return;
+      syncStarButton(btn, favorites.has(id));
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (favorites.has(id)) favorites.delete(id);
+        else favorites.add(id);
+        saveFavorites(favorites);
+        syncStarButton(btn, favorites.has(id));
+        updateFavoriteCount(favorites);
+        if (favorites.size === 0 && showFavoritesOnly) {
+          showFavoritesOnly = false;
+          favBtn?.classList.remove('is-active');
+          favBtn?.setAttribute('aria-pressed', 'false');
+        }
+        if (showFavoritesOnly) applyFiltersRef?.();
+      });
+    });
+
+    updateFavoriteCount(favorites);
+
+    rows.forEach((row) => {
+      const navigate = () => {
+        const href = row.getAttribute('data-href');
+        if (href) window.location.href = href;
+      };
+      row.addEventListener('click', (event) => {
+        if (event.target.closest('[data-sib-reg-star]')) return;
+        navigate();
+      });
+      row.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        if (event.target.closest('[data-sib-reg-star]')) return;
+        event.preventDefault();
+        navigate();
+      });
+    });
+
+    const filterTabs = Array.from(document.querySelectorAll('[data-sib-reg-filter]'));
     const sortSelect = document.querySelector('[data-sib-reg-sort]');
     const searchInput = document.querySelector('[data-sib-reg-search]');
     const footCount = document.querySelector('[data-sib-reg-foot-count]');
@@ -365,11 +413,12 @@ function statusTagClass(rec: SibRegulationRecord) {
       return sortRows(rows.filter((row) => rowMatchesFilters(row)));
     }
 
-    function setActiveCategory(filter) {
+    function setActiveTab(filter) {
       activeFilter = filter;
-      categoryCards.forEach((card) => {
-        const key = card.getAttribute('data-sib-reg-category-filter') || '';
-        card.classList.toggle('is-active', filter !== 'all' && key === filter);
+      filterTabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-sib-reg-filter') === filter;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
     }
 
@@ -398,8 +447,7 @@ function statusTagClass(rec: SibRegulationRecord) {
       });
       paginationRoot.appendChild(prev);
 
-      const maxButtons = totalPages;
-      for (let page = 1; page <= maxButtons; page += 1) {
+      for (let page = 1; page <= totalPages; page += 1) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = `sib-op-page-btn${page === currentPage ? ' active' : ''}`;
@@ -445,7 +493,9 @@ function statusTagClass(rec: SibRegulationRecord) {
 
       if (footCount) {
         if (filteredTotal === 0) {
-          footCount.textContent = '검색 결과 없음';
+          footCount.textContent = showFavoritesOnly ? '즐겨찾기한 문서 없음' : '검색 결과 없음';
+        } else if (showFavoritesOnly) {
+          footCount.textContent = `즐겨찾기 ${filteredTotal}개 · ${startIdx + 1} — ${endIdx} 표시`;
         } else {
           footCount.textContent = `총 ${filteredTotal}개 문서 중 ${startIdx + 1} — ${endIdx} 표시`;
         }
@@ -454,11 +504,9 @@ function statusTagClass(rec: SibRegulationRecord) {
       renderPagination(totalPages);
     }
 
-    categoryCards.forEach((card) => {
-      card.addEventListener('click', () => {
-        const key = card.getAttribute('data-sib-reg-category-filter') || 'all';
-        if (activeFilter === key) setActiveCategory('all');
-        else setActiveCategory(key);
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        setActiveTab(tab.getAttribute('data-sib-reg-filter') || 'all');
         applyFilters();
       });
     });
@@ -474,7 +522,7 @@ function statusTagClass(rec: SibRegulationRecord) {
     });
 
     applyFiltersRef = applyFilters;
-    setActiveCategory('all');
+    setActiveTab('all');
     applyFilters();
   }
 </script>
