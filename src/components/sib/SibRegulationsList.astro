@@ -254,8 +254,22 @@ function statusTagClass(rec: SibRegulationRecord) {
 </div>
 
 <script define:vars={{ pageSize: SIB_REG_PAGE_SIZE }}>
-  const FAV_STORAGE_KEY = 'sib-reg-favorites-v3';
-  const LEGACY_FAV_KEYS = ['sib-reg-favorites', 'sib-reg-favorites-v2'];
+  const FAV_STORAGE_KEY = 'sib-reg-favorites-v4';
+  const LEGACY_FAV_KEYS = ['sib-reg-favorites', 'sib-reg-favorites-v2', 'sib-reg-favorites-v3'];
+
+  function showRegToast(message) {
+    let toast = document.querySelector('[data-sib-reg-toast]');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.setAttribute('data-sib-reg-toast', '');
+      toast.className = 'sib-reg-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    window.clearTimeout(showRegToast._timer);
+    showRegToast._timer = window.setTimeout(() => toast.classList.remove('is-visible'), 2400);
+  }
 
   function loadFavorites(validIds) {
     LEGACY_FAV_KEYS.forEach((key) => localStorage.removeItem(key));
@@ -307,17 +321,25 @@ function statusTagClass(rec: SibRegulationRecord) {
       showFavoritesOnly = false;
       favBtn.classList.remove('is-active');
       favBtn.setAttribute('aria-pressed', 'false');
+      showRegToast('즐겨찾기한 문서가 없습니다. 목록에서 ★를 눌러 추가하세요.');
       return;
     }
     showFavoritesOnly = !showFavoritesOnly;
     favBtn.classList.toggle('is-active', showFavoritesOnly);
     favBtn.setAttribute('aria-pressed', showFavoritesOnly ? 'true' : 'false');
+    showRegToast(showFavoritesOnly ? '즐겨찾기한 문서만 표시합니다.' : '전체 문서를 표시합니다.');
     applyFiltersRef?.();
   });
 
   const inquiryModal = document.querySelector('[data-sib-reg-inquiry-modal]');
-  const openInquiry = () => inquiryModal?.classList.remove('is-hidden');
-  const closeInquiry = () => inquiryModal?.classList.add('is-hidden');
+  const openInquiry = () => {
+    inquiryModal?.classList.remove('is-hidden');
+    inquiryModal?.querySelector('.sib-reg-inquiry-close')?.focus();
+  };
+  const closeInquiry = () => {
+    inquiryModal?.classList.add('is-hidden');
+    document.querySelector('[data-sib-reg-inquiry-open]')?.focus();
+  };
 
   document.querySelector('[data-sib-reg-inquiry-open]')?.addEventListener('click', openInquiry);
   document.querySelectorAll('[data-sib-reg-inquiry-close]').forEach((el) => {
@@ -345,6 +367,7 @@ function statusTagClass(rec: SibRegulationRecord) {
         saveFavorites(favorites);
         syncStarButton(btn, favorites.has(id));
         updateFavoriteCount(favorites);
+        showRegToast(favorites.has(id) ? '즐겨찾기에 추가했습니다.' : '즐겨찾기에서 제거했습니다.');
         if (favorites.size === 0 && showFavoritesOnly) {
           showFavoritesOnly = false;
           favBtn?.classList.remove('is-active');
